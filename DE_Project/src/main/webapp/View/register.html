@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Component/CSS/register.css">
+    <title>Register</title>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <a href="homeCustomer.html" class="back-button">
+                <img src="../Component/IMG/ic-back.svg" alt="Back">
+            </a>
+            <h1>Daily Essentials</h1>
+            <a href="homeCustomer.html" class="home-button">
+                <img src="../Component/IMG/ic-home.svg" alt="Home">
+            </a>
+        </div>
+        <h2 class="register-title">Đăng ký</h2>
+        <form action="register" method="POST" class="register-form">
+            <label for="fullname">Họ và tên*</label>
+            <input type="text" id="fullname" name="fullname" tabindex="1" placeholder="Nhập họ và tên">
+
+            <label for="phone">Số điện thoại*</label>
+            <input type="tel" id="phone" name="phone" tabindex="2" placeholder="Nhập số điện thoại">
+            <label for="password">Mật khẩu*</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" tabindex="3" placeholder="Nhập mật khẩu">
+                <span class="show-password">
+                    <img src="../Component/IMG/ic-eye.svg" alt="Show/Hide Password">
+                </span>
+            </div>
+
+            <label for="confirm-password">Xác nhận mật khẩu*</label>
+            <input type="password" id="confirm-password" name="confirm-password" tabindex="4" placeholder="Xác nhận mật khẩu">
+
+            <label for="gender">Giới tính*</label>
+            <div class="gender-options">
+                <input type="radio" id="male" name="gender" value="male" tabindex="5" checked>
+                <label for="male" class="gender-label">Nam</label>
+
+                <input type="radio" id="female" name="gender" tabindex="6" value="female">
+                <label for="female" class="gender-label">Nữ</label>
+            </div>
+
+           
+
+            <button type="submit" class="register-button" tabindex="7">Đăng ký</button>
+            <div class="or-divider">
+                <hr><span>Hoặc</span><hr>
+            </div>
+            <a href="login.html" class="login-button">Đăng nhập</a>
+        </form>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById("password");
+            const passwordFieldType = passwordField.getAttribute("type");
+
+            if (passwordFieldType === "password") {
+                passwordField.setAttribute("type", "text");
+            } else {
+                passwordField.setAttribute("type", "password");
+            }
+        }
+
+        document.querySelector('.show-password').addEventListener('click', togglePasswordVisibility);
+    </script>
+</body>
+</html>
