@@ -1,9 +1,10 @@
 @import url(./mainStyle.css);
 @import url(./navbar.css);
 
-.container {
+.customerViewOrder-container {
     display: flex;
     margin: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .sidebar {
     width: 200px;
@@ -72,6 +73,7 @@ th {
     gap: 50px;
     justify-content: flex-start;
     margin-top: 22px;
+    align-items: center;
 }
 
 .filter-section input, .filter-section select {
@@ -88,4 +90,29 @@ th {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.side-menu a {
+    text-decoration: none;
+    color: #000;
+    font-size: 16px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.side-menu img {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.side-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+.side-menu-item:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
 }
