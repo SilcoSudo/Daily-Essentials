@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product - Detail View</title>
+    <link rel="stylesheet" href="../Component/CSS/productDetail.css">
+</head>
+<body>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail-wrapper">
+        <div class="product-detail-left">
+            <img src="../Component/IMG/Mogu.jpg" alt="Nutri Boost Product" class="product-detail-image">
+        </div>
+
+        <div class="product-detail-right">
+            <h1>Nước uống sữa trái cây bổ dưỡng hương cam Nutri Boost chai 1L</h1>
+            <p><strong>Giá niêm yết:</strong> <span class="product-price">29,000 ₫</span></p>
+            <p><strong>Tình trạng:</strong> Còn hàng</p>
+
+            <div class="quantity-control">
+                <button class="quantity-btn" id="decrement">-</button>
+                <input type="text" value="1" id="quantity" readonly>
+                <button class="quantity-btn" id="increment">+</button>
+            </div>
+
+            <button class="btn-add-to-cart">
+                <img src="../Component/IMG/ic-cart.svg" alt="Cart Icon"> Thêm vào giỏ hàng
+            </button>
+        </div>
+    </section>
+
+    <section class="product-description">
+        <h2>Mô tả</h2>
+        <p>
+            Nước uống sữa trái cây bổ dưỡng hương cam Nutri Boost chai 1L có thành phần an toàn cho người dùng,
+            hương vị cam thơm ngon, bổ dưỡng. Sản phẩm giúp cơ thể bù đắp nước, bổ sung năng lượng, vitamin B3, B6,
+            E, C rất có lợi cho cơ thể, giúp xua tan cơn khát và cảm giác mệt mỏi.
+        </p>
+        <p><strong>Lưu ý:</strong></p>
+        <ul>
+            <li>Hạn sử dụng thực tế vui lòng xem trên bao bì.</li>
+            <li>Hình ảnh sản phẩm chỉ mang tính chất minh họa.</li>
+        </ul>
+    </section>
+
+    <script src="../Component/JS/productDetail.js"></script>
+</body>
+
+</html>
