@@ -34,14 +34,16 @@
 
             <label for="confirm-password">Xác nhận mật khẩu*</label>
             <input type="password" id="confirm-password" name="confirm-password" tabindex="4" placeholder="Xác nhận mật khẩu">
-
-            <label for="gender">Giới tính*</label>
-            <div class="gender-options">
-                <input type="radio" id="male" name="gender" value="male" tabindex="5" checked>
-                <label for="male" class="gender-label">Nam</label>
-
-                <input type="radio" id="female" name="gender" tabindex="6" value="female">
-                <label for="female" class="gender-label">Nữ</label>
+            <div class="gender">
+                <label>Giới tính *</label>
+                <label class="custom-radio">
+                    <input type="radio" name="gender" value="male" checked>
+                    <span class="radio-btn">Nam</span> 
+                </label>
+                <label class="custom-radio">
+                    <input type="radio" name="gender" value="female">
+                    <span class="radio-btn">Nữ</span>
+                </label>
             </div>
 
            
