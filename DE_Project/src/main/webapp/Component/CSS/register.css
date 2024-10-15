@@ -93,40 +93,6 @@ body {
     height: 24px;
 }
 
-.gender-options {
-    display: flex;
-    gap: 10px;
-}
-
-.gender-options input[type="radio"] {
-    display: none;
-}
-
-.gender-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #aaa;
-    background-color: #f5f5f5;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.gender-options input[type="radio"]:checked+.gender-label {
-    color: white;
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.gender-label:hover {
-    border-color: var(--primary-color);
-}
-
 .register-button {
     background-color: var(--primary-color);
     color: white;
@@ -170,3 +136,65 @@ body {
     padding: 12px 30px;
     display: inline-block;
 }
+.gender {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.custom-radio {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    position: relative;
+}
+
+.custom-radio input[type="radio"] {
+    display: none;
+}
+
+.custom-radio .radio-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    border: 2px solid #3333cc;
+    border-radius: 6px;
+    background-color: white;
+    color: var(--primary-color);
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+}
+
+.custom-radio input[type="radio"]:checked + .radio-btn {
+    background-color: white;
+}
+
+.custom-radio input[type="radio"]:not(:checked) + .radio-btn {
+    color: #BFBFBF;
+    border-color: #BFBFBF;
+}
+
+.custom-radio .radio-btn::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    border: 2px solid;
+    transition: background-color 0.3s ease;
+    border-radius: 3px;
+}
+
+.custom-radio input[type="radio"]:checked + .radio-btn::before {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.custom-radio input[type="radio"]:not(:checked) + .radio-btn::before {
+    background-color: #BFBFBF;
+    border-color: #BFBFBF;
+}
+
