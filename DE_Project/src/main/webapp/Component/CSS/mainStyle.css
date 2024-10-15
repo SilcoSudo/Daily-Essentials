@@ -6,6 +6,8 @@
     --primary-color: #000080;
     --secondary-color: #F1F1F1;
     --background-color: #F1F1F1;
+    --shadow: 2px 4px 15px rgba(0, 0, 0, 0.2);
+    --hv-btn: rgb(0,0,128, 0.05);
     --white-100: #ffff;
     --black-50: #00000081;
     --black-333: #333;
@@ -50,13 +52,15 @@ a {
     align-items: center;
     justify-content: space-between;
 }
+.p-10 {
+    padding: 10px;
+}
 /* ------------------------------ */
 /* Tag */
 .icon{
     max-width: 30px;
     max-height: 30px;
-}
-nav {
-    width: 100%;
+    padding: 5px;
+    fill: var(--primary-color);
 }
 /* ------------------------------ */

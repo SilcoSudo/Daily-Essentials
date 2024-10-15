@@ -1,55 +1,5 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5;
-}
-
-/* Navbar Styling */
-.navbar {
-    background-color: #0c26a5;
-    padding: 15px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.menu-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1200px;
-}
-
-.menu-btn-container {
-    flex: 1; /* Push to the left */
-}
-
-.purchase-btn-container {
-    flex: 1; /* Push to the right */
-    display: flex;
-    justify-content: flex-end; /* Align purchase button to the right */
-}
-
-
-.logo-container .logo {
-    font-size: 28px;
-    font-weight: 700;
-    color: white;
-    text-decoration: none;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
-}
-
-.logo-container .logo:hover {
-    color: #ffcc00;
-}
+@import url(./mainStyle.css);
+@import url(./navbar.css);
 
 .load-more-btn .highlight {
     color: #1818a9;
