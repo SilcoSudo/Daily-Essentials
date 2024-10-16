@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* ------------------------------ */
+/* Rule color */
+:root {
+    --primary-color: #000080;
+    --secondary-color: #F1F1F1;
+    --background-color: #F1F1F1;
+    --shadow: 2px 4px 15px rgba(0, 0, 0, 0.2);
+    --hv-btn: rgb(0,0,128, 0.05);
+    --white-100: #ffff;
+    --black-50: #00000081;
+    --black-333: #333;
+
+    --fw-800: 800;
+    --fw-700: 700;
+    --fw-600: 600;
+    --fw-500: 500;
+    --fw-400: 400;
+    
+    --fs-32: 2em;
+    --fs-24: 1.5em;
+    --fs-20: 1.25em;
+    --fs-16: 1em;
+    --fs-14: 0.875em;
+
+}
+
+
+
+/* ------------------------------ */
+/* Rule basic */
+* {
+    font-family: "Montserrat", sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    overflow: scroll;
+}
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+.d-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.p-10 {
+    padding: 10px;
+}
+/* ------------------------------ */
+/* Tag */
+.icon{
+    max-width: 30px;
+    max-height: 30px;
+    padding: 5px;
+    fill: var(--primary-color);
+}
+/* ------------------------------ */

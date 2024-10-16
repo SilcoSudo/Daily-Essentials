@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Component/CSS/customerInfo.css">
+    <title>Account Information</title>
+</head>
+<script src="https://esgoo.net/scripts/jquery.js"></script>
+<script src="../Component/JS/Select_area.js"></script>
+<script src="../Component/JS/popup.js"></script>
+
+<body>
+    <div class="main-content">
+        <h2>Thông tin tài khoản</h2>
+        <br>
+        <hr><br>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label class="title" for="name">Họ và tên *</label>
+                <input class="userinfo" type="text" id="name" name="name" value="Nguyễn Quốc Khang" required>
+            </div>
+
+            <div class="form-group">
+                <label class="title" for="phone">Số điện thoại</label>
+                <input class="userinfo" type="text" id="phone" name="phone" value="8413136117">
+            </div>
+
+            <div class="form-group">
+                <label class="title" for="email">Email *</label>
+                <input class="userinfo" type="email" id="email" name="email" value="yinkennalt@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="title" for="gender">Giới tính *</label>
+                <div class="gender">
+                    <div class="custom-radio" aria-label="Nam" style="padding-right: 10px;">
+                        <input type="radio" id="male" name="gender" value="male" checked>
+                        <label class="button radio-btn" for="male" class="radio-btn">Nam</label>
+                    </div>
+                    <div class="custom-radio" aria-label="Nữ">
+                        <input type="radio" id="female" name="gender" value="female">
+                        <label class="button radio-btn" for="female" class="radio-btn">Nữ</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="title" for="tinh">Tỉnh/ Thành phố</label>
+                <select id="tinh" name="tinh">
+                    <option value="0">Tỉnh thành</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="title" for="quan">Quận/ Huyện</label>
+                <select id="quan" name="quan">
+                    <option value="0">Quận Huyện</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="title" for="phuong">Phường/ Xã</label>
+                <select id="phuong" name="phuong">
+                    <option value="0">Phường Xã</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="title" for="address">Địa chỉ nhà chi tiết</label>
+                <input class="userinfo" type="text" id="address" name="address" value="194b Nhà trọ !!!">
+            </div>
+            <button type="submit" class="update-button">Cập nhật</button>
+        </form>
+    </div>
+</body>
+
+</html>

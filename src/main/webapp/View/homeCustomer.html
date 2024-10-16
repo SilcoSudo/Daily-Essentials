@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Component/CSS/homeCustomer.css">
+    <title>Trang chủ - Daily Essentials</title>
+</head>
+
+<body>
+    <div id="header"></div>
+
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            })
+            .catch(error => console.log('Error loading header:', error));
+    </script>
+
+    <!-- Carousel Section -->
+    <div class="carousel">
+        <button class="carousel-btn left-btn" onclick="moveCarousel(-1)">&#10094;</button>
+        <div class="carousel-track">
+            <img src="../Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 1">
+            <img src="../Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 2">
+            <img src="../Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 3">
+        </div>
+        <button class="carousel-btn right-btn" onclick="moveCarousel(1)">&#10095;</button>
+    </div>
+
+    <!-- Product Section -->
+    <section class="product-section">
+        <h2>Sản Phẩm Hot</h2>
+        <div id="product-grid" class="product-grid"></div>
+
+        <!-- Load More Button -->
+        <button id="load-more-btn" class="load-more-btn">
+            Xem thêm 25 sản phẩm <span class="highlight">Giá rẻ hôm nay</span>
+            <img src="../Component/IMG/ic-down.svg" class="icon ic-down" alt="Arrow Icon">
+        </button>
+    </section>
+
+    <script src="../Component/JS/productDisplay.js"></script>
+</body>
+
+</html>

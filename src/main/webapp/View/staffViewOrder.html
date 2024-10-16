@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Order</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <link rel="stylesheet" href="../Component/CSS/staffViewOrder.css" type="text/css"/>
+        <link rel="stylesheet" href="../Component/CSS/staffUpdateStatusOrder.css" type="text/css"/>
+        <link rel="stylesheet" href="../Component/CSS/staffViewOrderDetail.css" type="text/css"/>
+
+
+        <script>
+            function toggleMenu(e) {
+                const menus = document.querySelectorAll('.actions');
+                menus.forEach(menu => {
+                    if (menu !== e.target.closest('.actions')) {
+                        menu.classList.remove('active');
+                    }
+                });
+                e.target.closest('.actions').classList.toggle('active');
+            }
+
+            window.onclick = function (event) {
+                if (!event.target.matches('.actions button')) {
+                    const menus = document.querySelectorAll('.actions');
+                    menus.forEach(menu => menu.classList.remove('active'));
+                }
+            }
+
+            function openPopup(popupId) {
+                document.getElementById(popupId).style.display = "flex";
+            }
+
+            function closePopup(popupId) {
+                document.getElementById(popupId).style.display = "none";
+            }
+        </script>
+    </head>
+    <body>
+        <div id="header"></div>
+
+        <script>
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header').innerHTML = data;
+                })
+                .catch(error => console.log('Error loading header:', error));
+        </script>
+    
+        <div class="container">
+            <h1>Quản lý đơn hàng</h1>
+            <div class="filter-section">
+                <div>
+                    <label> ID đơn : </label>
+                    <input type="text" placeholder="Nhập ID đơn" />
+                </div>
+                <div>
+                    <label> Tình trạng đơn : </label>
+                    <select>
+                        <option>Đang xử lý</option>
+                        <option>Ðã xác nhận</option>
+                        <option>Đang vận chuyển</option>
+                        <option>Hoàn thành</option>
+                        <option>Ðã hủy</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label> Tổng số tiền  : </label>
+                    <input type="text" placeholder="Nhập số tiền" />
+                </div>
+            </div>
+            <div class="filter-section">
+                <div>
+                    <label for="month">Ngày tạo : </label>
+                    <select id="month">
+                        <option>Tháng 10</option>
+                    </select>
+                    <select>
+                        <option>Năm 2024</option>
+                    </select>
+                </div>
+                <button>Tìm</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>ID khách</th>
+                            <th>Tổng số tiền</th>
+                            <th>Trạng thái đơn hàng</th>
+                            <th>Ngày tạo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>000121</td>
+                            <td>003214</td>
+                            <td>53.900 đ</td>
+                            <td>Đang xử lý</td>
+                            <td>10/10/2024 12:42:51</td>
+                            <td class="actions">
+                                <button onclick="toggleMenu(event)">⋮</button>
+                                <div class="actions-menu">
+                                    <a href="#" onclick="openPopup('popup-details')">Xem chi tiết</a>
+                                    <a href="#" onclick="openPopup('popup-update')">Cập nhật tt đơn</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>000121</td>
+                            <td>003214</td>
+                            <td>53.900 đ</td>
+                            <td>Đang xử lý</td>
+                            <td>10/10/2024 12:42:51</td>
+                            <td class="actions">
+                                <button onclick="toggleMenu(event)">⋮</button>
+                                <div class="actions-menu">
+                                    <a href="#" onclick="openPopup()">Xem chi tiết</a>
+                                    <a href="#">Cập nhật trạng thái</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>000121</td>
+                            <td>003214</td>
+                            <td>53.900 đ</td>
+                            <td>Đang xử lý</td>
+                            <td>10/10/2024 12:42:51</td>
+                            <td class="actions">
+                                <button onclick="toggleMenu(event)">⋮</button>
+                                <div class="actions-menu">
+                                    <a href="#" onclick="openPopup('popup-details')">Xem chi tiết</a>
+                                    <a href="#" onclick="openPopup('popup-update')">Cập nhật tt đơn</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>000121</td>
+                            <td>003214</td>
+                            <td>53.900 đ</td>
+                            <td>Hoàn thành</td>
+                            <td>10/10/2024 12:42:51</td>
+                            <td class="actions">
+                                <button onclick="toggleMenu(event)">⋮</button>
+                                <div class="actions-menu">
+                                    <a href="#" onclick="openPopup('popup-details')">Xem chi tiết</a>
+                                    <a href="#" onclick="openPopup('popup-update')">Cập nhật tt đơn</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Popup Xem chi tiết -->>
+        <div class="popup" id="popup-details">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h2>Chi tiết đơn hàng</h2>
+                    <button onclick="closePopup('popup-details')">×</button>
+                </div>
+                <div class="popup-body">
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <td>000121</td>
+                        </tr>
+                        <tr>
+                            <th>ID khách hàng</th>
+                            <td>003214</td>
+                        </tr>
+                        <tr>
+                            <th>Tình trạng đơn</th>
+                            <td>Đang xử lý</td>
+                        </tr>
+                        <tr>
+                            <th>Ngày tạo</th>
+                            <td>10/10/2024 12:42:51</td>
+                        </tr>
+                    </table>
+                    <br />
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img src="" alt="product-image"></td>
+                                <td>Lốc 6 chai nước Zero SS.pet COCA-COLA 390ml</td>
+                                <td>1</td>
+                                <td>45.500 đ</td>
+                            </tr>
+                            <tr>
+                                <td><img src="" alt="product-image"></td>
+                                <td>Mì tương đen Bắc Kinh Ottogi gói 83g</td>
+                                <td>1</td>
+                                <td>8.400 đ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="popup-footer">
+                    <strong>Tổng: 53.900 đ</strong>
+                    <br /><br />
+                    <button onclick="closePopup('popup-details')">Đóng</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup Cập nhật trạng thái đơn -->
+        <div class="popup" id="popup-update">
+            <div class="popup-content popup-update-content">
+                <div class="popup-header">
+                    <h2>Cập nhật trạng thái đơn hàng</h2>
+                    <button onclick="closePopup('popup-update')">×</button>
+                </div>
+                <div class="popup-body">
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <td>000121</td>
+                        </tr>
+                        <tr>
+                            <th>Trạng thái đơn</th>
+                            <td>
+                                <select>
+                                    <option>Đang xử lý</option>
+                                    <option>Ðã xác nhận</option>
+                                    <option>Đang vận chuyển</option>
+                                    <option>Hoàn thành</option>
+                                    <option>Ðã hủy</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="popup-footer">
+                    <button onclick="closePopup('popup-update')">Đóng</button>
+                    <button>Cập nhật</button>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
