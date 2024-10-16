@@ -1,4 +1,6 @@
 @import url('./mainStyle.css');
+@import url(./notfi.css);
+
 body {
     display: flex;
     justify-content: center;
@@ -145,4 +147,3 @@ body {
     padding: 12px 30px;
     display: inline-block;
 }
-

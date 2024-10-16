@@ -1,33 +1,30 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../Component/CSS/homeCustomer.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/homeCustomer.css">
         <title>Trang chủ - Daily Essentials</title>
     </head>
-
     <body>
-        <!-- Navbar -->
         <nav class="navbar">
             <div class="menu-container">
                 <div class="logo-container">
-                    <a href="#" class="logo">Daily Essentials</a>
+                    <a href="${pageContext.request.contextPath}/Home" class="logo">Daily Essentials</a>
                 </div>
                 <div class="search-container">
                     <div class="find-products">
-                        <img src="../Component/IMG/ic-find.svg" class="icon ic-find" alt="Search Icon">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-find.svg" class="icon ic-find" alt="Search Icon">
                         <input type="text" id="txt_FindProduct" placeholder="Giao hàng nhanh 3h, Giảm 20% sản phẩm Thịt Navi">
                     </div>
                 </div>
                 <div class="right-container">
                     <a href="#" class="cart-link">
-                        <img src="../Component/IMG/ic-cart.svg" alt="Cart Icon" class="icon">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart.svg" alt="Cart Icon" class="icon">
                         <span>Giỏ hàng (0)</span>
                     </a>
-                    <a href="login.html" class="user-link">
-                        <img src="../Component/IMG/ic-user.svg" alt="User Icon" class="icon">
+                    <a href="${pageContext.request.contextPath}/Home/Info" class="user-link">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-user.svg" alt="User Icon" class="icon">
                         <span>Khách hàng</span>
                     </a>
                 </div>
@@ -38,14 +35,14 @@
             <div class="product-menu-wrapper">
                 <div class="product-menu-left">
                     <button class="menu-btn">
-                        <img src="../Component/IMG/ic-bars.svg" class="icon ic-bars" alt="Bars Icon">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-bars.svg" class="icon ic-bars" alt="Bars Icon">
                         Danh mục sản phẩm
                     </button>
                 </div>
 
                 <div class="product-menu-right">
                     <button class="purchase-btn">
-                        <img src="../Component/IMG/ic-cart2.svg" class="icon ic-cart2" alt="Cart Icon">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart2.svg" class="icon ic-cart2" alt="Cart Icon">
                         Sản phẩm đã mua
                     </button>
                 </div>
@@ -55,9 +52,9 @@
             <div class="carousel">
                 <button class="carousel-btn left-btn" onclick="moveCarousel(-1)">&#10094;</button>
                 <div class="carousel-track">
-                    <img src="../Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 1">
-                    <img src="../Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 2">
-                    <img src="../Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 3">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 1">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 2">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/sprite_1.5L.jpg" class="carousel-image" alt="Slide 3">
                 </div>
                 <button class="carousel-btn right-btn" onclick="moveCarousel(1)">&#10095;</button>
             </div>
@@ -70,12 +67,11 @@
                 <!-- Load More Button -->
                 <button id="load-more-btn" class="load-more-btn">
                     Xem thêm 25 sản phẩm <span class="highlight">Giá rẻ hôm nay</span> 
-                    <img src="../Component/IMG/ic-down.svg" class="icon ic-down" alt="Arrow Icon">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-down.svg" class="icon ic-down" alt="Arrow Icon">
                 </button>
             </section>
         </section>
-        <script src="../Component/JS/productDisplay.js"></script>
+        <script src="${pageContext.request.contextPath}/Component/JS/productDisplay.js"></script>
 
     </body>
-
 </html>

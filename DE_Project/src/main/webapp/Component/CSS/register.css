@@ -1,4 +1,5 @@
 @import url('./mainStyle.css');
+@import url(./notfi.css);
 
 body {
     display: flex;
@@ -136,6 +137,7 @@ body {
     padding: 12px 30px;
     display: inline-block;
 }
+
 .gender {
     display: flex;
     align-items: center;
@@ -168,11 +170,11 @@ body {
     position: relative;
 }
 
-.custom-radio input[type="radio"]:checked + .radio-btn {
+.custom-radio input[type="radio"]:checked+.radio-btn {
     background-color: white;
 }
 
-.custom-radio input[type="radio"]:not(:checked) + .radio-btn {
+.custom-radio input[type="radio"]:not(:checked)+.radio-btn {
     color: #BFBFBF;
     border-color: #BFBFBF;
 }
@@ -188,13 +190,12 @@ body {
     border-radius: 3px;
 }
 
-.custom-radio input[type="radio"]:checked + .radio-btn::before {
+.custom-radio input[type="radio"]:checked+.radio-btn::before {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
-.custom-radio input[type="radio"]:not(:checked) + .radio-btn::before {
+.custom-radio input[type="radio"]:not(:checked)+.radio-btn::before {
     background-color: #BFBFBF;
     border-color: #BFBFBF;
 }
-

@@ -7,7 +7,7 @@
     --secondary-color: #F1F1F1;
     --background-color: #F1F1F1;
     --shadow: 2px 4px 15px rgba(0, 0, 0, 0.2);
-    --hv-btn: rgb(0,0,128, 0.05);
+    --hv-btn: rgb(0, 0, 128, 0.05);
     --white-100: #ffff;
     --black-50: #00000081;
     --black-333: #333;
@@ -17,7 +17,7 @@
     --fw-600: 600;
     --fw-500: 500;
     --fw-400: 400;
-    
+
     --fs-32: 2em;
     --fs-24: 1.5em;
     --fs-20: 1.25em;
@@ -36,9 +36,12 @@
     margin: 0;
     padding: 0;
 }
+
 body {
-    overflow: scroll;
+    overflow-x: scroll;
+    overflow-x: hidden ;
 }
+
 li {
     list-style-type: none;
 }
@@ -47,20 +50,24 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
 .d-flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 .p-10 {
     padding: 10px;
 }
+
 /* ------------------------------ */
 /* Tag */
-.icon{
+.icon {
     max-width: 30px;
     max-height: 30px;
     padding: 5px;
     fill: var(--primary-color);
 }
+
 /* ------------------------------ */
