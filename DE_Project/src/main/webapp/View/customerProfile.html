@@ -5,67 +5,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Component/CSS/customerInfo.css">
+    <link rel="stylesheet" href="../Component/CSS/homeCustomer.css">
     <title> Customer Profile </title>
 </head>
 
-<body>
-    <div class="container">
-        <div class="side-menu">
-            <div class="side-menu-item">
-                <img src="../Component/IMG/account-icon.png" alt="User Icon">
-                <a href="#" id="account-link">Tài khoản</a>
-            </div>
-            <div class="side-menu-item">
-                <img src="../Component/IMG/order-icon.png" alt="Order Icon">
-                <a href="#" id="order-link">Quản lý đơn hàng</a>
-            </div>
-            <div class="side-menu-item">
-                <img src="../Component/IMG/product-icon.png" alt="Product Icon">
-                <a href="#" id="product-link">Sản phẩm đã mua</a>
-            </div>
-            <div class="side-menu-item">
-                <img src="../Component/IMG/logout-icon.png" alt="Logout Icon">
-                <a href="#">Đăng xuất</a>
-            </div>
-        </div>
+<script src="https://esgoo.net/scripts/jquery.js"></script>
+<script src="../Component/JS/Select_area.js"></script>
+<script src="../Component/JS/popup.js"></script>
 
-        <!-- Main content area -->
-        <div class="main-content" id="main-content">
-            <!-- Nội dung sẽ được load vào đây -->
-        </div>
-    </div>
+<body>
+    <div id="header"></div>
 
     <script>
-        // Hàm load file HTML vào phần nội dung chính
-        function loadPage(url) {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', url, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    document.getElementById('main-content').innerHTML = xhr.responseText;
-                }
-            };
-            xhr.send();
-        }
-
-        // Load thông tin tài khoản khi trang được tải lần đầu
-        window.onload = function () {
-            loadPage('customerInfo.html'); // Load customerInfo.html khi trang mở
-        };
-
-        // Event listeners cho các mục menu
-        document.getElementById('account-link').addEventListener('click', function () {
-            loadPage('customerInfo.html');
-        });
-        document.getElementById('order-link').addEventListener('click', function () {
-            loadPage('staffViewOrder.html');
-        });
-        //bổ sung sp đã mua
-        // bổ sung logout
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            })
+            .catch(error => console.log('Error loading header:', error));
     </script>
-    <script src="https://esgoo.net/scripts/jquery.js"></script>
-    <script src="../Component/JS/Select_area.js"></script>
-    <script src="../Component/JS/popup.js"></script>
+
+
+        <div class="container">
+            <div class="side-menu">
+                <div class="side-menu-item">
+                    <img src="../Component/IMG/account-icon.png" alt="User Icon">
+                    <a href="#" id="account-link">Tài khoản</a>
+                </div>
+                <div class="side-menu-item">
+                    <img src="../Component/IMG/order-icon.png" alt="Order Icon">
+                    <a href="#" id="order-link">Quản lý đơn hàng</a>
+                </div>
+                <div class="side-menu-item">
+                    <img src="../Component/IMG/product-icon.png" alt="Product Icon">
+                    <a href="#" id="product-link">Sản phẩm đã mua</a>
+                </div>
+                <div class="side-menu-item">
+                    <img src="../Component/IMG/logout-icon.png" alt="Logout Icon">
+                    <a href="#">Đăng xuất</a>
+                </div>
+            </div>
+
+            <!-- Main content area -->
+            <div class="main-content" id="main-content">
+                <!-- Nội dung sẽ được load vào đây -->
+            </div>
+        </div>
+
+        <script>
+            // Hàm load file HTML vào phần nội dung chính
+            function loadPage(url) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        document.getElementById('main-content').innerHTML = xhr.responseText;
+                    }
+                };
+                xhr.send();
+            }
+
+            // Load thông tin tài khoản khi trang được tải lần đầu
+            window.onload = function () {
+                loadPage('customerInfo.html'); // Load customerInfo.html khi trang mở
+            };
+
+            // Event listeners cho các mục menu
+            document.getElementById('account-link').addEventListener('click', function () {
+                loadPage('customerInfo.html');
+            });
+            document.getElementById('order-link').addEventListener('click', function () {
+                loadPage('staffViewOrder.html');
+            });
+            //bổ sung sp đã mua
+            // bổ sung logout
+        </script>
+
 </body>
 
 </html>
