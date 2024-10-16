@@ -1,24 +1,72 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
+<html>
+    <head>
+        <title>View Order</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+=======
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>View Order</title>
+>>>>>>> Customer_UI-ViewOrder
         <link rel="stylesheet" href="../Component/CSS/staffViewOrder.css" type="text/css"/>
         <link rel="stylesheet" href="../Component/CSS/staffUpdateStatusOrder.css" type="text/css"/>
         <link rel="stylesheet" href="../Component/CSS/staffViewOrderDetail.css" type="text/css"/>
 
+<<<<<<< HEAD
+
+        <script>
+            function toggleMenu(e) {
+                const menus = document.querySelectorAll('.actions');
+                menus.forEach(menu => {
+                    if (menu !== e.target.closest('.actions')) {
+                        menu.classList.remove('active');
+                    }
+                });
+                e.target.closest('.actions').classList.toggle('active');
+            }
+
+            window.onclick = function (event) {
+                if (!event.target.matches('.actions button')) {
+                    const menus = document.querySelectorAll('.actions');
+                    menus.forEach(menu => menu.classList.remove('active'));
+                }
+            }
+
+            function openPopup(popupId) {
+                document.getElementById(popupId).style.display = "flex";
+            }
+
+            function closePopup(popupId) {
+                document.getElementById(popupId).style.display = "none";
+            }
+        </script>
+=======
+>>>>>>> Customer_UI-ViewOrder
     </head>
     <body>
         <div class="container">
             <h1>Quản lý đơn hàng</h1>
             <div class="filter-section">
                 <div>
+<<<<<<< HEAD
+                    <label> ID đơn : </label>
+                    <input type="text" placeholder="Nhập ID đơn" />
+                </div>
+                <div>
+                    <label> Tình trạng đơn : </label>
+=======
                     <label>ID đơn :</label>
                     <input type="text" placeholder="Nhập ID đơn" />
                 </div>
                 <div>
                     <label>Tình trạng đơn :</label>
+>>>>>>> Customer_UI-ViewOrder
                     <select>
                         <option>Đang xử lý</option>
                         <option>Ðã xác nhận</option>
@@ -27,15 +75,31 @@
                         <option>Ðã hủy</option>
                     </select>
                 </div>
+<<<<<<< HEAD
+
+                <div>
+                    <label> Tổng số tiền  : </label>
+=======
                 <div>
                     <label>Tổng số tiền :</label>
+>>>>>>> Customer_UI-ViewOrder
                     <input type="text" placeholder="Nhập số tiền" />
                 </div>
             </div>
             <div class="filter-section">
                 <div>
+<<<<<<< HEAD
+                    <label for="month">Ngày tạo : </label>
+                    <select id="month">
+                        <option>Tháng 10</option>
+                    </select>
+                    <select>
+                        <option>Năm 2024</option>
+                    </select>
+=======
                     <label for="Date"> Ngày tạo :</label>
                     <input type="Date" value="2024-03-20">
+>>>>>>> Customer_UI-ViewOrder
                 </div>
                 <button>Tìm</button>
             </div>
@@ -45,7 +109,11 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+<<<<<<< HEAD
+                            <th>ID khách</th>
+=======
                             <th>ID Khách hàng</th>
+>>>>>>> Customer_UI-ViewOrder
                             <th>Tổng số tiền</th>
                             <th>Trạng thái đơn hàng</th>
                             <th>Ngày tạo</th>
@@ -58,6 +126,14 @@
                             <td>003214</td>
                             <td>53.900 đ</td>
                             <td>Đang xử lý</td>
+<<<<<<< HEAD
+                            <td>10/10/2024 12:42:51</td>
+                            <td class="actions">
+                                <button onclick="toggleMenu(event)">⋮</button>
+                                <div class="actions-menu">
+                                    <a href="#" onclick="openPopup('popup-details')">Xem chi tiết</a>
+                                    <a href="#" onclick="openPopup('popup-update')">Cập nhật tt đơn</a>
+=======
                             <td>10/10/2024</td>
                             <td class="actions">
                                 <a href="#" class="toggle-menu-btn">
@@ -66,6 +142,7 @@
                                 <div class="actions-menu">
                                     <a href="#" class="view-details">Xem chi tiết</a>
                                     <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
+>>>>>>> Customer_UI-ViewOrder
                                 </div>
                             </td>
                         </tr>
@@ -74,6 +151,14 @@
                             <td>003214</td>
                             <td>53.900 đ</td>
                             <td>Đang xử lý</td>
+<<<<<<< HEAD
+                            <td>10/10/2024 12:42:51</td>
+                            <td class="actions">
+                                <button onclick="toggleMenu(event)">⋮</button>
+                                <div class="actions-menu">
+                                    <a href="#" onclick="openPopup()">Xem chi tiết</a>
+                                    <a href="#">Cập nhật trạng thái</a>
+=======
                             <td>10/10/2024</td>
                             <td class="actions">
                                 <a href="#" class="toggle-menu-btn">
@@ -82,6 +167,7 @@
                                 <div class="actions-menu">
                                     <a href="#" class="view-details">Xem chi tiết</a>
                                     <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
+>>>>>>> Customer_UI-ViewOrder
                                 </div>
                             </td>
                         </tr>
@@ -90,6 +176,28 @@
                             <td>003214</td>
                             <td>53.900 đ</td>
                             <td>Đang xử lý</td>
+<<<<<<< HEAD
+                            <td>10/10/2024 12:42:51</td>
+                            <td class="actions">
+                                <button onclick="toggleMenu(event)">⋮</button>
+                                <div class="actions-menu">
+                                    <a href="#" onclick="openPopup('popup-details')">Xem chi tiết</a>
+                                    <a href="#" onclick="openPopup('popup-update')">Cập nhật tt đơn</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>000121</td>
+                            <td>003214</td>
+                            <td>53.900 đ</td>
+                            <td>Hoàn thành</td>
+                            <td>10/10/2024 12:42:51</td>
+                            <td class="actions">
+                                <button onclick="toggleMenu(event)">⋮</button>
+                                <div class="actions-menu">
+                                    <a href="#" onclick="openPopup('popup-details')">Xem chi tiết</a>
+                                    <a href="#" onclick="openPopup('popup-update')">Cập nhật tt đơn</a>
+=======
                             <td>10/10/2024</td>
                             <td class="actions">
                                 <a href="#" class="toggle-menu-btn">
@@ -98,6 +206,7 @@
                                 <div class="actions-menu">
                                     <a href="#" class="view-details">Xem chi tiết</a>
                                     <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
+>>>>>>> Customer_UI-ViewOrder
                                 </div>
                             </td>
                         </tr>
@@ -106,12 +215,20 @@
             </div>
         </div>
 
+<<<<<<< HEAD
+        <!-- Popup Xem chi tiết -->>
+=======
         <!-- Popup Xem chi tiết -->
+>>>>>>> Customer_UI-ViewOrder
         <div class="popup" id="popup-details">
             <div class="popup-content">
                 <div class="popup-header">
                     <h2>Chi tiết đơn hàng</h2>
+<<<<<<< HEAD
+                    <button onclick="closePopup('popup-details')">×</button>
+=======
                     <button class="close-btn" data-popup-id="popup-details">×</button>
+>>>>>>> Customer_UI-ViewOrder
                 </div>
                 <div class="popup-body">
                     <table>
@@ -129,7 +246,11 @@
                         </tr>
                         <tr>
                             <th>Ngày tạo</th>
+<<<<<<< HEAD
+                            <td>10/10/2024 12:42:51</td>
+=======
                             <td>10/10/2024</td>
+>>>>>>> Customer_UI-ViewOrder
                         </tr>
                     </table>
                     <br />
@@ -161,7 +282,11 @@
                 <div class="popup-footer">
                     <strong>Tổng: 53.900 đ</strong>
                     <br /><br />
+<<<<<<< HEAD
+                    <button onclick="closePopup('popup-details')">Đóng</button>
+=======
                     <button class="close-btn" data-popup-id="popup-details">Đóng</button>
+>>>>>>> Customer_UI-ViewOrder
                 </div>
             </div>
         </div>
@@ -171,7 +296,11 @@
             <div class="popup-content popup-update-content">
                 <div class="popup-header">
                     <h2>Cập nhật trạng thái đơn hàng</h2>
+<<<<<<< HEAD
+                    <button onclick="closePopup('popup-update')">×</button>
+=======
                     <button class="close-btn" data-popup-id="popup-update">×</button>
+>>>>>>> Customer_UI-ViewOrder
                 </div>
                 <div class="popup-body">
                     <table>
@@ -194,12 +323,18 @@
                     </table>
                 </div>
                 <div class="popup-footer">
+<<<<<<< HEAD
+                    <button onclick="closePopup('popup-update')">Đóng</button>
+=======
                     <button class="close-btn" data-popup-id="popup-update">Đóng</button>
+>>>>>>> Customer_UI-ViewOrder
                     <button>Cập nhật</button>
                 </div>
             </div>
         </div>
 
+<<<<<<< HEAD
+=======
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const viewDetailsLinks = document.querySelectorAll('.view-details');
@@ -273,5 +408,6 @@
                 });
             });
         </script>
+>>>>>>> Customer_UI-ViewOrder
     </body>
 </html>

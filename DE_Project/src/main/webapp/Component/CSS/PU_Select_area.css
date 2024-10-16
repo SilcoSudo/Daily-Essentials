@@ -1,0 +1,138 @@
+@import url('./mainStyle.css');
+
+.popup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    transition: opacity 0.3s ease; 
+    opacity: 1; 
+}
+.popup-container.hidden {
+    opacity: 0; 
+    pointer-events: none; 
+}
+.popup {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 725px;
+    box-shadow: var(--shadow);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.popup-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.btnExit {
+    cursor: pointer;
+    height: 30px;
+}
+.btnExit:hover {
+    border-radius: 6px;
+    background-color: var(--hv-btn);
+}
+.popup-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+}
+
+.form-group label {
+    width: 150px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.continue-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.continue-btn:hover {
+    color: var(--primary-color);
+    background-color: var(--hv-btn);
+}
+
+.popup-body-address{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ic-Change {
+    display: flex;
+    gap: 10px;
+    width: 200px;
+    align-items: center; 
+    border-radius: 6px;
+}
+.ic-Change:hover{
+    cursor: pointer;
+    background-color: var(--hv-btn);
+}
+.store-list {
+    margin-top: 10px;
+}
+
+.store-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.store-info {
+    display: flex;
+    align-items: center;
+}
+.store-address {
+    width: 80%;
+}
+.store-icon {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+#sa1.hidden,
+#sa2.hidden {
+    display: none;
+}
