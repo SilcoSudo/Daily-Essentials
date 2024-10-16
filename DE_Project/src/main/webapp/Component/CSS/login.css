@@ -1,4 +1,6 @@
 @import url('./mainStyle.css');
+@import url(./notfi.css);
+
 body {
     display: flex;
     justify-content: center;
