@@ -15,7 +15,7 @@
     <body>
         <div class="register-container">
             <div class="register-header">
-                <a href="${pageContext.request.contextPath}/Home" class="back-button">
+                <a href="${pageContext.request.contextPath}/Authen/Login" class="back-button">
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-back.svg" alt="Back">
                 </a>
                 <h1>Daily Essentials</h1>

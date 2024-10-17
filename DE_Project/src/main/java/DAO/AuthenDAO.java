@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
 import DB.DBConnect;
@@ -39,7 +35,107 @@ public class AuthenDAO {
         return false;
     }
 
-    public boolean registerUser(String username, String password, String fullname, String phone, String gender) {
+    public int getAccountID(String email) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnect.getConnection();
+
+            String sql = "SELECT a.account_id "
+                    + "FROM account a "
+                    + "JOIN user_profile up ON up.user_id = a.user_id "
+                    + "WHERE up.user_email = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("account_id");
+            }
+        } catch (SQLException e) {
+            System.out.println("Account ID error: " + e.getMessage());
+        }
+
+        return -1;
+    }
+
+    public boolean updatePassword(int accountId, String newPassword) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean updateSuccess = false;
+
+        try {
+            conn = DBConnect.getConnection();
+            String sql = "UPDATE account SET password = ? WHERE account_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, newPassword);
+            ps.setInt(2, accountId);
+
+            int rowsAffected = ps.executeUpdate();
+            updateSuccess = (rowsAffected > 0);
+
+        } catch (SQLException e) {
+            System.out.println("Error while updating password: " + e.getMessage());
+        } 
+
+        return updateSuccess;
+    }
+
+    public String getLatestCodeValue(int accountId) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String codeValue = null;
+
+        try {
+            conn = DBConnect.getConnection();
+
+            String sql = "SELECT TOP 1 ca.code_value "
+                    + "FROM code_authenticate ca "
+                    + "WHERE ca.account_id = ? "
+                    + "ORDER BY ca.create_at DESC";
+
+            // Chuẩn bị câu truy vấn
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, accountId);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                codeValue = rs.getString("code_value");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error while fetching latest code_value: " + e.getMessage());
+        }
+
+        return codeValue;
+    }
+
+    public boolean insertCode(int accountId, String codeValue) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = DBConnect.getConnection();
+            String sql = "INSERT INTO code_authenticate (account_id, code_value, create_at) "
+                    + "VALUES (?, ?, GETDATE())";
+
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, accountId);
+            ps.setString(2, codeValue);
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("Insert code error: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean registerUser(String username, String password, String fullname, String phone, boolean gender) {
         Connection conn = null;
         PreparedStatement psCheck = null;
         PreparedStatement psInsertUser = null;
@@ -58,10 +154,12 @@ public class AuthenDAO {
                 return false;
             }
 
-            String insertUserSql = "INSERT INTO user_profile (user_fullname, user_phone) VALUES (?, ?)";
+            String insertUserSql = "INSERT INTO user_profile (user_fullname, user_phone, gender) VALUES (?, ?, ?)";
             psInsertUser = conn.prepareStatement(insertUserSql, Statement.RETURN_GENERATED_KEYS);
             psInsertUser.setString(1, fullname);
             psInsertUser.setString(2, phone);
+            psInsertUser.setBoolean(3, gender);
+
             psInsertUser.executeUpdate();
 
             rs = psInsertUser.getGeneratedKeys();

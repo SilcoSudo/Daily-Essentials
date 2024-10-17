@@ -7,46 +7,7 @@
         <title>Trang chủ - Daily Essentials</title>
     </head>
     <body>
-        <nav class="navbar">
-            <div class="menu-container">
-                <div class="logo-container">
-                    <a href="${pageContext.request.contextPath}/Home" class="logo">Daily Essentials</a>
-                </div>
-                <div class="search-container">
-                    <div class="find-products">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-find.svg" class="icon ic-find" alt="Search Icon">
-                        <input type="text" id="txt_FindProduct" placeholder="Giao hàng nhanh 3h, Giảm 20% sản phẩm Thịt Navi">
-                    </div>
-                </div>
-                <div class="right-container">
-                    <a href="#" class="cart-link">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart.svg" alt="Cart Icon" class="icon">
-                        <span>Giỏ hàng (0)</span>
-                    </a>
-                    <a href="${pageContext.request.contextPath}/Home/Info" class="user-link">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-user.svg" alt="User Icon" class="icon">
-                        <span>Khách hàng</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-        <section class="product-wrapper">
-            <div class="product-menu-wrapper">
-                <div class="product-menu-left">
-                    <button class="menu-btn">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-bars.svg" class="icon ic-bars" alt="Bars Icon">
-                        Danh mục sản phẩm
-                    </button>
-                </div>
-
-                <div class="product-menu-right">
-                    <button class="purchase-btn">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart2.svg" class="icon ic-cart2" alt="Cart Icon">
-                        Sản phẩm đã mua
-                    </button>
-                </div>
-            </div>
+        <jsp:include page="header.jsp"></jsp:include>
 
             <!-- Carousel Section -->
             <div class="carousel">

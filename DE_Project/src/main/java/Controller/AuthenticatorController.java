@@ -15,6 +15,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import UtilsFuction.*;
+import jakarta.mail.MessagingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -66,6 +70,8 @@ public class AuthenticatorController extends HttpServlet {
             request.getRequestDispatcher("/View/login.jsp").forward(request, response);
         } else if (part[3].equalsIgnoreCase("Register")) {
             request.getRequestDispatcher("/View/register.jsp").forward(request, response);
+        } else if (part[3].equalsIgnoreCase("ForgotPassword")) {
+            request.getRequestDispatcher("/View/ForgotPassword.jsp").forward(request, response);
         }
         if (part[3].equalsIgnoreCase("Logout")) {
             logout(request, response);
@@ -93,6 +99,95 @@ public class AuthenticatorController extends HttpServlet {
         if (part[3].equalsIgnoreCase("Register")) {
             register(request, response);
         }
+
+        if (part[3].equalsIgnoreCase("forgot")) {
+            String email = request.getParameter("email");
+            AuthenDAO authenDAO = new AuthenDAO();
+            if (email.isEmpty()) {
+                request.setAttribute("errorMessage", "Không được để trống.");
+                request.getRequestDispatcher("/View/ForgotPassword.jsp").forward(request, response);
+                return;
+            }
+            int accoutnID = authenDAO.getAccountID(email);
+            if (accoutnID != -1) {
+                try {
+                    String resetCode = String.valueOf((int) (Math.random() * 900000) + 100000);
+                    authenDAO.insertCode(accoutnID, resetCode);
+                    forgotpassword(request, response, email, resetCode);
+                } catch (MessagingException ex) {
+                    System.out.println("Error: " + ex);
+                }
+                request.setAttribute("email", email);
+                request.getRequestDispatcher("/View/ForgotPasswordOTP.jsp").forward(request, response);
+                return;
+            } else {
+                request.setAttribute("errorMessage", "Vui lòng nhập email chính xác!");
+                request.getRequestDispatcher("/View/ForgotPassword.jsp").forward(request, response);
+                return;
+            }
+        }
+
+        if (part[3].equalsIgnoreCase("forgot_otp")) {
+            String email = request.getParameter("email");
+            String codeOTP = request.getParameter("otp");
+            AuthenDAO authenDAO = new AuthenDAO();
+            int accountID = authenDAO.getAccountID(email);
+            String codeValue = authenDAO.getLatestCodeValue(accountID);
+            if (codeOTP.isEmpty()) {
+                request.setAttribute("accountID", accountID);
+                request.setAttribute("errorMessage", "Nhập lại mã");
+                request.getRequestDispatcher("/View/ForgotPasswordOTP.jsp").forward(request, response);
+                return;
+            }
+            if (codeOTP.equals(codeValue)) {
+                request.setAttribute("accountID", accountID);
+                request.getRequestDispatcher("/View/ForgotPassword_ChangePass.jsp").forward(request, response);
+            }
+        }
+        if (part[3].equalsIgnoreCase("forgot_changepass")) {
+            int accountID = Integer.parseInt(request.getParameter("accountID"));
+            String pass = request.getParameter("pass");
+            AuthenDAO authenDAO = new AuthenDAO();
+            if (authenDAO.updatePassword(accountID, md5Hash(pass))) {
+                response.sendRedirect(request.getContextPath() + "/Login");
+                return;
+            } else {
+                request.setAttribute("idacc", accountID);
+                request.getRequestDispatcher("/View/ForgotPassword_ChangePass.jsp").forward(request, response);
+                return;
+            }
+        }
+        if (part[3].equalsIgnoreCase("forgot_otp-2")) {
+            AuthenDAO authenDAO = new AuthenDAO();
+            response.setContentType("application/json");
+            PrintWriter out = response.getWriter();
+            String resetCode = String.valueOf((int) (Math.random() * 900000) + 100000);
+            String email = (String) request.getAttribute("email");
+            int accoutnID = authenDAO.getAccountID(email);
+            authenDAO.insertCode(accoutnID, resetCode);
+            try {
+                forgotpassword(request, response, email, resetCode);
+            } catch (MessagingException ex) {
+                System.out.println("Error: " + ex);
+            }
+            if (true) {
+                out.print("{\"status\": \"success\"}");
+            } else {
+                out.print("{\"status\": \"error\"}");
+            }
+            out.flush();
+        }
+    }
+
+    private void forgotpassword(HttpServletRequest request, HttpServletResponse response, String recipientEmail, String resetCode)
+            throws ServletException, IOException, MessagingException {
+        MailUtils email = new MailUtils();
+        try {
+            email.sendEmail(recipientEmail, resetCode);
+        } catch (MessagingException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
     }
 
     private void logout(HttpServletRequest request, HttpServletResponse response)
@@ -119,9 +214,10 @@ public class AuthenticatorController extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm-password");
         String gender = request.getParameter("gender");
+        boolean genders = gender.equals("male");
         if (password.equals(confirmPassword)) {
             AuthenDAO authenDAO = new AuthenDAO();
-            boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, gender);
+            boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, genders);
 
             if (isRegistered) {
                 request.getRequestDispatcher("/View/login.jsp").forward(request, response);
@@ -144,11 +240,13 @@ public class AuthenticatorController extends HttpServlet {
         if (username.isEmpty() || password.isEmpty()) {
             request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
             request.getRequestDispatcher("/View/login.jsp").forward(request, response);
+            return;
         }
         boolean isLogin = authen.isPassLogin(username, md5Hash(password));
         if (isLogin) {
             HttpSession session = request.getSession();
-            Cookie usernameCookie = new Cookie("username", username);
+            String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
+            Cookie usernameCookie = new Cookie("username", encodedUsername);
             usernameCookie.setMaxAge(24 * 3 * 60 * 60);
             session.setAttribute("username", username);
             response.addCookie(usernameCookie);
@@ -159,9 +257,11 @@ public class AuthenticatorController extends HttpServlet {
 //            System.out.println("Cookie value: " + usernameCookie.getValue());
 //            System.out.println("Cookie max age: " + usernameCookie.getMaxAge());
             response.sendRedirect(request.getContextPath() + "/Home");
+            return;
         } else {
             request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
             request.getRequestDispatcher("/View/login.jsp").forward(request, response);
+            return;
         }
     }
 
