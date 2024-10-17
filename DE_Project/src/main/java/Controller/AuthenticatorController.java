@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  *
@@ -64,7 +63,6 @@ public class AuthenticatorController extends HttpServlet {
         String path = request.getRequestURI();
         String part[] = path.split("/");
         if (part[3].equalsIgnoreCase("Login")) {
-            System.out.println("1");
             request.getRequestDispatcher("/View/login.jsp").forward(request, response);
         } else if (part[3].equalsIgnoreCase("Register")) {
             request.getRequestDispatcher("/View/register.jsp").forward(request, response);
@@ -90,35 +88,10 @@ public class AuthenticatorController extends HttpServlet {
         String part[] = path.split("/");
 
         if (part[3].equalsIgnoreCase("Login")) {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            if (username.isEmpty() || password.isEmpty()) {
-                request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
-                request.getRequestDispatcher("/View/login.jsp").forward(request, response);
-            }
-            login(username, password, request, response);
+            login(request, response);
         }
         if (part[3].equalsIgnoreCase("Register")) {
-            String username = request.getParameter("username");
-            String fullname = request.getParameter("fullname");
-            String phone = request.getParameter("phone");
-            String password = request.getParameter("password");
-            String confirmPassword = request.getParameter("confirm-password");
-            String gender = request.getParameter("gender");
-            if (password.equals(confirmPassword)) {
-                AuthenDAO authenDAO = new AuthenDAO();
-                boolean isRegistered = authenDAO.registerUser(username, password, fullname, phone, gender);
-
-                if (isRegistered) {
-                    request.getRequestDispatcher("/View/login.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("errorMessage", "Tên tài khoản đã tồn tại.");
-                    request.getRequestDispatcher("/View/register.jsp").forward(request, response);
-                }
-            } else {
-                request.setAttribute("errorMessage", "Mật khẩu xác nhận không khớp.");
-                request.getRequestDispatcher("/View/register.jsp").forward(request, response);
-            }
+            register(request, response);
         }
     }
 
@@ -138,14 +111,40 @@ public class AuthenticatorController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/Login");
     }
 
-    private void register() {
+    private void register(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String username = request.getParameter("username");
+        String fullname = request.getParameter("fullname");
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirm-password");
+        String gender = request.getParameter("gender");
+        if (password.equals(confirmPassword)) {
+            AuthenDAO authenDAO = new AuthenDAO();
+            boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, gender);
 
+            if (isRegistered) {
+                request.getRequestDispatcher("/View/login.jsp").forward(request, response);
+            } else {
+                request.setAttribute("errorMessage", "Tên tài khoản đã tồn tại.");
+                request.getRequestDispatcher("/View/register.jsp").forward(request, response);
+            }
+        } else {
+            request.setAttribute("errorMessage", "Mật khẩu xác nhận không khớp.");
+            request.getRequestDispatcher("/View/register.jsp").forward(request, response);
+        }
     }
 
-    private void login(String username, String password,
+    private void login(
             HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         AuthenDAO authen = new AuthenDAO();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        if (username.isEmpty() || password.isEmpty()) {
+            request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
+            request.getRequestDispatcher("/View/login.jsp").forward(request, response);
+        }
         boolean isLogin = authen.isPassLogin(username, md5Hash(password));
         if (isLogin) {
             HttpSession session = request.getSession();
