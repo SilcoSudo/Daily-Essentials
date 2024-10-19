@@ -76,7 +76,7 @@
                                         <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
                                     </a>
                                     <div class="actions-menu">
-                                        <a href="#" class="view-details">Xem chi tiết</a>
+                                        <a href="#" class="view-details" data-order-id="${order.order_id}">Xem chi tiết</a>
                                         <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
                                     </div>
                                 </td>
@@ -92,28 +92,34 @@
             <div class="popup-content">
                 <div class="popup-header">
                     <h2>Chi tiết đơn hàng</h2>
-                    <button class="close-btn" data-popup-id="popup-details">×</button>
                 </div>
                 <div class="popup-body">
+
                     <table>
+
                         <tr>
                             <th>ID</th>
-                            <td>000121</td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th>ID khách hàng</th>
-                            <td>003214</td>
+                            <th>ID Khách hàng</th>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th>Tình trạng đơn</th>
+                            <th>Tình trạng đơn hàng</th>
                             <td>Đang xử lý</td>
                         </tr>
                         <tr>
                             <th>Ngày tạo</th>
-                            <td>10/10/2024</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Tổng số tiền</th>
+                            <td></td>
                         </tr>
                     </table>
                     <br />
+
                     <table>
                         <thead>
                             <tr>
@@ -126,22 +132,22 @@
                         <tbody>
                             <tr>
                                 <td><img src="" alt="product-image"></td>
-                                <td>Lốc 6 chai nước Zero SS.pet COCA-COLA 390ml</td>
-                                <td>1</td>
-                                <td>45.500 đ</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td><img src="" alt="product-image"></td>
-                                <td>Mì tương đen Bắc Kinh Ottogi gói 83g</td>
-                                <td>1</td>
-                                <td>8.400 đ</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="popup-footer">
-                    <strong>Tổng: 53.900 đ</strong>
-                    <br /><br />
+                    <td></td>
+                    <br/><br/>
                     <button class="close-btn" data-popup-id="popup-details">Đóng</button>
                 </div>
             </div>
@@ -152,13 +158,12 @@
             <div class="popup-content popup-update-content">
                 <div class="popup-header">
                     <h2>Cập nhật trạng thái đơn hàng</h2>
-                    <button class="close-btn" data-popup-id="popup-update">×</button>
                 </div>
                 <div class="popup-body">
                     <table>
                         <tr>
                             <th>ID</th>
-                            <td>000121</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <th>Trạng thái đơn</th>
@@ -183,15 +188,15 @@
 
         <script>
             document.getElementById('searchOrderId').addEventListener('input', function () {
-                var searchId = this.value.toLowerCase(); // Lấy giá trị và chuyển sang chữ thường
+                var searchId = this.value.toLowerCase();
                 var rows = document.querySelectorAll('#orderBody tr');
 
                 rows.forEach(function (row) {
-                    var orderId = row.cells[0].textContent.toLowerCase(); // Lấy giá trị ID từ ô đầu tiên
+                    var orderId = row.cells[0].textContent.toLowerCase();
                     if (orderId.includes(searchId) || searchId === '') {
-                        row.style.display = ''; // Hiện hàng nếu tìm thấy hoặc ô tìm kiếm rỗng
+                        row.style.display = '';
                     } else {
-                        row.style.display = 'none'; // Ẩn hàng nếu không tìm thấy
+                        row.style.display = 'none';
                     }
                 });
             });
@@ -201,7 +206,7 @@
                 var rows = document.querySelectorAll('#orderBody tr');
 
                 rows.forEach(function (row) {
-                    var totalAmount = row.cells[2].textContent.toLowerCase(); // Lấy giá trị từ ô tổng số tiền
+                    var totalAmount = row.cells[2].textContent.toLowerCase();
                     if (totalAmount.includes(searchAmount) || searchAmount === '') {
                         row.style.display = '';
                     } else {
@@ -211,7 +216,7 @@
             });
 
             document.getElementById('searchDate').addEventListener('input', function () {
-                var searchDate = this.value; // Lấy giá trị ngày từ ô tìm kiếm
+                var searchDate = this.value;
                 var rows = document.querySelectorAll('#orderBody tr');
 
                 rows.forEach(function (row) {
@@ -241,10 +246,34 @@
                 viewDetailsLinks.forEach(link => {
                     link.addEventListener('click', function (e) {
                         e.preventDefault();
+                        const orderId = this.getAttribute('data-order-id');
                         openPopup('popup-details');
 
+                        const orderDetails = Array.from(document.querySelectorAll('#orderBody tr'))
+                                .find(row => row.cells[0].textContent.trim() === orderId); // Tìm dòng đơn hàng được nhấp
+                        
                         const actions = e.target.closest('.actions');
                         actions.classList.remove('active');
+                        
+        
+                        if (orderDetails) {
+                            const orderData = {
+                                order_id: orderDetails.cells[0].textContent,
+                                user_id: orderDetails.cells[1].textContent,
+                                total_amount: orderDetails.cells[2].textContent,
+                                order_date: orderDetails.cells[4].textContent,
+                            };
+
+                            // Cập nhật popup với dữ liệu đơn hàng
+                            const popupBody = document.querySelector('#popup-details .popup-body');
+                            const tds = popupBody.querySelectorAll('td'); 
+                            tds[0].textContent = orderData.order_id; 
+                            tds[1].textContent = orderData.user_id; 
+                            tds[3].textContent = orderData.order_date; 
+                            tds[4].textContent = orderData.total_amount; 
+                        }
+
+                       
                     });
                 });
 
