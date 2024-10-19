@@ -8,7 +8,6 @@
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-
             <!-- Carousel Section -->
             <div class="carousel">
                 <button class="carousel-btn left-btn" onclick="moveCarousel(-1)">&#10094;</button>
@@ -31,8 +30,6 @@
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-down.svg" class="icon ic-down" alt="Arrow Icon">
                 </button>
             </section>
-        </section>
         <script src="${pageContext.request.contextPath}/Component/JS/productDisplay.js"></script>
-
     </body>
 </html>

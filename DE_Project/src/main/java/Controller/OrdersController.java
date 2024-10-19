@@ -7,18 +7,12 @@ package Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.Arrays;
 
-/**
- *
- * @author Yin Kenna
- */
-public class HomeController extends HttpServlet {
+public class OrdersController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +31,10 @@ public class HomeController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeController</title>");
+            out.println("<title>Servlet OrdersController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet OrdersController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,15 +54,11 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         String part[] = path.split("/");
-        System.out.println("home: " + Arrays.toString(part));
-        if (part[2].equalsIgnoreCase("Home")) {
-            if (part.length > 3 && part[3].equalsIgnoreCase("Info")) {
-                request.getRequestDispatcher("/View/customerInfo.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("/View/homeCus.jsp").forward(request, response);
-            }
-        }
+        System.out.println("path: " + Arrays.toString(part));
+        if (part[2].equalsIgnoreCase("Orders")) {
+            request.getRequestDispatcher("/View/Orders.jsp").forward(request, response);
 
+        }
     }
 
     /**

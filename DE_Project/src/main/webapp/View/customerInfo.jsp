@@ -4,15 +4,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/navbar.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerInfo.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/PU_Select_area.css" />
         <title>Account Information</title>
     </head>
     <body>
-        <div class="container">
-            <div class="side-menu">
-                <div class="side-menu-item">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
+        <jsp:include page="header.jsp"></jsp:include>
+            <div class="container">
+                <div class="side-menu">
+                    <div class="side-menu-item">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
                     <a href="customerInfo.html">Tài khoản</a>
                 </div>
                 <div class="side-menu-item">
