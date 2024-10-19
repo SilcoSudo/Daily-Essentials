@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="right-container">
-            <a href="#" class="cart-link">
+            <a href="${pageContext.request.contextPath}/Orders" class="cart-link">
                 <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart.svg" alt="Cart Icon" class="icon">
                 <span>Giỏ hàng (0)</span>
             </a>
@@ -22,7 +22,6 @@
         </div>
     </div>
 </nav>
-
 <section class="product-wrapper">
     <div class="product-menu-wrapper">
         <div class="product-menu-left">
@@ -53,3 +52,4 @@
             </button>
         </div>
     </div>
+</section>

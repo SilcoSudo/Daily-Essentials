@@ -218,7 +218,7 @@ public class AuthenticatorController extends HttpServlet {
         if (password.equals(confirmPassword)) {
             AuthenDAO authenDAO = new AuthenDAO();
             boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, genders);
-
+            
             if (isRegistered) {
                 request.getRequestDispatcher("/View/login.jsp").forward(request, response);
             } else {

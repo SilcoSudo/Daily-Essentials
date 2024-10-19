@@ -90,6 +90,7 @@ input[type="radio"] {
     display: flex;
     align-items: center;
     width: 100%;
+    gap: 10px;
 }
 
 /* Custom radio button styling */
