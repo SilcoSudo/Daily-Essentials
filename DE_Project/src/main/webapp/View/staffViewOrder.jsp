@@ -25,7 +25,7 @@
                 <div class="filter-section">
                     <div>
                         <label>ID đơn :</label>
-                        <input type="text" placeholder="Nhập ID đơn" />
+                        <input type="text" id="searchOrderId" placeholder="Nhập ID đơn"/>
                     </div>
                     <div>
                         <label>Tình trạng đơn :</label>
@@ -39,19 +39,18 @@
                     </div>
                     <div>
                         <label>Tổng số tiền :</label>
-                        <input type="text" placeholder="Nhập số tiền" />
+                        <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
                     </div>
                 </div>
                 <div class="filter-section">
                     <div>
                         <label for="Date"> Ngày tạo :</label>
-                        <input type="Date" value="2024-03-20">
+                        <input type="Date"  id="searchDate">
                     </div>
-                    <button>Tìm</button>
                 </div>
 
                 <div class="table-container" items="${orderlist}" var="order">
-                <table>
+                <table id="orderTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -63,24 +62,26 @@
                         </tr>
                     </thead>
                     <c:forEach items="${listorder.allOrder}" var="order">
-                        <tr>
-                            <td>${order.order_id} </td>
-                            <td>${order.user_id}</td>
-                            <td>${order.total_amount}</td>
-                            <td>Đang xử lý</td>
-                            <td>${order.order_date}</td>
+                        <tbody id="orderBody">
+                            <tr>
+                                <td>${order.order_id} </td>
+                                <td>${order.user_id}</td>
+                                <td>${order.total_amount}</td>
+                                <td>Đang xử lý</td>
+                                <td>${order.order_date}</td>
 
 
-                            <td class="actions">
-                                <a href="#" class="toggle-menu-btn">
-                                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
-                                </a>
-                                <div class="actions-menu">
-                                    <a href="#" class="view-details">Xem chi tiết</a>
-                                    <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
-                                </div>
-                            </td>
-                        </tr>
+                                <td class="actions">
+                                    <a href="#" class="toggle-menu-btn">
+                                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
+                                    </a>
+                                    <div class="actions-menu">
+                                        <a href="#" class="view-details">Xem chi tiết</a>
+                                        <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
                     </c:forEach>
                 </table>
             </div>
@@ -181,6 +182,48 @@
         </div>
 
         <script>
+            document.getElementById('searchOrderId').addEventListener('input', function () {
+                var searchId = this.value.toLowerCase(); // Lấy giá trị và chuyển sang chữ thường
+                var rows = document.querySelectorAll('#orderBody tr');
+
+                rows.forEach(function (row) {
+                    var orderId = row.cells[0].textContent.toLowerCase(); // Lấy giá trị ID từ ô đầu tiên
+                    if (orderId.includes(searchId) || searchId === '') {
+                        row.style.display = ''; // Hiện hàng nếu tìm thấy hoặc ô tìm kiếm rỗng
+                    } else {
+                        row.style.display = 'none'; // Ẩn hàng nếu không tìm thấy
+                    }
+                });
+            });
+
+            document.getElementById('searchTotalAmount').addEventListener('input', function () {
+                var searchAmount = this.value.toLowerCase();
+                var rows = document.querySelectorAll('#orderBody tr');
+
+                rows.forEach(function (row) {
+                    var totalAmount = row.cells[2].textContent.toLowerCase(); // Lấy giá trị từ ô tổng số tiền
+                    if (totalAmount.includes(searchAmount) || searchAmount === '') {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            document.getElementById('searchDate').addEventListener('input', function () {
+                var searchDate = this.value; // Lấy giá trị ngày từ ô tìm kiếm
+                var rows = document.querySelectorAll('#orderBody tr');
+
+                rows.forEach(function (row) {
+                    var orderDate = row.cells[4].textContent; // Lấy giá trị từ ô ngày tạo
+                    if (orderDate.includes(searchDate) || searchDate === '') {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
             document.addEventListener('DOMContentLoaded', function () {
                 const viewDetailsLinks = document.querySelectorAll('.view-details');
                 const updateStatusLinks = document.querySelectorAll('.update-status');
