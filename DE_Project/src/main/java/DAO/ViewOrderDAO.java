@@ -23,23 +23,22 @@ public class ViewOrderDAO {
 
     public List<OrderHistory> getAllOrder() {
 
-        List<OrderHistory> orderlist = new ArrayList<>();
-        String sql = "SELECT * FROM [order]";
-
         try {
+            List<OrderHistory> orderlist = new ArrayList<>();
+            String sql = "SELECT * FROM [order]";
             conn = new DB.DBConnect().getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 orderlist.add(new OrderHistory(rs.getInt("order_id"),
-                              rs.getInt("user_id"),
-                              rs.getDate("order_date"),
-                              rs.getDouble("total_amount")));
-
+                        rs.getInt("user_id"),
+                        rs.getDate("order_date"),
+                        rs.getDouble("total_amount")));
             }
+            return orderlist;
         } catch (Exception e) {
         }
-        return orderlist;
+        return null;
     }
 
     public static void main(String[] args) {

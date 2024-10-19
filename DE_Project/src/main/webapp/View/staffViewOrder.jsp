@@ -6,7 +6,6 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.List" %>
 <%@page import="Model.OrderHistory" %>
 
 <!DOCTYPE html>
@@ -18,40 +17,40 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewOrder.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffUpdateStatusOrder.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewOrderDetail.css" type="text/css"/>
+        <jsp:useBean id= "listorder" class="DAO.ViewOrderDAO" scope="request"></jsp:useBean>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Quản lý đơn hàng</h1>
+                <div class="filter-section">
+                    <div>
+                        <label>ID đơn :</label>
+                        <input type="text" placeholder="Nhập ID đơn" />
+                    </div>
+                    <div>
+                        <label>Tình trạng đơn :</label>
+                        <select>
+                            <option>Đang xử lý</option>
+                            <option>Ðã xác nhận</option>
+                            <option>Đang vận chuyển</option>
+                            <option>Hoàn thành</option>
+                            <option>Ðã hủy</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Tổng số tiền :</label>
+                        <input type="text" placeholder="Nhập số tiền" />
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div>
+                        <label for="Date"> Ngày tạo :</label>
+                        <input type="Date" value="2024-03-20">
+                    </div>
+                    <button>Tìm</button>
+                </div>
 
-    </head>
-    <body>
-        <div class="container">
-            <h1>Quản lý đơn hàng</h1>
-            <div class="filter-section">
-                <div>
-                    <label>ID đơn :</label>
-                    <input type="text" placeholder="Nhập ID đơn" />
-                </div>
-                <div>
-                    <label>Tình trạng đơn :</label>
-                    <select>
-                        <option>Đang xử lý</option>
-                        <option>Ðã xác nhận</option>
-                        <option>Đang vận chuyển</option>
-                        <option>Hoàn thành</option>
-                        <option>Ðã hủy</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Tổng số tiền :</label>
-                    <input type="text" placeholder="Nhập số tiền" />
-                </div>
-            </div>
-            <div class="filter-section">
-                <div>
-                    <label for="Date"> Ngày tạo :</label>
-                    <input type="Date" value="2024-03-20">
-                </div>
-                <button>Tìm</button>
-            </div>
-
-            <div class="table-container" items="${orderlist}" var="order">
+                <div class="table-container" items="${orderlist}" var="order">
                 <table>
                     <thead>
                         <tr>
@@ -63,9 +62,8 @@
                             <th></th>
                         </tr>
                     </thead>
-                    
+                    <c:forEach items="${listorder.allOrder}" var="order">
                         <tr>
-
                             <td>${order.order_id} </td>
                             <td>${order.user_id}</td>
                             <td>${order.total_amount}</td>
@@ -82,41 +80,8 @@
                                     <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
                                 </div>
                             </td>
-
                         </tr>
-
-                        <tr>
-                            <td>000121</td>
-                            <td>003214</td>
-                            <td>53.900 đ</td>
-                            <td>Đang xử lý</td>
-                            <td>10/10/2024</td>
-                            <td class="actions">
-                                <a href="#" class="toggle-menu-btn">
-                                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
-                                </a>
-                                <div class="actions-menu">
-                                    <a href="#" class="view-details">Xem chi tiết</a>
-                                    <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>000121</td>
-                            <td>003214</td>
-                            <td>53.900 đ</td>
-                            <td>Đang xử lý</td>
-                            <td>10/10/2024</td>
-                            <td class="actions">
-                                <a href="#" class="toggle-menu-btn">
-                                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
-                                </a>
-                                <div class="actions-menu">
-                                    <a href="#" class="view-details">Xem chi tiết</a>
-                                    <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
-                                </div>
-                            </td>
-                        </tr>
+                    </c:forEach>
                 </table>
             </div>
         </div>

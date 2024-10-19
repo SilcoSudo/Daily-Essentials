@@ -35,7 +35,7 @@ public class StaffViewOrderController extends HttpServlet {
         ViewOrderDAO orders = new ViewOrderDAO();
         List<OrderHistory> orderlist = orders.getAllOrder();
         request.setAttribute("orderlist", orderlist);
-        request.getRequestDispatcher("staffViewOrder.jsp").forward(request, response);
+        request.getRequestDispatcher("View/staffViewOrder.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,7 +58,7 @@ public class StaffViewOrderController extends HttpServlet {
         } else {
         request.setAttribute("errorMessage", "Không có đơn hàng nào.");
     }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("staffViewOrder.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("View/staffViewOrder.jsp");
         dispatcher.forward(request, response);
 
     }
