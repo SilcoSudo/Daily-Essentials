@@ -33,6 +33,7 @@
                 </div>
             </div>
 
+             <!-- Bảng thống kê danh mục -->
             <div class="filter-section">
                 <h3>Danh mục</h3>
                 <select>
@@ -47,10 +48,11 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>ID Sản phẩm</th>
                             <th>Danh mục</th>
                             <th>Tên sản phẩm</th>
                             <th>Số lượng bán</th>
+                            <th>Doanh thu sản phẩm</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,7 +60,8 @@
                             <td>1</td>
                             <td>Đồ uống</td>
                             <td>Café</td>
-                            <td>132,414</td>
+                            <td>50</td>
+                            <td>200.000</td>
                         </tr>
                     </tbody>
                 </table>
@@ -82,9 +85,9 @@
                         <tr>
                             <td>1</td>
                             <td>Đồ uống</td>
-                            <td><img src="placeholder-image.png" alt="product"> Bia vàng Leffe chai 330ml</td>
-                            <td>123,402</td>
-                            <td>561,426,124 đ</td>
+                            <td><img src="placeholder-image.png" alt="product"> Cafe </td>
+                            <td>100</td>
+                            <td>561,426</td>
                         </tr>
                     </tbody>
                 </table>

@@ -32,6 +32,10 @@
         <servlet-name>OrdersController</servlet-name>
         <servlet-class>Controller.OrdersController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductStatisticsController</servlet-name>
+        <servlet-class>Controller.ProductStatisticsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticatorController</servlet-name>
         <url-pattern>/Authen/*</url-pattern>
@@ -51,6 +55,10 @@
     <servlet-mapping>
         <servlet-name>OrdersController</servlet-name>
         <url-pattern>/Orders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductStatisticsController</servlet-name>
+        <url-pattern>/ViewProductStatistics</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

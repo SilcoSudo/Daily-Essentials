@@ -4,10 +4,12 @@
  */
 package DAO;
 
+import DB.DBConnect;
 import Model.OrderHistory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class ViewOrderDAO {
         try {
             List<OrderHistory> orderlist = new ArrayList<>();
             String sql = "SELECT * FROM [order]";
-            conn = new DB.DBConnect().getConnection();
+            conn = DBConnect.getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -36,7 +38,7 @@ public class ViewOrderDAO {
                         rs.getDouble("total_amount")));
             }
             return orderlist;
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return null;
     }
