@@ -13,28 +13,28 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerViewOrder.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/homeCustomer.css">
-        
+
     </head>
     <body>
         <!-- Navbar -->
         <nav class="navbar">
             <div class="menu-container">
                 <div class="logo-container">
-                    <a href="../View/homeCustomer.html" class="logo">Daily Essentials</a>
+                    <a href="${pageContext.request.contextPath}/View/homeCustomer.html" class="logo">Daily Essentials</a>
                 </div>
                 <div class="search-container">
                     <div class="find-products">
-                        <img src="../Component/IMG/ic-find.svg" class="icon ic-find" alt="Search Icon">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-find.svg" class="icon ic-find" alt="Search Icon">
                         <input type="text" id="txt_FindProduct" placeholder="Giao hàng nhanh 3h, Giảm 20% sản phẩm Thịt Navi">
                     </div>
                 </div>
                 <div class="right-container">
                     <a href="#" class="cart-link">
-                        <img src="../Component/IMG/ic-cart.svg" alt="Cart Icon" class="icon">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart.svg" alt="Cart Icon" class="icon">
                         <span>Giỏ hàng (0)</span>
                     </a>
                     <a href="login.html" class="user-link">
-                        <img src="../Component/IMG/ic-user.svg" alt="User Icon" class="icon">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-user.svg" alt="User Icon" class="icon">
                         <span>Khách hàng</span>
                     </a>
                 </div>
@@ -44,14 +44,14 @@
         <div class="product-menu-wrapper">
             <div class="product-menu-left">
                 <button class="menu-btn">
-                    <img src="../Component/IMG/ic-bars.svg" class="icon ic-bars" alt="Bars Icon">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-bars.svg" class="icon ic-bars" alt="Bars Icon">
                     Danh mục sản phẩm
                 </button>
             </div>
 
             <div class="product-menu-right">
                 <button class="purchase-btn">
-                    <img src="../Component/IMG/ic-cart2.svg" class="icon ic-cart2" alt="Cart Icon">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart2.svg" class="icon ic-cart2" alt="Cart Icon">
                     Sản phẩm đã mua
                 </button>
             </div>
@@ -60,19 +60,19 @@
         <div class="customerViewOrder-container">
             <div class="sidebar">
                 <div class="side-menu-item">
-                    <img src="../Component/IMG/account-icon.png" alt="User Icon">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
                     <a href="customerInfo.html">Tài khoản</a>
                 </div>
                 <div class="side-menu-item">
-                    <img src="../Component/IMG/order-icon.png" alt="Order Icon">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/order-icon.png" alt="Order Icon">
                     <a href="customerViewOrder.htmlViewOrder.html">Quản lý đơn hàng</a>
                 </div>
                 <div class="side-menu-item">
-                    <img src="../Component/IMG/product-icon.png" alt="Product Icon">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/product-icon.png" alt="Product Icon">
                     <a href="productDetail.html">Sản phẩm đã mua</a>
                 </div>
                 <div class="side-menu-item">
-                    <img src="../Component/IMG/logout-icon.png" alt="Logout Icon">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/logout-icon.png" alt="Logout Icon">
                     <a href="#">Đăng xuất</a>
                 </div>
             </div>
@@ -82,10 +82,10 @@
                 <div class="filter-section">
                     <div>
                         <label>ID đơn :</label>
-                        <input type="text" placeholder="Nhập ID đơn" />
+                        <input type="text" id="searchOrderId" placeholder="Nhập ID đơn"/>
                     </div>
                     <div>
-                        <label>Trạng thái đơn hàng :</label>
+                        <label>Tình trạng đơn :</label>
                         <select>
                             <option>Đang xử lý</option>
                             <option>Ðã xác nhận</option>
@@ -96,16 +96,16 @@
                     </div>
                     <div>
                         <label>Tổng số tiền :</label>
-                        <input type="text" placeholder="Nhập số tiền" />
+                        <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
                     </div>
                 </div>
                 <div class="filter-section">
                     <div>
                         <label for="Date"> Ngày tạo :</label>
-                        <input type="Date" value="2024-03-20">
+                        <input type="Date"  id="searchDate">
                     </div>
-                    <button>Tìm</button>
                 </div>
+
                 <div class="table-container">
                     <table>
                         <thead>
@@ -124,43 +124,7 @@
                                 <td>140.000 đ</td>
                                 <td>Hoàn thành</td>
                                 <td>...</td>
-                            </tr>
-                            <tr>
-                                <td>#0001F2</td>
-                                <td>10/09/2024</td>
-                                <td>140.000 đ</td>
-                                <td>Hoàn thành</td>
-                                <td>...</td>
-                            </tr>
-                            <tr>
-                                <td>#0001F2</td>
-                                <td>10/09/2024</td>
-                                <td>140.000 đ</td>
-                                <td>Hoàn thành</td>
-                                <td>...</td>
-                            </tr>
-                            <tr>
-                                <td>#0001F2</td>
-                                <td>10/09/2024</td>
-                                <td>140.000 đ</td>
-                                <td>Hoàn thành</td>
-                                <td>...</td>
-                            </tr>
-                            <tr>
-                                <td>#0001F2</td>
-                                <td>10/09/2024</td>
-                                <td>140.000 đ</td>
-                                <td>Hoàn thành</td>
-                                <td>...</td>
-                            </tr>
-                            <tr>
-                                <td>#0001F2</td>
-                                <td>10/09/2024</td>
-                                <td>140.000 đ</td>
-                                <td>Hoàn thành</td>
-                                <td>...</td>
-                            </tr>
-                            
+                            </tr>       
                         </tbody>
                     </table>
                 </div>
@@ -168,7 +132,47 @@
         </div>
 
         <script>
+            document.getElementById('searchOrderId').addEventListener('input', function () {
+                var searchId = this.value.toLowerCase();
+                var rows = document.querySelectorAll('#orderBody tr');
 
+                rows.forEach(function (row) {
+                    var orderId = row.cells[0].textContent.toLowerCase();
+                    if (orderId.includes(searchId) || searchId === '') {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            document.getElementById('searchTotalAmount').addEventListener('input', function () {
+                var searchAmount = this.value.toLowerCase();
+                var rows = document.querySelectorAll('#orderBody tr');
+
+                rows.forEach(function (row) {
+                    var totalAmount = row.cells[2].textContent.toLowerCase();
+                    if (totalAmount.includes(searchAmount) || searchAmount === '') {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            document.getElementById('searchDate').addEventListener('input', function () {
+                var searchDate = this.value;
+                var rows = document.querySelectorAll('#orderBody tr');
+
+                rows.forEach(function (row) {
+                    var orderDate = row.cells[4].textContent; // Lấy giá trị từ ô ngày tạo
+                    if (orderDate.includes(searchDate) || searchDate === '') {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
         </script>
     </body>
 </html>
