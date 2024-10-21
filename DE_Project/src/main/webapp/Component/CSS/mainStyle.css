@@ -50,6 +50,11 @@ a {
     color: inherit;
 }
 
+button {
+    border: none;
+    background: none;
+}
+
 .d-flex {
     display: flex;
     align-items: center;
@@ -63,6 +68,7 @@ a {
 /* ------------------------------ */
 /* Tag */
 .icon {
+    width: 100%;
     max-width: 30px;
     max-height: 30px;
     padding: 5px;
@@ -78,6 +84,11 @@ a {
     font-size: var(--fs-16);
     color: var(--white-100);
     margin-top: 15px;
+}
+
+.btn:hover {
+    cursor: pointer;
+    opacity: .9;
 }
 
 .diviser {

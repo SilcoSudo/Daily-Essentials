@@ -132,9 +132,3 @@
 .discount {
     color: rgb(0, 0, 0, 0.45);
 }
-
-
-.btnPayment>p:hover {
-    cursor: pointer;
-    opacity: .7;
-}
