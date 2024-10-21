@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Component/CSS/homeAdmin_Staff.css">
+    <title>Admin Product</title>
+</head>
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <h2 id="sidebar-logo-text">Daily Essentials</h2>
+            <button id="toggle-btn">
+                <img src="../Component/IMG/ic-left.svg" class="icon ic-left" alt="Left Icon">
+            </button>
+        </div>
+
+        <ul class="nav-menu">
+            <li>
+                <a href="#" class="active">
+                    <img src="../Component/IMG/ic-home.svg" class="icon ic-home" alt="Home Icon">
+                    <span class="menu-text">Trang chủ</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../Component/IMG/ic-address-card.svg" class="icon ic-address-card" alt="Address card Icon">
+                    <span class="menu-text">Quản lý tài khoản</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../Component/IMG/ic-box.svg" class="icon ic-box" alt="Box Icon">
+                    <span class="menu-text">Quản lý hàng hóa</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../Component/IMG/ic-file.svg" class="icon ic-file" alt="File Icon">
+                    <span class="menu-text">Quản lý đơn hàng</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="admin-section">
+            <div class="admin-info-wrapper">
+                <div class="admin-info">
+                    <img id="admin-icon" src="../Component/IMG/ic-admin.svg" alt="Admin Icon">
+                    <span id="admin-text">Admin</span>
+                </div>
+                <button id="logout-btn">
+                    <img src="../Component/IMG/ic-logout.svg" alt="Logout Icon">
+                </button>
+            </div>
+            <p class="version-text">version 1.0.0</p>
+        </div>
+    </div>
+
+    <div class="main-container">
+
+        <div class="section-wrapper warehouse-info">
+            <div class="form-group">
+                <div class="row">
+                    <label for="ten-kho">Tên kho</label>
+                    <input type="text" id="ten-kho" placeholder="Tất cả">
+                </div>
+                <div class="row">
+                    <label for="ma-kho">Mã kho</label>
+                    <input type="text" id="ma-kho" placeholder="Tất cả">
+                </div>
+                <div class="row">
+                    <label for="dia-chi">Địa chỉ</label>
+                    <input type="text" id="dia-chi" placeholder="Tất cả">
+                </div>
+                <div class="row">
+                    <label for="trang-thai">Trạng thái</label>
+                    <select id="trang-thai">
+                    </select>
+                </div>
+                <div class="row button-group">
+                    <label for="loai-kho">Loại kho</label>
+                    <select id="loai-kho">
+                    </select>
+                    <button id="Find-btn">
+                        <img src="../Component/IMG/ic-find.svg" alt="Find Icon"> Tìm
+                    </button>
+                </div>
+            </div>
+            
+
+            <div class="button-group">
+                <button>Nhập kho</button>
+                <button>Xuất kho</button>
+                <button>Tồn kho</button>
+            </div>
+
+            <table class="warehouse-table">
+                <thead>
+                    <tr>
+                        <th>Tên kho</th>
+                        <th>Mã kho</th>
+                        <th>Địa chỉ</th>
+                        <th>Sức chứa hiện tại (sản phẩm)</th>
+                        <th>Loại kho</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>            
+
+
+        <div class="section-wrapper product-info">
+            <div class="form-group">
+                <div class="row">
+                    <label for="ten-san-pham">Tên sản phẩm</label>
+                    <input type="text" id="ten-san-pham" placeholder="Tất cả">
+                </div>
+                <div class="row">
+                    <label for="ma-san-pham">Mã sản phẩm</label>
+                    <input type="text" id="ma-san-pham" placeholder="Tất cả">
+                </div>
+                <div class="row">
+                    <label for="gia">Giá</label>
+                    <input type="text" id="gia" placeholder="Tất cả">
+                </div>
+                <div class="row">
+                    <label for="nhan">Nhãn</label>
+                    <select id="nhan">
+
+                    </select>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="row">
+                    <label for="kho">Kho</label>
+                    <input type="text" id="kho" placeholder="Tất cả">
+                </div>
+                <button id="Find-btn">
+                    <img src="../Component/IMG/ic-find.svg" alt="Find Icon">
+                    Tìm
+                </button>
+            </div>
+        
+            <table class="product-table table-scroll">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>ID sản phẩm</th>
+                        <th>Mã sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Nhãn</th>
+                        <th>Kho</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="section-wrapper label-info">
+            <table class="label-table">
+                <thead>
+                    <tr>
+                        <th>Mã nhãn</th>
+                        <th>Phân loại</th>
+                        <th>Nhãn</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                </tbody>
+            </table>
+            
+            <div class="label-form">
+                <input type="text" placeholder="Phân loại">
+                <input type="text" placeholder="Danh mục">
+                <button>Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../Component/JS/homeAdmin_Staff.js"></script>
+</body>
+</html>
