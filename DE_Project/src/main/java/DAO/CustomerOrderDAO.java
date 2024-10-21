@@ -38,7 +38,8 @@ public class CustomerOrderDAO {
                         rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
-                        rs.getDouble("total_amount")
+                        rs.getDouble("total_amount"),
+                        rs.getInt("order_status")
                 ));
             }
         } catch (SQLException e) {

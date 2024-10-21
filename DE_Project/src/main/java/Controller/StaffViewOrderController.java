@@ -54,10 +54,10 @@ public class StaffViewOrderController extends HttpServlet {
         ViewOrderDAO orders = new ViewOrderDAO();
         List<OrderHistory> orderlist = orders.getAllOrder();
         if (orderlist != null && !orderlist.isEmpty()) {
-        request.setAttribute("orderlist", orderlist);
+            request.setAttribute("orderlist", orderlist);
         } else {
-        request.setAttribute("errorMessage", "Không có đơn hàng nào.");
-    }
+            request.setAttribute("errorMessage", "Không có đơn hàng nào.");
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("View/staffViewOrder.jsp");
         dispatcher.forward(request, response);
 
@@ -74,7 +74,19 @@ public class StaffViewOrderController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String orderId = request.getParameter("order_id");
+        String orderStatus = request.getParameter("order_status");
+
+        ViewOrderDAO orderDAO = new ViewOrderDAO();
+        boolean updateSuccess = orderDAO.updateOrderStatus(Integer.parseInt(orderId), Integer.parseInt(orderStatus));
+
+        if (updateSuccess) {
+            request.setAttribute("successMessage", "Trạng thái đơn hàng đã được cập nhật.");
+        } else {
+            request.setAttribute("errorMessage", "Cập nhật trạng thái thất bại.");
+        }
+        doGet(request, response);
     }
 
     /**

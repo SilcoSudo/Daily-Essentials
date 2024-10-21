@@ -29,12 +29,13 @@
                     </div>
                     <div>
                         <label>Tình trạng đơn :</label>
-                        <select>
-                            <option>Đang xử lý</option>
-                            <option>Ðã xác nhận</option>
-                            <option>Đang vận chuyển</option>
-                            <option>Hoàn thành</option>
-                            <option>Ðã hủy</option>
+                        <select id="statusFilter">
+                            <option value="">Tất cả</option>
+                            <option value="Đang xử lý">Đang xử lý</option>
+                            <option value="Ðã xác nhận">Ðã xác nhận</option>
+                            <option value="Đang vận chuyển">Đang vận chuyển</option>
+                            <option value="Ðã hoàn thành">Ðã hoàn thành</option>
+                            <option value="Ðã hủy">Ðã hủy</option>
                         </select>
                     </div>
                     <div>
@@ -67,7 +68,7 @@
                                 <td>${order.order_id} </td>
                                 <td>${order.user_id}</td>
                                 <td>${order.total_amount}</td>
-                                <td>Đang xử lý</td>
+                                <td>${order.orderStatusString}</td>
                                 <td>${order.order_date}</td>
 
 
@@ -77,7 +78,7 @@
                                     </a>
                                     <div class="actions-menu">
                                         <a href="#" class="view-details" data-order-id="${order.order_id}">Xem chi tiết</a>
-                                        <a href="#" class="update-status">Cập nhật trạng thái đơn hàng</a>
+                                        <a href="#" class="update-status" data-order-id="${order.order_id}">Cập nhật trạng thái đơn hàng</a>
                                     </div>
                                 </td>
                             </tr>
@@ -94,9 +95,7 @@
                     <h2>Chi tiết đơn hàng</h2>
                 </div>
                 <div class="popup-body">
-
                     <table>
-
                         <tr>
                             <th>ID</th>
                             <td></td>
@@ -107,7 +106,7 @@
                         </tr>
                         <tr>
                             <th>Tình trạng đơn hàng</th>
-                            <td>Đang xử lý</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <th>Ngày tạo</th>
@@ -118,6 +117,7 @@
                             <td></td>
                         </tr>
                     </table>
+
                     <br />
 
                     <table>
@@ -160,75 +160,36 @@
                     <h2>Cập nhật trạng thái đơn hàng</h2>
                 </div>
                 <div class="popup-body">
-                    <table>
-                        <tr>
-                            <th>ID</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Trạng thái đơn</th>
-                            <td>
-                                <select>
-                                    <option>Đang xử lý</option>
-                                    <option>Ðã xác nhận</option>
-                                    <option>Đang vận chuyển</option>
-                                    <option>Hoàn thành</option>
-                                    <option>Ðã hủy</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="popup-footer">
-                    <button class="close-btn" data-popup-id="popup-update">Đóng</button>
-                    <button>Cập nhật</button>
+                    <form method="post" action="ViewOrders">
+                        <table>
+                            <tr>
+                                <th>ID</th>
+                                <td id="update-order-id"></td>
+                            <input type="hidden" name="order_id" id="hidden-order-id"> 
+                            </tr>
+                            <tr>
+                                <th>Trạng thái đơn</th>
+                                <td>
+                                    <select id="order-status-select" name="order_status">
+                                        <option value="0">Đang xử lý</option>
+                                        <option value="1">Ðã xác nhận</option>
+                                        <option value="2">Đang vận chuyển</option>
+                                        <option value="3">Ðã hoàn thành</option>
+                                        <option value="4">Ðã hủy</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="popup-footer">
+                            <button type="button" class="close-btn" data-popup-id="popup-update">Đóng</button>
+                            <button type="submit">Cập nhật</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
         <script>
-            document.getElementById('searchOrderId').addEventListener('input', function () {
-                var searchId = this.value.toLowerCase();
-                var rows = document.querySelectorAll('#orderBody tr');
-
-                rows.forEach(function (row) {
-                    var orderId = row.cells[0].textContent.toLowerCase();
-                    if (orderId.includes(searchId) || searchId === '') {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            });
-
-            document.getElementById('searchTotalAmount').addEventListener('input', function () {
-                var searchAmount = this.value.toLowerCase();
-                var rows = document.querySelectorAll('#orderBody tr');
-
-                rows.forEach(function (row) {
-                    var totalAmount = row.cells[2].textContent.toLowerCase();
-                    if (totalAmount.includes(searchAmount) || searchAmount === '') {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            });
-
-            document.getElementById('searchDate').addEventListener('input', function () {
-                var searchDate = this.value;
-                var rows = document.querySelectorAll('#orderBody tr');
-
-                rows.forEach(function (row) {
-                    var orderDate = row.cells[4].textContent; // Lấy giá trị từ ô ngày tạo
-                    if (orderDate.includes(searchDate) || searchDate === '') {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            });
-
             document.addEventListener('DOMContentLoaded', function () {
                 const viewDetailsLinks = document.querySelectorAll('.view-details');
                 const updateStatusLinks = document.querySelectorAll('.update-status');
@@ -243,6 +204,58 @@
                     document.getElementById(popupId).style.display = 'none';
                 }
 
+                function filterTable() {
+                    var searchId = document.getElementById('searchOrderId').value.toLowerCase();
+                    var searchAmount = document.getElementById('searchTotalAmount').value.toLowerCase();
+                    var searchDate = document.getElementById('searchDate').value;
+                    var selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
+
+                    var rows = document.querySelectorAll('#orderBody tr');
+
+                    rows.forEach(function (row) {
+                        var orderId = row.cells[0].textContent.toLowerCase();
+                        var totalAmount = row.cells[2].textContent.toLowerCase();
+                        var orderStatus = row.cells[3].textContent.toLowerCase();
+                        var orderDate = row.cells[4].textContent;
+
+                        var matchesId = (orderId.includes(searchId) || searchId === '');
+                        var matchesAmount = (totalAmount.includes(searchAmount) || searchAmount === '');
+                        var matchesStatus = (orderStatus.includes(selectedStatus) || selectedStatus === '');
+                        var matchesDate = (orderDate.includes(searchDate) || searchDate === '');
+
+
+                        if (matchesId && matchesAmount && matchesStatus && matchesDate) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+
+                document.getElementById('searchOrderId').addEventListener('input', filterTable);
+                document.getElementById('searchTotalAmount').addEventListener('input', filterTable);
+                document.getElementById('searchDate').addEventListener('input', filterTable);
+                document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+                updateStatusLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        openPopup('popup-update');
+
+
+                        const orderRow = this.closest('tr');
+                        const orderId = orderRow.cells[0].textContent.trim();
+                        const currentStatus = orderRow.cells[3].textContent.trim();
+
+                        document.getElementById('update-order-id').textContent = orderId;
+                        document.getElementById('hidden-order-id').value = orderId;
+                        document.getElementById('order-status-select').value = getStatusValue(currentStatus);
+
+                        const actions = e.target.closest('.actions');
+                        actions.classList.remove('active');
+                    });
+                });
+
                 viewDetailsLinks.forEach(link => {
                     link.addEventListener('click', function (e) {
                         e.preventDefault();
@@ -250,30 +263,30 @@
                         openPopup('popup-details');
 
                         const orderDetails = Array.from(document.querySelectorAll('#orderBody tr'))
-                                .find(row => row.cells[0].textContent.trim() === orderId); // Tìm dòng đơn hàng được nhấp
-                        
+                                .find(row => row.cells[0].textContent.trim() === orderId);
+
                         const actions = e.target.closest('.actions');
                         actions.classList.remove('active');
-                        
-        
+
+
                         if (orderDetails) {
                             const orderData = {
                                 order_id: orderDetails.cells[0].textContent,
                                 user_id: orderDetails.cells[1].textContent,
                                 total_amount: orderDetails.cells[2].textContent,
+                                orderStatusString: orderDetails.cells[3].textContent,
                                 order_date: orderDetails.cells[4].textContent,
+
                             };
 
-                            // Cập nhật popup với dữ liệu đơn hàng
                             const popupBody = document.querySelector('#popup-details .popup-body');
-                            const tds = popupBody.querySelectorAll('td'); 
-                            tds[0].textContent = orderData.order_id; 
-                            tds[1].textContent = orderData.user_id; 
-                            tds[3].textContent = orderData.order_date; 
-                            tds[4].textContent = orderData.total_amount; 
+                            const tds = popupBody.querySelectorAll('td');
+                            tds[0].textContent = orderData.order_id;
+                            tds[1].textContent = orderData.user_id;
+                            tds[2].textContent = orderData.orderStatusString;
+                            tds[3].textContent = orderData.order_date;
+                            tds[4].textContent = orderData.total_amount;
                         }
-
-                       
                     });
                 });
 
