@@ -24,8 +24,8 @@
                 <h1>Quản lý đơn hàng</h1>
                 <div class="filter-section">
                     <div>
-                        <label>ID đơn :</label>
-                        <input type="text" id="searchOrderId" placeholder="Nhập ID đơn"/>
+                        <label>ID Đơn hàng :</label>
+                        <input type="text" id="searchOrderId" placeholder="Nhập ID đơn hàng"/>
                     </div>
                     <div>
                         <label>Tình trạng đơn :</label>
@@ -54,7 +54,7 @@
                 <table id="orderTable">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>ID Đơn hàng</th>
                             <th>ID Khách hàng</th>
                             <th>Tổng số tiền</th>
                             <th>Trạng thái đơn hàng</th>
@@ -70,8 +70,6 @@
                                 <td>${order.total_amount}</td>
                                 <td>${order.orderStatusString}</td>
                                 <td>${order.order_date}</td>
-
-
                                 <td class="actions">
                                     <a href="#" class="toggle-menu-btn">
                                         <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
@@ -97,7 +95,7 @@
                 <div class="popup-body">
                     <table>
                         <tr>
-                            <th>ID</th>
+                            <th>ID Đơn hàng</th>
                             <td></td>
                         </tr>
                         <tr>
@@ -163,7 +161,7 @@
                     <form method="post" action="ViewOrders">
                         <table>
                             <tr>
-                                <th>ID</th>
+                                <th>ID Đơn hàng</th>
                                 <td id="update-order-id"></td>
                             <input type="hidden" name="order_id" id="hidden-order-id"> 
                             </tr>
@@ -242,6 +240,8 @@
                         e.preventDefault();
                         openPopup('popup-update');
 
+                        const actions = e.target.closest('.actions');
+                        actions.classList.remove('active');
 
                         const orderRow = this.closest('tr');
                         const orderId = orderRow.cells[0].textContent.trim();
@@ -251,8 +251,6 @@
                         document.getElementById('hidden-order-id').value = orderId;
                         document.getElementById('order-status-select').value = getStatusValue(currentStatus);
 
-                        const actions = e.target.closest('.actions');
-                        actions.classList.remove('active');
                     });
                 });
 
@@ -287,16 +285,6 @@
                             tds[3].textContent = orderData.order_date;
                             tds[4].textContent = orderData.total_amount;
                         }
-                    });
-                });
-
-                updateStatusLinks.forEach(link => {
-                    link.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        openPopup('popup-update');
-
-                        const actions = e.target.closest('.actions');
-                        actions.classList.remove('active');
                     });
                 });
 
