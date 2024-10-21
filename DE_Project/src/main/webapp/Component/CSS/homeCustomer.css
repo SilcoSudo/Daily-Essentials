@@ -6,6 +6,7 @@
     font-weight: bold;
 }
 
+/* Search Container */
 .search-container {
     flex: 1;
     display: flex;
@@ -46,6 +47,7 @@
     color: #aaa;
 }
 
+/* Right Container with Cart and User Links */
 .right-container {
     display: flex;
     align-items: center;

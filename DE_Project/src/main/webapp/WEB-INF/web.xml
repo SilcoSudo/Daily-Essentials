@@ -16,6 +16,26 @@
         <servlet-name>HomeController</servlet-name>
         <servlet-class>Controller.HomeController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerViewOrderController</servlet-name>
+        <servlet-class>Controller.CustomerViewOrderController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffViewOrder</servlet-name>
+        <servlet-class>Controller.StaffViewOrder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffViewOrderController</servlet-name>
+        <servlet-class>Controller.StaffViewOrderController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrdersController</servlet-name>
+        <servlet-class>Controller.OrdersController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductStatisticsController</servlet-name>
+        <servlet-class>Controller.ProductStatisticsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticatorController</servlet-name>
         <url-pattern>/Authen/*</url-pattern>
@@ -23,6 +43,22 @@
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/Home/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerViewOrderController</servlet-name>
+        <url-pattern>/CustomerViewOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffViewOrderController</servlet-name>
+        <url-pattern>/ViewOrders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrdersController</servlet-name>
+        <url-pattern>/Orders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductStatisticsController</servlet-name>
+        <url-pattern>/ViewProductStatistics</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

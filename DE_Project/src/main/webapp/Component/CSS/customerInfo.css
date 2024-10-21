@@ -5,9 +5,9 @@ body {
 }
 
 .container {
-    display: flex;
+    display: flex; 
     justify-content: flex-start;
-    width: 80%;
+    width: 1200px;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -16,7 +16,7 @@ body {
 }
 
 .side-menu {
-    width: 20%;
+    width: 25%;
     margin-right: 20px;
     padding: 0 20px 20px 0;
     border-right: 1px solid #ccc;
@@ -37,8 +37,8 @@ body {
 
 .side-menu-item {
     display: flex;
-    align-items: center;
     padding: 20px 0;
+    padding-left: 10px;
     transition: background-color 0.3s ease;
 }
 
@@ -90,6 +90,7 @@ input[type="radio"] {
     display: flex;
     align-items: center;
     width: 100%;
+    gap: 10px;
 }
 
 /* Custom radio button styling */

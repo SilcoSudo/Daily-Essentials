@@ -1,16 +1,15 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/login.css">
-        <title>Đăng nhập</title>
+        <title>Daily Esstentials</title>
     </head>
     <body>
         <div class="login-container">
             <div class="login-header">
-                <a href="homeCustomer.html" class="back-button">
+                <a href="${pageContext.request.contextPath}/Authen/Login" class="back-button">
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-back.svg" alt="Back">
                 </a>
                 <h1>Daily Essentials</h1>
@@ -18,26 +17,11 @@
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-home.svg" alt="Home">
                 </a>
             </div>
-            <h2 class="login-title">Đăng nhập</h2>
-            <form action="Login" method="POST" class="login-form">
-                <label for="username">Tên tài khoản</label>
-                <input type="text" id="username" name="username" tabindex="1" placeholder="Nhập tài khoản">
-
-                <label for="password">Mật khẩu</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password" tabindex="2" placeholder="Nhập mật khẩu" >
-                    <span class="show-password">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-eye.svg" alt="Show/Hide Password">
-                    </span>
-                </div>
-                <div class="forgot-password">
-                    <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Quên mật khẩu?</a>
-                </div>
-                <button type="submit" class="login-button" tabindex="3">Đăng nhập</button>
-                <div class="or-divider">
-                    <hr><span>Hoặc</span><hr>
-                </div>
-                <a href="${pageContext.request.contextPath}/Authen/Register" class="register-button">Đăng ký</a>
+            <h2 class="login-title">Quên mật khẩu</h2>
+            <form action="forgot" method="POST" class="login-form">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" tabindex="1" placeholder="Nhập email">
+                <button type="submit" class="btnAuthen" tabindex="2">Tiếp tục</button>
             </form>
         </div>
         <jsp:include page="noti.jsp"></jsp:include>

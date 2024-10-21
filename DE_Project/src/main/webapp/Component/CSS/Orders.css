@@ -1,0 +1,134 @@
+@import url(./mainStyle.css);
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.w-orders {
+    display: flex;
+    gap: 43px;
+    margin-top: 28px;
+}
+
+.products-list {
+    flex: 3;
+}
+
+.products-list>figure,
+.product-info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.product-info {
+    flex: 3;
+}
+
+.product-price {
+    flex: .5;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.product-info .product-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5em;
+    max-height: 4.5em;
+    text-align: justify;
+    width: 85%;
+
+}
+
+.product-info .product-name :after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+
+.product-info img {
+    max-width: 86px;
+}
+
+.product-quantity {
+    display: flex;
+    align-items: center;
+    flex: .7;
+    overflow: hidden;
+    gap: 40px;
+    justify-content: space-between;
+    height: 30px;
+    border-radius: 12px;
+    border: 1px solid rgb(0, 0, 0, 0.25);
+}
+
+.product-quantity img {
+    width: 45px;
+    padding: 10px;
+}
+
+.product-quantity img:hover {
+    cursor: pointer;
+    background-color: var(--hv-btn);
+}
+
+.w-payment {
+    flex: 1;
+    display: grid;
+    gap: 30px;
+    width: 100%;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.location:hover {
+    background-color: var(--hv-btn);
+}
+
+.location-text {
+    display: grid;
+    gap: 10px;
+}
+
+.location-title {
+    font-size: var(--fs-16);
+}
+
+.location-address {
+    font-size: var(--fs-14);
+}
+
+.payment-info {
+    display: grid;
+    width: 100%;
+    gap: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btnPayment {
+    background-color: var(--primary-color);
+    border-radius: 6px;
+    color: var(--white-100);
+}
+
+.discount {
+    color: rgb(0, 0, 0, 0.45);
+}

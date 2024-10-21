@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<div class="toast ${not empty errorMessage ? 'active' : ''}">
+<div class="toast ${errorMessage != null && !errorMessage.isEmpty() ? 'active' : ''}">
     <div class="toast-content">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 448 512">
             <path
@@ -22,39 +22,17 @@
     </div>
 </div>
 <script>
-    const button = document.querySelector("button"),
-            toast = document.querySelector(".toast"),
-            closeIcon = document.querySelector(".close"),
-            progress = document.querySelector(".progress");
-
     window.addEventListener("DOMContentLoaded", () => {
         const toast = document.querySelector(".toast");
-        const progress = document.querySelector(".progress");
-
+        const closeIcon = document.querySelector(".close");
         if (toast.classList.contains("active")) {
             setTimeout(() => {
                 toast.classList.remove("active");
-                progress.classList.remove("active");
             }, 3000);
         }
 
-        const button = document.querySelector("button");
-        const closeIcon = document.querySelector(".close");
-
-        button.addEventListener("click", () => {
-            toast.classList.add("active");
-            progress.classList.add("active");
-
-            setTimeout(() => {
-                toast.classList.remove("active");
-                progress.classList.remove("active");
-            }, 3000);
-        });
-
         closeIcon.addEventListener("click", () => {
             toast.classList.remove("active");
-            progress.classList.remove("active");
         });
     });
-
 </script>
