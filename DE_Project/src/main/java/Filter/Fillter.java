@@ -141,7 +141,7 @@ public class Fillter implements Filter {
                 return;
             }
 
-            if (path.endsWith("/Login") || path.endsWith("/login")) {
+            if (path.endsWith("/") || path.endsWith("/Login") || path.endsWith("/login")) {
                 if (!path.contains("/Authen/")) {
                     httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Login");
                     return;
@@ -163,6 +163,10 @@ public class Fillter implements Filter {
             }
 
             if (path.endsWith("/Home")) {
+                chain.doFilter(request, response);
+                return;
+            }
+            if (path.endsWith("/Product/ViewAll")) {
                 chain.doFilter(request, response);
                 return;
             }
