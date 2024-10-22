@@ -66,4 +66,32 @@ $(document).ready(function () {
     loadAllProducts();
     $(this).hide();
   });
+  $("button[name='btnAddCart']").click(function () {
+    var productId = $(this).val();
+    addToCart(productId);
+  });
+
+  function addToCart(productId) {
+    $.ajax({
+      url: `${contextPath}/Cart/Add`,
+      method: "POST",
+      data: { productId: productId, quantity: 1 },
+      success: function (response) {
+        updateCartCount();
+      },
+      error: function (xhr, status, error) {
+        if (xhr.status === 401) {
+          window.location.href = `${contextPath}/Authen/Login`;
+        } else {
+          alert("Không thể thêm sản phẩm vào giỏ hàng.");
+        }
+      },
+    });
+  }
+
+  function updateCartCount() {
+    var currentCount = parseInt($("#cart-count").text());
+    currentCount += 1;
+    $("#cart-count").text(currentCount);
+  }
 });

@@ -5,6 +5,7 @@
 package Controller;
 
 import DAO.AuthenDAO;
+import DAO.CartDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -248,6 +249,8 @@ public class AuthenticatorController extends HttpServlet {
         }
         boolean isLogin = authen.isPassLogin(username, md5Hash(password));
         String fullNameUser = authen.getFullNameUser(username);
+        int userID = authen.getUserIdByUsername(username);
+
         if (isLogin) {
             HttpSession session = request.getSession();
             String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
@@ -257,9 +260,15 @@ public class AuthenticatorController extends HttpServlet {
             usernameCookie.setHttpOnly(true);
 
             session.setAttribute("username", username);
+            session.setAttribute("userID", userID);
+
             session.setAttribute("userFullName", fullNameUser);
             response.addCookie(usernameCookie);
-
+            
+            CartDAO cartDAO = new CartDAO();
+            int totalCartItems = cartDAO.getTotalCartItems(userID);
+            session.setAttribute("totalCartItems", totalCartItems);
+            
 //            System.out.println("Session ID: " + session.getId());
 //            System.out.println("Session username: " + session.getAttribute("username"));
 //            System.out.println("Cookie name: " + usernameCookie.getName());

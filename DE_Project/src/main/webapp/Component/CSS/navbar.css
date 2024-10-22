@@ -1,4 +1,12 @@
 /* Navbar Styling */
+header {
+    display: grid;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    width: 100%;
+}
+
 nav {
     width: 100%;
 }

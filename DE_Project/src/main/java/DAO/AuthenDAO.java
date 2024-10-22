@@ -62,6 +62,31 @@ public class AuthenDAO {
         return -1;
     }
 
+    public int getUserIdByUsername(String username) {
+        int userId = -1;
+
+        String query = "SELECT up.user_id "
+                + "FROM account ac "
+                + "JOIN user_profile up ON up.user_id = ac.user_id "
+                + "WHERE ac.username = ?";
+
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, username);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getInt("user_id");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("User ID: " + e);
+        }
+
+        return userId;
+    }
+
     public String getFullNameUser(String username) {
         Connection conn = null;
         PreparedStatement ps = null;

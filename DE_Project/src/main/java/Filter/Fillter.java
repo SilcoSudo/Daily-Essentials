@@ -4,6 +4,8 @@
  */
 package Filter;
 
+import DAO.AuthenDAO;
+import DAO.CartDAO;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -109,6 +111,7 @@ public class Fillter implements Filter {
         String path = httpRequest.getRequestURI();
         System.out.println("path url: " + path);
         HttpSession session = httpRequest.getSession(false);
+
         boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
         boolean hasValidCookie = false;
         if (httpRequest.getCookies() != null) {
@@ -178,10 +181,23 @@ public class Fillter implements Filter {
                 }
             }
         }
+        if (isLoggedIn) {
+            AuthenDAO authenDAO = new AuthenDAO();
+            String username = (String) session.getAttribute("username");
+            CartDAO cartDAO = new CartDAO();
+            int userID = authenDAO.getUserIdByUsername(username);
+            int totalCartItems = cartDAO.getTotalCartItems(userID);
+            session.setAttribute("totalCartItems", totalCartItems);
+        }
 
         if (!isLoggedIn && !hasValidCookie) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Login");
-            return;
+            if (path.contains("/Cart/Add")) {
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            } else {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Login");
+                return;
+            }
         }
 
         doBeforeProcessing(request, response);
