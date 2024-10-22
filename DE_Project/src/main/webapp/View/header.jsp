@@ -17,7 +17,7 @@
             </a>
             <a href="${pageContext.request.contextPath}/Home/Info" class="user-link">
                 <img src="${pageContext.request.contextPath}/Component/IMG/ic-user.svg" alt="User Icon" class="icon">
-                <span>Khách hàng</span>
+                <span>${sessionScope.userFullName != null ? sessionScope.userFullName : 'Khách hàng'}</span>
             </a>
         </div>
     </div>

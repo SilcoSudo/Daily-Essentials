@@ -193,15 +193,19 @@ public class AuthenticatorController extends HttpServlet {
     private void logout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-
         if (session != null) {
-            session.removeAttribute("username");
             session.invalidate();
         }
 
-        Cookie usernameCookie = new Cookie("username", null);
-        usernameCookie.setMaxAge(0);
-        response.addCookie(usernameCookie);
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                cookie.setValue(null);
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
+        }
 
         response.sendRedirect(request.getContextPath() + "/Login");
     }
@@ -218,7 +222,7 @@ public class AuthenticatorController extends HttpServlet {
         if (password.equals(confirmPassword)) {
             AuthenDAO authenDAO = new AuthenDAO();
             boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, genders);
-            
+
             if (isRegistered) {
                 request.getRequestDispatcher("/View/login.jsp").forward(request, response);
             } else {
@@ -243,12 +247,17 @@ public class AuthenticatorController extends HttpServlet {
             return;
         }
         boolean isLogin = authen.isPassLogin(username, md5Hash(password));
+        String fullNameUser = authen.getFullNameUser(username);
         if (isLogin) {
             HttpSession session = request.getSession();
             String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
             Cookie usernameCookie = new Cookie("username", encodedUsername);
-            usernameCookie.setMaxAge(24 * 3 * 60 * 60);
+            usernameCookie.setMaxAge(24 * 3 * 60 * 60); // 3 days
+            usernameCookie.setPath("/");
+            usernameCookie.setHttpOnly(true);
+
             session.setAttribute("username", username);
+            session.setAttribute("userFullName", fullNameUser);
             response.addCookie(usernameCookie);
 
 //            System.out.println("Session ID: " + session.getId());

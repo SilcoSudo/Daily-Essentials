@@ -1,10 +1,6 @@
 @import url(./mainStyle.css);
 @import url(./navbar.css);
 
-.load-more-btn .highlight {
-    color: #1818a9;
-    font-weight: bold;
-}
 
 .right-container {
     display: flex;
@@ -158,7 +154,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    max-height: calc(320px * 3 + 40px);
+    /* max-height: calc(320px * 3 + 40px); */
     transition: max-height 0.5s ease;
     gap: 15px 18px;
 }
@@ -250,6 +246,7 @@
 
 .btnQuantity:hover {
     background: var(--hv-btn);
+    cursor: pointer;
 }
 
 .load-more-container {

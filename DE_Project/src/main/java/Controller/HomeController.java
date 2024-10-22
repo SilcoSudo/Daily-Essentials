@@ -4,15 +4,15 @@
  */
 package Controller;
 
+import DAO.ProductDAO;
+import Model.ProductModel;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -60,17 +60,19 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         String part[] = path.split("/");
-        System.out.println("home: " + Arrays.toString(part));
         if (part[2].equalsIgnoreCase("Home")) {
             if (part.length > 3 && part[3].equalsIgnoreCase("Info")) {
                 request.getRequestDispatcher("/View/customerInfo.jsp").forward(request, response);
             } else {
+                ProductDAO productDAO = new ProductDAO();
+                List<ProductModel> listProduct = productDAO.getListProductMax15Item();
+                request.setAttribute("productList", listProduct);
                 request.getRequestDispatcher("/View/homeCus.jsp").forward(request, response);
             }
         }
-
+        
     }
-
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -84,6 +86,8 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
+
+    
 
     /**
      * Returns a short description of the servlet.

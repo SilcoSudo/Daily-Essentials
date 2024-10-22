@@ -41,8 +41,6 @@
 
                     <label for="email">Email *</label>
                     <input type="email" id="email" name="email" value="yinkennalt@gmail.com" required>
-
-
                     <div class="gender">
                         <label>Giới tính *</label>
                         <label class="custom-radio">
@@ -56,7 +54,6 @@
                     </div>
                     <label for="dob">Ngày sinh</label>
                     <input type="date" id="dob" name="dob" value="2004-10-01">
-
                     <label for="tinh">Tỉnh/ Thành phố</label>
                     <select id="tinh" name="tinh">
                         <option value="0">Tỉnh thành</option>

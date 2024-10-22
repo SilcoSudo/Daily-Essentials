@@ -62,6 +62,33 @@ public class AuthenDAO {
         return -1;
     }
 
+    public String getFullNameUser(String username) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnect.getConnection();
+
+            String sql = "SELECT up.user_fullname\n"
+                    + "FROM user_profile up\n"
+                    + "JOIN account ac ON ac.user_id = up.user_id\n"
+                    + "WHERE ac.username = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("user_fullname");
+            }
+        } catch (SQLException e) {
+            System.out.println("Account User Full Name error: " + e.getMessage());
+        }
+
+        return null;
+    }
+
     public boolean updatePassword(int accountId, String newPassword) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -79,7 +106,7 @@ public class AuthenDAO {
 
         } catch (SQLException e) {
             System.out.println("Error while updating password: " + e.getMessage());
-        } 
+        }
 
         return updateSuccess;
     }

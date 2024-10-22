@@ -14,8 +14,10 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -105,19 +107,78 @@ public class Fillter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String path = httpRequest.getRequestURI();
-        
-        if (path != null && (path.endsWith("/Login") || path.endsWith("/login"))) {
-            if (!path.endsWith("/Authen/Login")) {
-                httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Login");
-                return;
+        System.out.println("path url: " + path);
+        HttpSession session = httpRequest.getSession(false);
+        boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
+        boolean hasValidCookie = false;
+        if (httpRequest.getCookies() != null) {
+            for (Cookie cookie : httpRequest.getCookies()) {
+                if ("username".equals(cookie.getName())) {
+                    hasValidCookie = true;
+                    break;
+                }
             }
         }
-//        if (path != null && (path.endsWith("/Register") || path.endsWith("/register"))) {
-//            if (!path.endsWith("/Authen/Register")) {
-//                httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Register");
-//                return;
-//            }
-//        }
+        if (path != null) {
+            if (path.contains("/Component/CSS/") || path.contains("/Component/JS/") || path.contains("/Component/IMG/")
+                    || path.endsWith(".css") || path.endsWith(".js") || path.endsWith(".png") || path.endsWith(".jpg")
+                    || path.endsWith(".jpeg") || path.endsWith(".svg") || path.endsWith(".gif")) {
+                chain.doFilter(request, response);
+                return;
+            }
+            if (path.endsWith("/Authen/Login")) {
+                chain.doFilter(request, response);
+                return;
+            }
+
+            if (path.endsWith("/Authen/Register")) {
+                chain.doFilter(request, response);
+                return;
+            }
+
+            if (path.endsWith("/Authen/ForgotPassword")) {
+                chain.doFilter(request, response);
+                return;
+            }
+
+            if (path.endsWith("/Login") || path.endsWith("/login")) {
+                if (!path.contains("/Authen/")) {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Login");
+                    return;
+                }
+            }
+
+            if (path.endsWith("/Register") || path.endsWith("/register")) {
+                if (!path.contains("/Authen/")) {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Register");
+                    return;
+                }
+            }
+
+            if (path.endsWith("/ForgotPassword") || path.endsWith("/forgotpassword")) {
+                if (!path.contains("/Authen/")) {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/ForgotPassword");
+                    return;
+                }
+            }
+
+            if (path.endsWith("/Home")) {
+                chain.doFilter(request, response);
+                return;
+            }
+
+            if (path.startsWith("/Home/") && !path.equals("/Home")) {
+                if (!isLoggedIn && !hasValidCookie) {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Login");
+                    return;
+                }
+            }
+        }
+
+        if (!isLoggedIn && !hasValidCookie) {
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Login");
+            return;
+        }
 
         doBeforeProcessing(request, response);
 

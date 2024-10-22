@@ -133,7 +133,7 @@ nav {
 
 /* Search Container */
 .search-container {
-    flex: 1;
+    flex: .8;
     display: flex;
     justify-content: center;
     max-width: 600px;
