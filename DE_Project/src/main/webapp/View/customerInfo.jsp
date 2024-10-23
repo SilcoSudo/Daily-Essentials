@@ -19,7 +19,7 @@
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/order-icon.png" alt="Order Icon">
-                    <a href="staffViewOrder.html">Quản lý đơn hàng</a>
+                    <a href="${pageContext.request.contextPath}/CustomerViewOrder">Quản lý đơn hàng</a>
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/product-icon.png" alt="Product Icon">

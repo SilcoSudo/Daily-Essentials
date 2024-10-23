@@ -15,10 +15,10 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerInfo.css">
     </head>
     <body>    
-            <div class="container">
-                <div class="side-menu">
-                    <div class="side-menu-item">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
+        <div class="container">
+            <div class="side-menu">
+                <div class="side-menu-item">
+                    <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
                     <a href="${pageContext.request.contextPath}/Home/Info">Tài khoản</a>
                 </div>
                 <div class="side-menu-item">
@@ -38,27 +38,28 @@
             <div class="main-content">
                 <h2>Danh sách đơn hàng</h2>
                 <div class="filter-section">
-                    <div style = "display: ruby;">
-                        <label>ID đơn :</label>
-                        <input type="text" id="searchOrderId" placeholder="Nhập ID đơn"/>
+                    <div>
+                        <label>ID Đơn hàng :</label>
+                        <input type="text" id="searchOrderId" placeholder="Nhập ID đơn hàng"/>
                     </div>
-                    <div style = "display: ruby;">
+                    <div class="filter-section-item">
                         <label>Tình trạng đơn :</label>
-                        <select>
-                            <option>Đang xử lý</option>
-                            <option>Ðã xác nhận</option>
-                            <option>Đang vận chuyển</option>
-                            <option>Hoàn thành</option>
-                            <option>Ðã hủy</option>
+                        <select id="statusFilter">
+                            <option value="">Tất cả</option>
+                            <option value="Đang xử lý">Đang xử lý</option>
+                            <option value="Ðã xác nhận">Ðã xác nhận</option>
+                            <option value="Đang vận chuyển">Đang vận chuyển</option>
+                            <option value="Ðã hoàn thành">Ðã hoàn thành</option>
+                            <option value="Ðã hủy">Ðã hủy</option>
                         </select>
                     </div>
-                    <div style = "display: ruby;">
+                    <div class="filter-section-item">
                         <label>Tổng số tiền :</label>
                         <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
                     </div>
                 </div>
                 <div class="filter-section">
-                    <div style = "display: ruby;">
+                    <div class="filter-section-item">
                         <label for="Date"> Ngày tạo :</label>
                         <input type="Date"  id="searchDate">
                     </div>
@@ -90,47 +91,39 @@
         </div>
 
         <script>
-            document.getElementById('searchOrderId').addEventListener('input', function () {
-                var searchId = this.value.toLowerCase();
+            function filterTable() {
+                var searchId = document.getElementById('searchOrderId').value.toLowerCase();
+                var searchAmount = document.getElementById('searchTotalAmount').value.toLowerCase();
+                var searchDate = document.getElementById('searchDate').value;
+                var selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
+
                 var rows = document.querySelectorAll('#orderBody tr');
 
                 rows.forEach(function (row) {
                     var orderId = row.cells[0].textContent.toLowerCase();
-                    if (orderId.includes(searchId) || searchId === '') {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            });
-
-            document.getElementById('searchTotalAmount').addEventListener('input', function () {
-                var searchAmount = this.value.toLowerCase();
-                var rows = document.querySelectorAll('#orderBody tr');
-
-                rows.forEach(function (row) {
                     var totalAmount = row.cells[2].textContent.toLowerCase();
-                    if (totalAmount.includes(searchAmount) || searchAmount === '') {
+                    var orderStatus = row.cells[3].textContent.toLowerCase();
+                    var orderDate = row.cells[4].textContent;
+
+                    var matchesId = (orderId.includes(searchId) || searchId === '');
+                    var matchesAmount = (totalAmount.includes(searchAmount) || searchAmount === '');
+                    var matchesStatus = (orderStatus.includes(selectedStatus) || selectedStatus === '');
+                    var matchesDate = (orderDate.includes(searchDate) || searchDate === '');
+
+
+                    if (matchesId && matchesAmount && matchesStatus && matchesDate) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';
                     }
                 });
-            });
+            }
 
-            document.getElementById('searchDate').addEventListener('input', function () {
-                var searchDate = this.value;
-                var rows = document.querySelectorAll('#orderBody tr');
+            document.getElementById('searchOrderId').addEventListener('input', filterTable);
+            document.getElementById('searchTotalAmount').addEventListener('input', filterTable);
+            document.getElementById('searchDate').addEventListener('input', filterTable);
+            document.getElementById('statusFilter').addEventListener('change', filterTable);
 
-                rows.forEach(function (row) {
-                    var orderDate = row.cells[4].textContent; // Lấy giá trị từ ô ngày tạo
-                    if (orderDate.includes(searchDate) || searchDate === '') {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            });
         </script>
     </body>
 </html>
