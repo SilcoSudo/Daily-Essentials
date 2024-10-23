@@ -220,15 +220,14 @@ public class AuthenDAO {
                 userId = rs.getInt(1);
             }
 
-            String insertAccountSql = "INSERT INTO account (username, password, user_id, role, is_lock, is_delete, create_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String insertAccountSql = "INSERT INTO account (username, password, user_id, role, is_lock, create_at) VALUES (?, ?, ?, ?, ?, ?)";
             psInsertAccount = conn.prepareStatement(insertAccountSql);
             psInsertAccount.setString(1, username);
             psInsertAccount.setString(2, password);
             psInsertAccount.setInt(3, userId);
             psInsertAccount.setString(4, "user");
             psInsertAccount.setBoolean(5, false);
-            psInsertAccount.setBoolean(6, false);
-            psInsertAccount.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+            psInsertAccount.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
             psInsertAccount.executeUpdate();
 
             return true;
