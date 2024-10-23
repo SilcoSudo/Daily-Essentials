@@ -72,9 +72,25 @@ public class CartController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         String[] part = path.split("/");
-        if(part[3].equalsIgnoreCase("Add")){
+        if (part[3].equalsIgnoreCase("Add")) {
             addToCard(request, response);
         }
+        if (part[3].equalsIgnoreCase("UpdateQuantity")) {
+            updateQuantity(request, response);
+        }
+    }
+
+    private void updateQuantity(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        boolean increase = Boolean.parseBoolean(request.getParameter("increase"));
+
+        HttpSession session = request.getSession();
+        int userId = (int) session.getAttribute("userID");
+        CartDAO cartDAO = new CartDAO();
+        cartDAO.updateProductQuantity(productId, userId, increase);
+    
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     private void addToCard(HttpServletRequest request, HttpServletResponse respons)

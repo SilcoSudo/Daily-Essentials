@@ -4,13 +4,15 @@
  */
 package Controller;
 
+import DAO.CartDAO;
+import Model.ProductModel;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import java.util.List;
 
 public class OrdersController extends HttpServlet {
 
@@ -55,6 +57,10 @@ public class OrdersController extends HttpServlet {
         String path = request.getRequestURI();
         String part[] = path.split("/");
         if (part[2].equalsIgnoreCase("Orders")) {
+            CartDAO cartDAO = new CartDAO();
+            List<ProductModel> cartProducts = cartDAO.getAllProductCart();
+
+            request.setAttribute("cartProducts", cartProducts);
             request.getRequestDispatcher("/View/Orders.jsp").forward(request, response);
 
         }

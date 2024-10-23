@@ -88,11 +88,7 @@ public class ProductController extends HttpServlet {
         processRequest(request, response);
     }
 
-    private List<ProductModel> getListProductMax15Item() {
-        ProductDAO productDAO = new ProductDAO();
-        List<ProductModel> productList = productDAO.getListProductMax15Item();
-        return productList;
-    }
+  
 
     /**
      * Returns a short description of the servlet.
