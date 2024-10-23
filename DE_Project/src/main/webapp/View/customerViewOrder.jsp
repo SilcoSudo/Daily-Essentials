@@ -4,7 +4,10 @@
     Author     : nhatl
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List" %>
+<%@page import="Model.OrderHistory" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -65,7 +68,7 @@
                     </div>
                 </div>
 
-                <div class="table-container">
+                <div class="table-container" items="${orderlist}" var="order">
                     <table>
                         <thead>
                             <tr>
@@ -76,15 +79,17 @@
                                 <th>Ghi chú</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <c:forEach items="${orderlist}" var="order">
+                        <tbody id="orderBody">
                             <tr>
-                                <td>#0001F2</td>
-                                <td>10/09/2024</td>
-                                <td>140.000 đ</td>
-                                <td>Hoàn thành</td>
+                                <td>${order.order_id}</td>
+                                <td>${order.order_date}</td>
+                                <td>${order.total_amount}</td>
+                                <td>${order.orderStatusString}</td>
                                 <td>...</td>
                             </tr>       
                         </tbody>
+                        </c:forEach>
                     </table>
                 </div>
             </div>     

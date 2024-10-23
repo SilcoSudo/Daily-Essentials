@@ -40,9 +40,9 @@ public class ViewOrderDAO {
         }
     }
 
-    public List<OrderHistory> getOrdersByUserId(int user_id) {
-        List<OrderHistory> orders = new ArrayList<>();
+    public List<OrderHistory> getOrdersByUserId(int user_id) {   
         try {
+            List<OrderHistory> orderlist = new ArrayList<>();
             String sql = "SELECT * FROM [order] WHERE user_id = ?";
             conn = DBConnect.getConnection();
             ps = conn.prepareStatement(sql);
@@ -50,18 +50,21 @@ public class ViewOrderDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                orders.add(new OrderHistory(
+                OrderHistory orders = new OrderHistory(
                         rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
                         rs.getDouble("total_amount"),
-                        rs.getInt("order_status")
-                ));
+                        rs.getInt("order_status"));
+                
+                orders.setOrderStatusString(getOrderStatus(orders.getOrder_status()));
+                orderlist.add(orders);
             }
+            return orderlist;
         } catch (SQLException e) {
 
         }
-        return orders;
+        return null;
     }
 
     public List<OrderHistory> getAllOrder() {
@@ -73,7 +76,8 @@ public class ViewOrderDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
 
-                OrderHistory orders = new OrderHistory(rs.getInt("order_id"),
+                OrderHistory orders = new OrderHistory(
+                        rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
                         rs.getDouble("total_amount"),
