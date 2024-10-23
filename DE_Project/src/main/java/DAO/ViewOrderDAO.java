@@ -40,6 +40,30 @@ public class ViewOrderDAO {
         }
     }
 
+    public List<OrderHistory> getOrdersByUserId(int user_id) {
+        List<OrderHistory> orders = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM [order] WHERE user_id = ?";
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, user_id);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                orders.add(new OrderHistory(
+                        rs.getInt("order_id"),
+                        rs.getInt("user_id"),
+                        rs.getDate("order_date"),
+                        rs.getDouble("total_amount"),
+                        rs.getInt("order_status")
+                ));
+            }
+        } catch (SQLException e) {
+
+        }
+        return orders;
+    }
+
     public List<OrderHistory> getAllOrder() {
         try {
             List<OrderHistory> orderlist = new ArrayList<>();
@@ -69,27 +93,22 @@ public class ViewOrderDAO {
         try {
             conn = DBConnect.getConnection();
             ps = conn.prepareStatement(sql);
-            ps.setInt(1, status);  
-            ps.setInt(2, orderId);  
-            return ps.executeUpdate() > 0; 
+            ps.setInt(1, status);
+            ps.setInt(2, orderId);
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
         }
         return false;
     }
 
     public static void main(String[] args) {
-        ViewOrderDAO orders = new ViewOrderDAO();
-        List<OrderHistory> orderlist = orders.getAllOrder();
-        for (OrderHistory o : orderlist) {
-            System.out.println(o);
-        }
+        ViewOrderDAO orderDAO = new ViewOrderDAO();
 
-        boolean updated = orders.updateOrderStatus(1, 2);
-        if (updated) {
-            System.out.println("Thanh cong");
-        } else {
-            System.out.println("That bai");
+        int userId = 9;
+        List<OrderHistory> orderlist = orderDAO.getOrdersByUserId(userId);
+
+        for (OrderHistory order : orderlist) {
+            System.out.println(order);
         }
     }
-
 }
