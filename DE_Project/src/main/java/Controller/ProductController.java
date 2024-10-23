@@ -4,15 +4,18 @@
  */
 package Controller;
 
+import DAO.ProductDAO;
+import Model.ProductModel;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+import java.util.List;
 
-public class OrdersController extends HttpServlet {
+public class ProductController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,10 +34,10 @@ public class OrdersController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrdersController</title>");
+            out.println("<title>Servlet ProductController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrdersController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProductController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,9 +57,20 @@ public class OrdersController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         String part[] = path.split("/");
-        if (part[2].equalsIgnoreCase("Orders")) {
-            request.getRequestDispatcher("/View/Orders.jsp").forward(request, response);
+        if (part[2].equalsIgnoreCase("Product")) {
+            if (part.length > 3 && part[3].equalsIgnoreCase("ViewAll")) {
+                int offset = 15;
+                
+                ProductDAO productDAO = new ProductDAO();
+                List<ProductModel> productList = productDAO.getRemainingProducts(offset);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
 
+                Gson gson = new Gson();
+                String jsonResponse = gson.toJson(productList);
+
+                response.getWriter().write(jsonResponse);
+            }
         }
     }
 
@@ -72,6 +86,12 @@ public class OrdersController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+    }
+
+    private List<ProductModel> getListProductMax15Item() {
+        ProductDAO productDAO = new ProductDAO();
+        List<ProductModel> productList = productDAO.getListProductMax15Item();
+        return productList;
     }
 
     /**

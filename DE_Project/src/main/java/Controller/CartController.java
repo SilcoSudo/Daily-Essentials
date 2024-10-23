@@ -4,15 +4,17 @@
  */
 package Controller;
 
+import DAO.CartDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.Arrays;
 
-public class OrdersController extends HttpServlet {
+public class CartController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,10 +33,10 @@ public class OrdersController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrdersController</title>");
+            out.println("<title>Servlet CartController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrdersController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CartController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -53,11 +55,8 @@ public class OrdersController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-        String part[] = path.split("/");
-        if (part[2].equalsIgnoreCase("Orders")) {
-            request.getRequestDispatcher("/View/Orders.jsp").forward(request, response);
+        String[] part = path.split("/");
 
-        }
     }
 
     /**
@@ -71,7 +70,39 @@ public class OrdersController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String path = request.getRequestURI();
+        String[] part = path.split("/");
+        if(part[3].equalsIgnoreCase("Add")){
+            addToCard(request, response);
+        }
+    }
+
+    private void addToCard(HttpServletRequest request, HttpServletResponse respons)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        String productIdStr = request.getParameter("productId");
+        String quantityStr = request.getParameter("quantity");
+        int userID = (int) session.getAttribute("userID");
+        if (productIdStr != null && quantityStr != null) {
+            try {
+                int productId = Integer.parseInt(productIdStr);
+                int quantity = Integer.parseInt(quantityStr);
+
+                CartDAO cartDAO = new CartDAO();
+                cartDAO.insertProductToCart(userID, productId, quantity);
+
+                respons.setContentType("application/json");
+                respons.setCharacterEncoding("UTF-8");
+                respons.getWriter().write("{\"status\":\"success\"}");
+
+            } catch (NumberFormatException e) {
+                respons.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                respons.getWriter().write("{\"status\":\"error\", \"message\": \"Invalid product ID or quantity\"}");
+            }
+        } else {
+            respons.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            respons.getWriter().write("{\"status\":\"error\", \"message\": \"Missing product ID or quantity\"}");
+        }
     }
 
     /**

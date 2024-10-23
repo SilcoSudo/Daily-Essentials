@@ -62,6 +62,58 @@ public class AuthenDAO {
         return -1;
     }
 
+    public int getUserIdByUsername(String username) {
+        int userId = -1;
+
+        String query = "SELECT up.user_id "
+                + "FROM account ac "
+                + "JOIN user_profile up ON up.user_id = ac.user_id "
+                + "WHERE ac.username = ?";
+
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, username);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userId = rs.getInt("user_id");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("User ID: " + e);
+        }
+
+        return userId;
+    }
+
+    public String getFullNameUser(String username) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnect.getConnection();
+
+            String sql = "SELECT up.user_fullname\n"
+                    + "FROM user_profile up\n"
+                    + "JOIN account ac ON ac.user_id = up.user_id\n"
+                    + "WHERE ac.username = ?";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("user_fullname");
+            }
+        } catch (SQLException e) {
+            System.out.println("Account User Full Name error: " + e.getMessage());
+        }
+
+        return null;
+    }
+
     public boolean updatePassword(int accountId, String newPassword) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -79,7 +131,7 @@ public class AuthenDAO {
 
         } catch (SQLException e) {
             System.out.println("Error while updating password: " + e.getMessage());
-        } 
+        }
 
         return updateSuccess;
     }
@@ -168,15 +220,14 @@ public class AuthenDAO {
                 userId = rs.getInt(1);
             }
 
-            String insertAccountSql = "INSERT INTO account (username, password, user_id, role, is_lock, is_delete, create_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String insertAccountSql = "INSERT INTO account (username, password, user_id, role, is_lock, create_at) VALUES (?, ?, ?, ?, ?, ?)";
             psInsertAccount = conn.prepareStatement(insertAccountSql);
             psInsertAccount.setString(1, username);
             psInsertAccount.setString(2, password);
             psInsertAccount.setInt(3, userId);
             psInsertAccount.setString(4, "user");
             psInsertAccount.setBoolean(5, false);
-            psInsertAccount.setBoolean(6, false);
-            psInsertAccount.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
+            psInsertAccount.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
             psInsertAccount.executeUpdate();
 
             return true;

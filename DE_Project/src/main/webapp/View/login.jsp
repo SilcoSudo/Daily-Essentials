@@ -10,11 +10,11 @@
     <body>
         <div class="login-container">
             <div class="login-header">
-                <a href="homeCustomer.html" class="back-button">
+                <a href="${pageContext.request.contextPath}/Home" class="back-button">
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-back.svg" alt="Back">
                 </a>
                 <h1>Daily Essentials</h1>
-                <a href="homeCustomer.html" class="home-button">
+                <a href="${pageContext.request.contextPath}/Home" class="home-button">
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-home.svg" alt="Home">
                 </a>
             </div>

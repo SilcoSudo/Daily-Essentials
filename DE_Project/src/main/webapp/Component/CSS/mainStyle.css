@@ -39,6 +39,7 @@
 
 body {
     overflow-x: hidden;
+    overflow: scroll;
 }
 
 li {
