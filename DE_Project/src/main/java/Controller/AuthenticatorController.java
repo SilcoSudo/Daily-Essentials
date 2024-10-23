@@ -248,6 +248,7 @@ public class AuthenticatorController extends HttpServlet {
             return;
         }
         boolean isLogin = authen.isPassLogin(username, md5Hash(password));
+
         String fullNameUser = authen.getFullNameUser(username);
         int userID = authen.getUserIdByUsername(username);
 
@@ -271,9 +272,11 @@ public class AuthenticatorController extends HttpServlet {
             
 //            System.out.println("Session ID: " + session.getId());
 //            System.out.println("Session username: " + session.getAttribute("username"));
+//            System.out.println("Session userID: " + session.getAttribute("userID"));
 //            System.out.println("Cookie name: " + usernameCookie.getName());
 //            System.out.println("Cookie value: " + usernameCookie.getValue());
 //            System.out.println("Cookie max age: " + usernameCookie.getMaxAge());
+
             response.sendRedirect(request.getContextPath() + "/Home");
             return;
         } else {

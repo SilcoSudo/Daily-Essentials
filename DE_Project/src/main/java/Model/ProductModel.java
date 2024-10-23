@@ -20,6 +20,7 @@ public class ProductModel {
     private String imageUrl;            // image_url
     private String productDescription;  // product_description
     private int categoryId;             // category_id
+    private int quantityInCart;         // quantity in cart
 
     public ProductModel() {
     }
@@ -33,6 +34,14 @@ public class ProductModel {
         this.imageUrl = imageUrl;
         this.productDescription = productDescription;
         this.categoryId = categoryId;
+    }
+
+    public int getQuantityInCart() {
+        return quantityInCart;
+    }
+
+    public void setQuantityInCart(int quantityInCart) {
+        this.quantityInCart = quantityInCart;
     }
 
     public int getProductId() {
@@ -99,5 +108,4 @@ public class ProductModel {
         this.categoryId = categoryId;
     }
 
-    
 }
