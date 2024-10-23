@@ -12,60 +12,18 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerViewOrder.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/homeCustomer.css">
-
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerInfo.css">
     </head>
-    <body>
-        <!-- Navbar -->
-        <nav class="navbar">
-            <div class="menu-container">
-                <div class="logo-container">
-                    <a href="${pageContext.request.contextPath}/View/homeCustomer.html" class="logo">Daily Essentials</a>
-                </div>
-                <div class="search-container">
-                    <div class="find-products">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-find.svg" class="icon ic-find" alt="Search Icon">
-                        <input type="text" id="txt_FindProduct" placeholder="Giao hàng nhanh 3h, Giảm 20% sản phẩm Thịt Navi">
-                    </div>
-                </div>
-                <div class="right-container">
-                    <a href="#" class="cart-link">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart.svg" alt="Cart Icon" class="icon">
-                        <span>Giỏ hàng (0)</span>
-                    </a>
-                    <a href="login.html" class="user-link">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-user.svg" alt="User Icon" class="icon">
-                        <span>Khách hàng</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-        <div class="product-menu-wrapper">
-            <div class="product-menu-left">
-                <button class="menu-btn">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-bars.svg" class="icon ic-bars" alt="Bars Icon">
-                    Danh mục sản phẩm
-                </button>
-            </div>
-
-            <div class="product-menu-right">
-                <button class="purchase-btn">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart2.svg" class="icon ic-cart2" alt="Cart Icon">
-                    Sản phẩm đã mua
-                </button>
-            </div>
-        </div>
-
-        <div class="customerViewOrder-container">
-            <div class="sidebar">
-                <div class="side-menu-item">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
-                    <a href="customerInfo.html">Tài khoản</a>
+    <body>    
+            <div class="container">
+                <div class="side-menu">
+                    <div class="side-menu-item">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
+                    <a href="${pageContext.request.contextPath}/Home/Info">Tài khoản</a>
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/order-icon.png" alt="Order Icon">
-                    <a href="customerViewOrder.htmlViewOrder.html">Quản lý đơn hàng</a>
+                    <a href="${pageContext.request.contextPath}/CustomerViewOrder">Quản lý đơn hàng</a>
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/product-icon.png" alt="Product Icon">
@@ -73,18 +31,18 @@
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/logout-icon.png" alt="Logout Icon">
-                    <a href="#">Đăng xuất</a>
+                    <a href="${pageContext.request.contextPath}/Authen/Logout">Đăng xuất</a>
                 </div>
             </div>
 
             <div class="main-content">
                 <h2>Danh sách đơn hàng</h2>
                 <div class="filter-section">
-                    <div>
+                    <div style = "display: ruby;">
                         <label>ID đơn :</label>
                         <input type="text" id="searchOrderId" placeholder="Nhập ID đơn"/>
                     </div>
-                    <div>
+                    <div style = "display: ruby;">
                         <label>Tình trạng đơn :</label>
                         <select>
                             <option>Đang xử lý</option>
@@ -94,13 +52,13 @@
                             <option>Ðã hủy</option>
                         </select>
                     </div>
-                    <div>
+                    <div style = "display: ruby;">
                         <label>Tổng số tiền :</label>
                         <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
                     </div>
                 </div>
                 <div class="filter-section">
-                    <div>
+                    <div style = "display: ruby;">
                         <label for="Date"> Ngày tạo :</label>
                         <input type="Date"  id="searchDate">
                     </div>
