@@ -1,29 +1,6 @@
 @import url(./mainStyle.css);
-@import url(./navbar.css);
 
-.customerViewOrder-container {
-    display: flex;
-    margin: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.sidebar {
-    width: 200px;
-    background-color: #fff;
-    padding: 15px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-.sidebar a {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-    color: #333;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-.sidebar a:hover {
-    background-color: #ececec;
-}
+
 .main-content {
     flex: 1;
     padding: 20px;
@@ -70,10 +47,13 @@ th {
 
 .filter-section {
     display: flex;
-    gap: 50px;
+    gap: 20px;
     justify-content: flex-start;
     margin-top: 22px;
     align-items: center;
+}
+.filter-section-item {
+   display: ruby;
 }
 
 .filter-section input, .filter-section select {
@@ -90,29 +70,4 @@ th {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.side-menu a {
-    text-decoration: none;
-    color: #000;
-    font-size: 16px;
-    margin-left: 10px;
-    display: inline-block;
-}
-
-.side-menu img {
-    vertical-align: middle;
-    margin-right: 10px;
-}
-
-.side-menu-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    transition: background-color 0.3s ease;
-}
-
-.side-menu-item:hover {
-    background-color: #f0f0f0;
-    border-radius: 5px;
 }
