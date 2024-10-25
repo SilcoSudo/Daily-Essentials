@@ -230,4 +230,17 @@ $(document).ready(function () {
       },
     });
   }
+
+  $("#btnPay").click(() => {
+    $.ajax({
+      url: `${contextPath}/Payment/pay`,
+      method: "POST",
+      success: () => {
+        window.location.href = `${contextPath}/Home`;
+      },
+      error: (xhr) => {
+        alert(xhr.responseText);
+      },
+    });
+  });
 });

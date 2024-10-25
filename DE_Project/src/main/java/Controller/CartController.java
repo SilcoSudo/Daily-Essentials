@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.Arrays;
 
 public class CartController extends HttpServlet {
 
@@ -80,7 +79,7 @@ public class CartController extends HttpServlet {
         }
     }
 
-    private void updateQuantity(HttpServletRequest request, HttpServletResponse response) 
+    private void updateQuantity(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
         boolean increase = Boolean.parseBoolean(request.getParameter("increase"));
@@ -88,9 +87,12 @@ public class CartController extends HttpServlet {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("userID");
         CartDAO cartDAO = new CartDAO();
-        cartDAO.updateProductQuantity(productId, userId, increase);
-    
-        response.setStatus(HttpServletResponse.SC_OK);
+        boolean isUpdate = cartDAO.updateProductQuantity(productId, userId, increase);
+        if (isUpdate) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     private void addToCard(HttpServletRequest request, HttpServletResponse respons)

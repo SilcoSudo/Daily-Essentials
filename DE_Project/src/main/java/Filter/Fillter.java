@@ -144,13 +144,18 @@ public class Fillter implements Filter {
                 return;
             }
 
-            if (path.endsWith("/") || path.endsWith("/Login") || path.endsWith("/login")) {
+            if (path.endsWith("/Login") || path.endsWith("/login")) {
                 if (!path.contains("/Authen/")) {
                     httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Login");
                     return;
                 }
             }
 
+            if (path.endsWith("/")) {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/Home");
+                return;
+            }
+            
             if (path.endsWith("/Register") || path.endsWith("/register")) {
                 if (!path.contains("/Authen/")) {
                     httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Register");

@@ -21,19 +21,26 @@ public class ProductModel {
     private String productDescription;  // product_description
     private int categoryId;             // category_id
     private int quantityInCart;         // quantity in cart
+    private String categoryName;
+    private String labelName;
 
     public ProductModel() {
     }
+    
+    public String getCategoryName() {
+        return categoryName;
+    }
 
-    public ProductModel(int productId, String productName, BigDecimal productPrice, String productSku, int productQuantity, String imageUrl, String productDescription, int categoryId) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productSku = productSku;
-        this.productQuantity = productQuantity;
-        this.imageUrl = imageUrl;
-        this.productDescription = productDescription;
-        this.categoryId = categoryId;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getLabelName() {
+        return labelName;
+    }
+
+    public void setLabelName(String labelName) {
+        this.labelName = labelName;
     }
 
     public int getQuantityInCart() {

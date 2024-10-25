@@ -5,6 +5,7 @@
 package Controller;
 
 import DAO.CartDAO;
+import Model.LocationModel;
 import Model.ProductModel;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 public class OrdersController extends HttpServlet {
@@ -55,15 +59,102 @@ public class OrdersController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-        String part[] = path.split("/");
-        if (part[2].equalsIgnoreCase("Orders")) {
+        String[] part = path.split("/");
+
+        if (part.length >= 3 && part[2].equalsIgnoreCase("Orders")) {
             CartDAO cartDAO = new CartDAO();
             List<ProductModel> cartProducts = cartDAO.getAllProductCart();
 
+            getLocationArea(request, response);
+            setEstimatedOrders(request, response);
+
             request.setAttribute("cartProducts", cartProducts);
             request.getRequestDispatcher("/View/Orders.jsp").forward(request, response);
-
         }
+    }
+
+    private void setEstimatedOrders(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        CartDAO cartDAO = new CartDAO();
+        HttpSession session = request.getSession();
+        Integer userIDObj = (Integer) session.getAttribute("userID");
+        int userID = (userIDObj != null) ? userIDObj : 0;
+
+        List<ProductModel> estimatedOrders = cartDAO.getProductInCart(userID);
+        if (estimatedOrders == null || estimatedOrders.isEmpty()) {
+            session.setAttribute("provisionals", 0);
+            session.setAttribute("feeShips", 0);
+            session.setAttribute("totalAmounts", 0);
+            return;
+        }
+
+        BigDecimal price = calculateTotalPrice(estimatedOrders);
+
+        LocationModel userAddress = cartDAO.getUserAddress(userID);
+        LocationModel locationAddress = cartDAO.getLocationAddress(userID);
+
+        if (userAddress == null || locationAddress == null) {
+            session.setAttribute("errorMessage", "Vui lòng cập nhật địa chỉ.");
+            return;
+        }
+
+        int feeShip = calculateShippingFee(userAddress, locationAddress, price);
+
+        BigDecimal feeShipBigDecimal = BigDecimal.valueOf(feeShip);
+        BigDecimal totalAmount = price.add(feeShipBigDecimal);
+
+        session.setAttribute("provisionals", price);
+        session.setAttribute("feeShips", feeShip);
+        session.setAttribute("totalAmounts", totalAmount);
+    }
+
+    private BigDecimal calculateTotalPrice(List<ProductModel> estimatedOrders) {
+        BigDecimal price = BigDecimal.ZERO;
+        for (ProductModel product : estimatedOrders) {
+            BigDecimal quantity = BigDecimal.valueOf(product.getQuantityInCart());
+            BigDecimal productPrice = product.getProductPrice() != null ? product.getProductPrice() : BigDecimal.ZERO;
+            BigDecimal productTotal = productPrice.multiply(quantity);
+            price = price.add(productTotal);
+        }
+        return price;
+    }
+
+    private int calculateShippingFee(LocationModel userAddress, LocationModel locationAddress, BigDecimal price) {
+        int feeShip;
+
+        if (!userAddress.getProvince().equalsIgnoreCase(locationAddress.getProvince())) {
+            feeShip = 200000; // Phí giao hàng ngoài tỉnh
+        } else if (!userAddress.getDistrict().equalsIgnoreCase(locationAddress.getDistrict())) {
+            feeShip = 50000;  // Phí giao hàng khác quận
+        } else {
+            feeShip = 0;       // Giao hàng miễn phí cùng quận
+        }
+
+        // Nếu giá trị đơn hàng lớn hơn 300000 thì giảm 40% phí giao hàng
+        if (price.compareTo(BigDecimal.valueOf(300000)) > 0) {
+            feeShip = (int) (feeShip * 0.6); // Giảm 40% phí giao hàng
+        }
+
+        return feeShip;
+    }
+
+    private void getLocationArea(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        CartDAO cartDAO = new CartDAO();
+        HttpSession session = request.getSession();
+        Integer userIDObj = (Integer) request.getSession().getAttribute("userID");
+        int userID = (userIDObj != null) ? userIDObj : 0;
+        List<LocationModel> locationModels = cartDAO.getLocation(userID);
+        String location;
+        if (locationModels.isEmpty()) {
+            session.setAttribute("location", "Chọn khu vực giao hàng.");
+        } else {
+            location = "Địa chỉ đã chọn: P. " + locationModels.get(0).getProvince()
+                    + ", Q. " + locationModels.get(0).getDistrict()
+                    + ", TP. " + locationModels.get(0).getWard();
+            session.setAttribute("location", location);
+        }
+
     }
 
     /**
@@ -77,7 +168,25 @@ public class OrdersController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String path = request.getRequestURI();
+        String part[] = path.split("/");
+        if (part.length >= 4 && part[3].equalsIgnoreCase("AddressInfo")) {
+            String thanhPho = request.getParameter("thanhPho");
+            String quanHuyen = request.getParameter("quanHuyen");
+            String phuongXa = request.getParameter("phuongXa");
+            HttpSession session = request.getSession();
+            int userID = (int) session.getAttribute("userID");
+            saveLocation(thanhPho, quanHuyen, phuongXa, userID);
+        }
+    }
+
+    private void saveLocation(String thanhPho, String quanHuyen, String phuongXa, int userID) {
+        CartDAO cartDAO = new CartDAO();
+        if (!cartDAO.isHaveLocation(userID)) {
+            cartDAO.insertLocation(thanhPho, quanHuyen, phuongXa, userID);
+        } else {
+            cartDAO.updateLocation(thanhPho, quanHuyen, phuongXa, userID);
+        }
     }
 
     /**

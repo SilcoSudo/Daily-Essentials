@@ -58,19 +58,17 @@ $(document).ready(function () {
   });
 
   $("#btnContinue").click(function () {
-    var thanhPho = $("#tinh option:selected").text();
-    var quanHuyen = $("#quan option:selected").text();
-    var phuongXa = $("#phuong option:selected").text();
+    var thanhPho = $("#tinh").val();
+    var quanHuyen = $("#quan").val();
+    var phuongXa = $("#phuong").val();
 
-    if (
-      thanhPho === "Tỉnh thành" ||
-      quanHuyen === "Quận Huyện" ||
-      phuongXa === "Phường Xã"
-    ) {
+    if (thanhPho === "0" || quanHuyen === "0" || phuongXa === "0") {
       alert("Vui lòng chọn đầy đủ thông tin!");
     } else {
       $("#address-sa2-comfirm").html(
-        `Địa chỉ: <strong>P. ${phuongXa}, Q. ${quanHuyen}, TP. ${thanhPho}</strong>`
+        `Địa chỉ: <strong>P. ${$("#phuong option:selected").text()}, Q. ${$(
+          "#quan option:selected"
+        ).text()}, TP. ${$("#tinh option:selected").text()}</strong>`
       );
 
       $("#sa1").addClass("hidden");
@@ -85,5 +83,30 @@ $(document).ready(function () {
 
   $("#btnConfirm").click(function () {
     $("#popup").addClass("hidden");
+    var thanhPho = $("#tinh option:selected").text();
+    var quanHuyen = $("#quan option:selected").text();
+    var phuongXa = $("#phuong option:selected").text();
+    $.ajax({
+      url: `${contextPath}/Orders/AddressInfo`,
+      type: "POST",
+      data: {
+        thanhPho: thanhPho,
+        quanHuyen: quanHuyen,
+        phuongXa: phuongXa,
+      },
+      success: function (response) {
+        var txtLocation = $(".location-address");
+        txtLocation.html(
+          `Địa chỉ đã chọn: P. ${phuongXa}, Q. ${quanHuyen}, TP. ${thanhPho}`
+        );
+      },
+      error: function (xhr, status, error) {
+        alert("Đã xảy ra lỗi khi gửi địa chỉ: " + error);
+      },
+    });
+  });
+
+  $("#btnLocation").click(function () {
+    $("#popup").removeClass("hidden");
   });
 });

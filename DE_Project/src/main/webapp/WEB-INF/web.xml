@@ -48,6 +48,14 @@
         <servlet-name>CategoryController</servlet-name>
         <servlet-class>Controller.CategoryController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PaymentController</servlet-name>
+        <servlet-class>Controller.PaymentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountControler</servlet-name>
+        <servlet-class>Controller.AccountControler</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticatorController</servlet-name>
         <url-pattern>/Authen/*</url-pattern>
@@ -66,7 +74,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OrdersController</servlet-name>
-        <url-pattern>/Orders</url-pattern>
+        <url-pattern>/Orders/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductStatisticsController</servlet-name>
@@ -84,12 +92,20 @@
         <servlet-name>CategoryController</servlet-name>
         <url-pattern>/Category/*</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentController</servlet-name>
+        <url-pattern>/Payment/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountControler</servlet-name>
+        <url-pattern>/Account/*</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>/View/login.jsp</welcome-file>
+        <welcome-file>/View/homeCus.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
