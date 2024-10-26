@@ -18,16 +18,34 @@ public class OrderHistory {
     private double total_amount;
     private int order_status;
     private String orderStatusString;
+    private double fee_shipp;
 
-    public OrderHistory() {
-    }
-
-    public OrderHistory(int order_id, int user_id, Date order_date, double total_amount, int order_status) {
+     public OrderHistory(int order_id, int user_id, Date order_date, double total_amount, int order_status) {
         this.order_id = order_id;
         this.user_id = user_id;
         this.order_date = order_date;
         this.total_amount = total_amount;
         this.order_status = order_status;
+    }
+    
+    public OrderHistory(int order_id, int user_id, Date order_date, double total_amount, int order_status, double fee_shipp) {
+        this.order_id = order_id;
+        this.user_id = user_id;
+        this.order_date = order_date;
+        this.total_amount = total_amount;
+        this.order_status = order_status;
+        this.fee_shipp = fee_shipp;
+    }
+
+    public OrderHistory() {
+    }
+
+    public double getFee_shipp() {
+        return fee_shipp;
+    }
+
+    public void setFee_shipp(double fee_shipp) {
+        this.fee_shipp = fee_shipp;
     }
 
     public int getOrder_status() {
@@ -78,7 +96,8 @@ public class OrderHistory {
                 + ", order_date=" + order_date
                 + ", total_amount=" + total_amount
                 + ", order_status=" + order_status
-                + ", orderStatusString='" + orderStatusString + '\''
+                + ", orderStatusString='" + orderStatusString
+                + ", fee_shipp='" + fee_shipp + '\''
                 + '}';
     }
 

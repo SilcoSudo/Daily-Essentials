@@ -40,10 +40,13 @@ public class ViewOrderDAO {
         }
     }
 
-    public List<OrderHistory> getOrdersByUserId(int user_id) {   
+    public List<OrderHistory> getOrdersByUserId(int user_id) {
         try {
             List<OrderHistory> orderlist = new ArrayList<>();
-            String sql = "SELECT * FROM [order] WHERE user_id = ?";
+            String sql = "SELECT o.order_id, o.user_id, o.order_date, o.total_amount, o.order_status, i.fee_shipp "
+                    + "FROM [order] o "
+                    + "JOIN invoice i ON o.order_id = i.order_id "
+                    + "WHERE o.user_id = ?";
             conn = DBConnect.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setInt(1, user_id);
@@ -55,8 +58,9 @@ public class ViewOrderDAO {
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
                         rs.getDouble("total_amount"),
-                        rs.getInt("order_status"));
-                
+                        rs.getInt("order_status"),
+                        rs.getDouble("fee_shipp"));
+
                 orders.setOrderStatusString(getOrderStatus(orders.getOrder_status()));
                 orderlist.add(orders);
             }
@@ -108,11 +112,20 @@ public class ViewOrderDAO {
     public static void main(String[] args) {
         ViewOrderDAO orderDAO = new ViewOrderDAO();
 
-        int userId = 9;
-        List<OrderHistory> orderlist = orderDAO.getOrdersByUserId(userId);
+        int userId = 26; 
+        List<OrderHistory> orders = orderDAO.getOrdersByUserId(userId);
 
-        for (OrderHistory order : orderlist) {
-            System.out.println(order);
+        if (orders != null && !orders.isEmpty()) {
+            for (OrderHistory order : orders) {
+                System.out.println("Order ID: " + order.getOrder_id()
+                        + ", User ID: " + order.getUser_id()
+                        + ", Order Date: " + order.getOrder_date()
+                        + ", Total Amount: " + order.getTotal_amount()
+                        + ", Order Status: " + order.getOrderStatusString()
+                        + ", Shipping Fee: " + order.getFee_shipp());
+            }
+        } else {
+            System.out.println("Không tìm thấy đơn hàng cho người dùng ID: " + userId);
         }
     }
 }

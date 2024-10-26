@@ -65,12 +65,12 @@ public class CustomerViewOrderController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Integer userID = (Integer) session.getAttribute("userID");
+        int userID = (int) session.getAttribute("userID");
 
         ViewOrderDAO orders = new ViewOrderDAO();
         List<OrderHistory> orderList = orders.getOrdersByUserId(userID);
+        
         request.setAttribute("orderlist", orderList);
-
         RequestDispatcher dispatcher = request.getRequestDispatcher("View/customerViewOrder.jsp");
         dispatcher.forward(request, response);
 
@@ -87,7 +87,7 @@ public class CustomerViewOrderController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

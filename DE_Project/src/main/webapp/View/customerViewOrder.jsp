@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerViewOrder.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerInfo.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/navbar.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewOrderDetail.css">
     </head>
     <body>   
 
@@ -80,7 +81,8 @@
                                 <th>Ngày mua</th>
                                 <th>Tổng tiền</th>
                                 <th>Trạng thái đơn hàng</th>
-                                <th>Ghi chú</th>
+                                <th>Phí</th>
+                                <th>Chi tiết</th>
                             </tr>
                         </thead>
                         <c:forEach items="${orderlist}" var="order">
@@ -90,7 +92,10 @@
                                     <td>${order.order_date}</td>
                                     <td>${order.total_amount}</td>
                                     <td>${order.orderStatusString}</td>
-                                    <td>...</td>
+                                    <td>${order.fee_shipp}</td>
+                                    <td class="actions">
+                                        <a href="#" class="view-details" data-order-id="${order.order_id}">Xem chi tiết</a>
+                                    </td>
                                 </tr>       
                             </tbody>
                         </c:forEach>
@@ -99,40 +104,190 @@
             </div>     
         </div>
 
+        <!-- Popup Xem chi tiết -->
+        <div class="popup" id="popup-details">
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h2>Chi tiết đơn hàng</h2>
+                </div>
+                <div class="popup-body">
+                    <table>
+                        <tr>
+                            <th>ID Đơn hàng</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Tình trạng đơn hàng</th>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <th>Ngày tạo</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Phí vận chuyển</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Tổng số tiền</th>
+                            <td></td>
+                        </tr>
+                    </table>
+
+                    <br />
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img src="" alt="product-image"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><img src="" alt="product-image"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="popup-footer">
+                    <td></td>
+                    <br/><br/>
+                    <button class="close-btn" data-popup-id="popup-details">Đóng</button>
+                </div>
+            </div>
+        </div>
+
         <script>
-            function filterTable() {
-                var searchId = document.getElementById('searchOrderId').value.toLowerCase();
-                var searchAmount = document.getElementById('searchTotalAmount').value.toLowerCase();
-                var searchDate = document.getElementById('searchDate').value;
-                var selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
+            document.addEventListener('DOMContentLoaded', function () {
+                const viewDetailsLinks = document.querySelectorAll('.view-details');
+                const closeButtons = document.querySelectorAll('.close-btn');
+                const toggleMenuButtons = document.querySelectorAll('.toggle-menu-btn');
 
-                var rows = document.querySelectorAll('#orderBody tr');
+                function openPopup(popupId) {
+                    document.getElementById(popupId).style.display = 'flex';
+                }
 
-                rows.forEach(function (row) {
-                    var orderId = row.cells[0].textContent.toLowerCase();
-                    var totalAmount = row.cells[2].textContent.toLowerCase();
-                    var orderStatus = row.cells[3].textContent.toLowerCase();
-                    var orderDate = row.cells[4].textContent;
+                function closePopup(popupId) {
+                    document.getElementById(popupId).style.display = 'none';
+                }
 
-                    var matchesId = (orderId.includes(searchId) || searchId === '');
-                    var matchesAmount = (totalAmount.includes(searchAmount) || searchAmount === '');
-                    var matchesStatus = (orderStatus.includes(selectedStatus) || selectedStatus === '');
-                    var matchesDate = (orderDate.includes(searchDate) || searchDate === '');
+                function filterTable() {
+                    var searchId = document.getElementById('searchOrderId').value.toLowerCase();
+                    var searchAmount = document.getElementById('searchTotalAmount').value.toLowerCase();
+                    var searchDate = document.getElementById('searchDate').value;
+                    var selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
+
+                    var rows = document.querySelectorAll('#orderBody tr');
+
+                    rows.forEach(function (row) {
+                        var orderId = row.cells[0].textContent.toLowerCase();
+                        var orderDate = row.cells[1].textContent;
+                        var totalAmount = row.cells[2].textContent.toLowerCase();
+                        var orderStatus = row.cells[3].textContent.toLowerCase();
 
 
-                    if (matchesId && matchesAmount && matchesStatus && matchesDate) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
+                        var matchesId = (orderId.includes(searchId) || searchId === '');
+                        var matchesAmount = (totalAmount.includes(searchAmount) || searchAmount === '');
+                        var matchesStatus = (orderStatus.includes(selectedStatus) || selectedStatus === '');
+                        var matchesDate = (orderDate.includes(searchDate) || searchDate === '');
+
+
+                        if (matchesId && matchesAmount && matchesStatus && matchesDate) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+
+
+                document.getElementById('searchOrderId').addEventListener('input', filterTable);
+                document.getElementById('searchTotalAmount').addEventListener('input', filterTable);
+                document.getElementById('searchDate').addEventListener('input', filterTable);
+                document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+                viewDetailsLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const orderId = this.getAttribute('data-order-id');
+                        openPopup('popup-details');
+
+                        const orderDetails = Array.from(document.querySelectorAll('#orderBody tr'))
+                                .find(row => row.cells[0].textContent.trim() === orderId);
+
+                        const actions = e.target.closest('.actions');
+                        actions.classList.remove('active');
+
+
+                        if (orderDetails) {
+                            const orderData = {
+                                order_id: orderDetails.cells[0].textContent,
+                                order_date: orderDetails.cells[1].textContent,
+                                total_amount: orderDetails.cells[2].textContent,
+                                orderStatusString: orderDetails.cells[3].textContent,
+
+                            };
+
+                            const popupBody = document.querySelector('#popup-details .popup-body');
+                            const tds = popupBody.querySelectorAll('td');
+                            tds[0].textContent = orderData.order_id;
+                            tds[1].textContent = orderData.orderStatusString;
+                            tds[2].textContent = orderData.order_date;
+                            tds[4].textContent = orderData.total_amount;
+                        }
+                    });
                 });
-            }
 
-            document.getElementById('searchOrderId').addEventListener('input', filterTable);
-            document.getElementById('searchTotalAmount').addEventListener('input', filterTable);
-            document.getElementById('searchDate').addEventListener('input', filterTable);
-            document.getElementById('statusFilter').addEventListener('change', filterTable);
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const popupId = this.getAttribute('data-popup-id');
+                        closePopup(popupId);
+                    });
+                });
 
+                toggleMenuButtons.forEach(button => {
+                    button.addEventListener('click', function (e) {
+                        const actions = e.target.closest('.actions');
+                        actions.classList.toggle('active');
+
+                        const menus = document.querySelectorAll('.actions');
+                        menus.forEach(menu => {
+                            if (menu !== actions) {
+                                menu.classList.remove('active');
+                            }
+                        });
+                    });
+                });
+
+                window.addEventListener('click', function (event) {
+                    const popups = document.querySelectorAll('.popup');
+                    popups.forEach(popup => {
+                        if (event.target === popup) {
+                            closePopup(popup.id);
+                        }
+                    });
+
+                    const menus = document.querySelectorAll('.actions');
+                    menus.forEach(menu => {
+                        if (!menu.contains(event.target)) {
+                            menu.classList.remove('active');
+                        }
+                    });
+                });
+            });
         </script>
     </body>
 </html>
