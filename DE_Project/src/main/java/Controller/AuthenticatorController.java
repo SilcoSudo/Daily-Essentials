@@ -77,7 +77,7 @@ public class AuthenticatorController extends HttpServlet {
         if (part[3].equalsIgnoreCase("Logout")) {
             logout(request, response);
         }
-        
+
     }
 
     /**
@@ -260,27 +260,29 @@ public class AuthenticatorController extends HttpServlet {
 
             session.setAttribute("username", username);
             session.setAttribute("userID", userID);
+            String role = authen.getRole(username);
+            
+            if (role.equals("admin")) {
+                response.sendRedirect(request.getContextPath() + "/Homes");
+            } else {
+                session.setAttribute("userFullName", fullNameUser);
+                response.addCookie(usernameCookie);
 
-            session.setAttribute("userFullName", fullNameUser);
-            response.addCookie(usernameCookie);
-            
-            CartDAO cartDAO = new CartDAO();
-            int totalCartItems = cartDAO.getTotalCartItems(userID);
-            session.setAttribute("totalCartItems", totalCartItems);
-            
+                CartDAO cartDAO = new CartDAO();
+                int totalCartItems = cartDAO.getTotalCartItems(userID);
+                session.setAttribute("totalCartItems", totalCartItems);
+
 //            System.out.println("Session ID: " + session.getId());
 //            System.out.println("Session username: " + session.getAttribute("username"));
 //            System.out.println("Session userID: " + session.getAttribute("userID"));
 //            System.out.println("Cookie name: " + usernameCookie.getName());
 //            System.out.println("Cookie value: " + usernameCookie.getValue());
 //            System.out.println("Cookie max age: " + usernameCookie.getMaxAge());
-
-            response.sendRedirect(request.getContextPath() + "/Home");
-            return;
+                response.sendRedirect(request.getContextPath() + "/Home");
+            }
         } else {
             request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
             request.getRequestDispatcher("/View/login.jsp").forward(request, response);
-            return;
         }
     }
 

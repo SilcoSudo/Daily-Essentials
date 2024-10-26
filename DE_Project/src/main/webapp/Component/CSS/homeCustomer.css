@@ -292,3 +292,45 @@
 .load-more-btn:focus {
     outline: none;
 }
+
+.container.d-flex {
+    align-items: start !important;
+}
+
+
+.w-container-label {
+    display: grid;
+}
+
+.w-label {
+    flex: 0.5;
+    margin-right: 10px;
+}
+
+.container.d-flex>.product-list {
+    flex: 3;
+}
+
+.label {
+    width: 100%;
+    border-radius: 6px;
+
+}
+
+.btnLabel {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 10px;
+}
+
+.label:hover {
+    background-color: var(--hv-btn);
+    cursor: pointer;
+}
+
+.textLabel {
+    align-self: center;
+    font-size: var(--fs-20);
+    font-weight: var(--fw-600);
+}

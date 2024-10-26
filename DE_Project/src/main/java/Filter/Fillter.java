@@ -6,6 +6,8 @@ package Filter;
 
 import DAO.AuthenDAO;
 import DAO.CartDAO;
+import DAO.CategoryDAO;
+import Model.CategoryModel;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -20,6 +22,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
@@ -193,6 +196,10 @@ public class Fillter implements Filter {
             int userID = authenDAO.getUserIdByUsername(username);
             int totalCartItems = cartDAO.getTotalCartItems(userID);
             session.setAttribute("totalCartItems", totalCartItems);
+            
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<CategoryModel> categoryModel = categoryDAO.getFullLabel();
+            session.setAttribute("fullLabel", categoryModel);
         }
 
         if (!isLoggedIn && !hasValidCookie) {

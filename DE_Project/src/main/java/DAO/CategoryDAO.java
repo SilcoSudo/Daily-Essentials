@@ -48,17 +48,17 @@ public class CategoryDAO {
 
             while (rs.next()) {
                 ProductModel product = new ProductModel();
+
                 product.setProductId(rs.getInt("product_id"));
                 product.setProductName(rs.getString("product_name"));
                 product.setProductPrice(rs.getBigDecimal("product_price"));
                 product.setImageUrl(rs.getString("image_url"));
                 product.setCategoryName(rs.getString("category_name"));
                 product.setLabelName(rs.getString("label_name"));
-
                 productList.add(product);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("searchProducts: " + e);
         }
         return productList;
     }
@@ -80,12 +80,60 @@ public class CategoryDAO {
                 CategoryModel category = new CategoryModel();
                 category.setCategoryId(rs.getInt("category_id"));
                 category.setCategoryName(rs.getString("category_name"));
-
                 categoryList.add(category);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return categoryList;
+    }
+
+    public List<ProductModel> getProductByCategoryID(int categoryID) {
+        List<ProductModel> result = new ArrayList<>();
+        String query = "SELECT p.product_id, p.product_name, p.product_price, p.image_url, c.category_name, l.label_name \n"
+                + "FROM product p\n"
+                + "JOIN category c ON p.category_id = c.category_id \n"
+                + "JOIN label l ON c.label_id = l.label_id \n"
+                + "WHERE c.category_id = ?";
+        try ( Connection connection = DB.DBConnect.getConnection();  PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, categoryID);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                ProductModel product = new ProductModel();
+
+                product.setProductId(rs.getInt("product_id"));
+                product.setProductName(rs.getString("product_name"));
+                product.setProductPrice(rs.getBigDecimal("product_price"));
+                product.setImageUrl(rs.getString("image_url"));
+                product.setCategoryName(rs.getString("category_name"));
+                product.setLabelName(rs.getString("label_name"));
+
+                result.add(product);
+            }
+        } catch (SQLException e) {
+            System.out.println("getProductByCategoryID: " + e);
+        }
+        return result;
+    }
+
+    public List<CategoryModel> getFullLabel() {
+        List<CategoryModel> result = new ArrayList<>();
+        String query = "SELECT label_id, label_name\n"
+                + "FROM label";
+        try ( Connection connection = DB.DBConnect.getConnection();  PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                CategoryModel categoryModel = new CategoryModel();
+
+                categoryModel.setLabelId(rs.getInt("label_id"));
+                categoryModel.setCategoryName(rs.getString("label_name"));
+                result.add(categoryModel);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("getFullLabel: " + e);
+        }
+        return result;
     }
 }

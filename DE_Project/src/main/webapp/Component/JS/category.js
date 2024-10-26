@@ -8,7 +8,7 @@ $(document).ready(function () {
         url: `${contextPath}/Category/Search`,
         type: "GET",
         data: { search: searchQuery },
-        success: function(response) {
+        success: function (response) {
           window.location.href = `${contextPath}/View/category.jsp`;
         },
         error: function (xhr, status, error) {
@@ -16,5 +16,22 @@ $(document).ready(function () {
         },
       });
     }
+  });
+
+  $(".category_item").click(function () {
+    const categoryId = $(this).attr("id");
+
+    const targetUrl = `${contextPath}/Category/Search`;
+    $.ajax({
+      url: targetUrl,
+      type: "POST",
+      data: { categoryId: categoryId },
+      success: function () {
+        window.location.href = `${contextPath}/View/category.jsp`;
+      },
+      error: function (xhr, status, error) {
+        console.log("Có lỗi xảy ra:", error);
+      },
+    });
   });
 });

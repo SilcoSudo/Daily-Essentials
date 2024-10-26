@@ -1,11 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var contextPath = '${pageContext.request.contextPath}';
 </script>
 <script src="${pageContext.request.contextPath}/Component/JS/category.js"></script>
-
-
 <header>
     <nav class="navbar">
         <div class="menu-container">
@@ -38,26 +37,11 @@
                         <img src="${pageContext.request.contextPath}/Component/IMG/ic-bars.svg" class="icon ic-bars" alt="Bars Icon"> Danh mục sản phẩm
                     </button>
                     <ul class="dropdown_content">
-                        <li><a href="#">Giá rẻ</a></li>
-                        <li><a href="#">Sữa các loại</a></li>
-                        <li><a href="#">Rau - Củ - Trái cây</a></li>
-                        <li><a href="#">Hóa phẩm - Tẩy rửa</a></li>
-                        <li><a href="#">Chăm sóc cá nhân</a></li>
-                        <li><a href="#">Thịt - Hải sản tươi</a></li>
-                        <li><a href="#">Đồ uống có cồn</a></li>
-                        <li><a href="#">Đồ uống - Giải khát</a></li>
-                        <li><a href="#">Mì - Thực phẩm ăn liền</a></li>
-                        <li><a href="#">Thực phẩm khô</a></li>
-                        <li><a href="#">Thực phẩm chế biến</a></li>
+                        <c:forEach items="${fullLabel}" var="label_item">
+                            <li class="category_item" id="${label_item.labelId}">${label_item.categoryName}</li>
+                            </c:forEach>
                     </ul>
                 </div>
-            </div>
-
-            <div class="product-menu-right">
-                <button class="purchase-btn">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/ic-cart2.svg" class="icon ic-cart2" alt="Cart Icon">
-                    Sản phẩm đã mua
-                </button>
             </div>
         </div>
     </section>
