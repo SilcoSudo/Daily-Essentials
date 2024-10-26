@@ -4,26 +4,19 @@
  */
 package Controller;
 
-import DAO.AccountDAO;
-import DAO.AuthenDAO;
 import DAO.CartDAO;
-import DAO.ProductDAO;
+import DAO.OrdersDAO;
 import Model.ProductModel;
-import Model.UserProfile;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
-/**
- *
- * @author Yin Kenna
- */
-public class HomeController extends HttpServlet {
+public class PaymentController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +35,10 @@ public class HomeController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomeController</title>");
+            out.println("<title>Servlet PaymentController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomeController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PaymentController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,37 +56,7 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getRequestURI();
-        String part[] = path.split("/");
-        if (part[2].equalsIgnoreCase("Home")) {
-            if (part.length > 3 && part[3].equalsIgnoreCase("Info")) {
-                AccountDAO accountDAO = new AccountDAO();
-                String usernameObj = (String) request.getSession().getAttribute("username");
-                String username = (usernameObj != null) ? usernameObj : null;
-                List<UserProfile> userProfiles = accountDAO.getInfoUser(username);
-                HttpSession session = request.getSession();
-                session.setAttribute("userProfiles", userProfiles);
-                request.getRequestDispatcher("/View/customerInfo.jsp").forward(request, response);
-            } else {
-                ProductDAO productDAO = new ProductDAO();
-                Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
-                int userId = (userIdObj != null) ? userIdObj : 0;
-
-                List<ProductModel> listProduct = productDAO.getListProductMax15Item(userId);
-                request.setAttribute("productList", listProduct);
-
-                AuthenDAO authenDAO = new AuthenDAO();
-                HttpSession session = request.getSession(false);
-
-                String username = (String) session.getAttribute("username");
-                CartDAO cartDAO = new CartDAO();
-                int userID = authenDAO.getUserIdByUsername(username);
-                int totalCartItems = cartDAO.getTotalCartItems(userID);
-                session.setAttribute("totalCartItems", totalCartItems);
-                request.getRequestDispatcher("/View/homeCus.jsp").forward(request, response);
-            }
-        }
-
+        processRequest(request, response);
     }
 
     /**
@@ -107,7 +70,48 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String path = request.getRequestURI();
+        String part[] = path.split("/");
+
+        Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
+        int userId = (userIdObj != null) ? userIdObj : 0;
+
+        if (part.length >= 4 && part[3].equalsIgnoreCase("pay")) {
+            OrdersDAO ordersDAO = new OrdersDAO();
+            CartDAO cartDAO = new CartDAO();
+
+            // Lấy sản phẩm trong giỏ hàng
+            List<ProductModel> productsInCart = cartDAO.getProductInCart(userId);
+
+            // Kiểm tra giỏ hàng trống
+            if (productsInCart == null || productsInCart.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Không có sản phẩm trong giỏ hàng.");
+                return;
+            }
+
+            // Tính tổng số tiền hàng
+            BigDecimal totalAmount = BigDecimal.ZERO;
+            for (ProductModel product : productsInCart) {
+                BigDecimal productTotal = product.getProductPrice().multiply(BigDecimal.valueOf(product.getQuantityInCart()));
+                totalAmount = totalAmount.add(productTotal);
+            }
+
+            // Lấy phí vận chuyển từ session
+            Object feeShipObj = request.getSession().getAttribute("feeShips");
+            BigDecimal feeShip = (feeShipObj != null) ? BigDecimal.valueOf(((Number) feeShipObj).doubleValue()) : BigDecimal.ZERO;
+
+            // Gọi hàm xử lý thanh toán với transaction
+            boolean success = ordersDAO.processPaymentTransaction(userId, totalAmount, productsInCart, feeShip);
+
+            if (success) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write("Thanh toán thành công.");
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("Lỗi trong quá trình thanh toán. Vui lòng thử lại.");
+            }
+        }
     }
 
     /**

@@ -35,9 +35,9 @@
 }
 
 .product-price {
-    flex: .5;
+    flex: .8;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     width: 100%;
 }
 

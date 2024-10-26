@@ -16,12 +16,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerViewOrder.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerInfo.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/navbar.css">
     </head>
-    <body>    
-        <div class="container">
-            <div class="side-menu">
-                <div class="side-menu-item">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
+    <body>   
+
+        <jsp:include page="header.jsp"></jsp:include>
+
+            <div class="container">
+                <div class="side-menu">
+                    <div class="side-menu-item">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
                     <a href="${pageContext.request.contextPath}/Home/Info">Tài khoản</a>
                 </div>
                 <div class="side-menu-item">
@@ -80,15 +84,15 @@
                             </tr>
                         </thead>
                         <c:forEach items="${orderlist}" var="order">
-                        <tbody id="orderBody">
-                            <tr>
-                                <td>${order.order_id}</td>
-                                <td>${order.order_date}</td>
-                                <td>${order.total_amount}</td>
-                                <td>${order.orderStatusString}</td>
-                                <td>...</td>
-                            </tr>       
-                        </tbody>
+                            <tbody id="orderBody">
+                                <tr>
+                                    <td>${order.order_id}</td>
+                                    <td>${order.order_date}</td>
+                                    <td>${order.total_amount}</td>
+                                    <td>${order.orderStatusString}</td>
+                                    <td>...</td>
+                                </tr>       
+                            </tbody>
                         </c:forEach>
                     </table>
                 </div>

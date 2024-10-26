@@ -1,4 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var contextPath = '${pageContext.request.contextPath}';
+</script>
+<script src="${pageContext.request.contextPath}/Component/JS/category.js"></script>
+
+
 <header>
     <nav class="navbar">
         <div class="menu-container">

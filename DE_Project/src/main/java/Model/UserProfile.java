@@ -11,18 +11,26 @@ package Model;
 public class UserProfile {
 
     private String username;
-    private String password;
-    private String major;
-    private String school;
+    private String fullName;
+    private int user_phone;
+    private String user_email;
+    private boolean gender;
+    private String user_province;
+    private String user_district;
+    private String user_ward;
+    private String user_address;
 
-    public UserProfile(String username, String password, String major, String school) {
-        this.username = username;
-        this.password = password;
-        this.major = major;
-        this.school = school;
+    public UserProfile() {
     }
-    
-    // Getters và setters
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -31,27 +39,60 @@ public class UserProfile {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public int getUser_phone() {
+        return user_phone;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUser_phone(int user_phone) {
+        this.user_phone = user_phone;
     }
 
-    public String getMajor() {
-        return major;
+    public String getUser_email() {
+        return user_email;
     }
 
-    public void setMajor(String major) {
-        this.major = major;
+    public void setUser_email(String user_email) {
+        this.user_email = user_email;
     }
 
-    public String getSchool() {
-        return school;
+    public boolean isGender() {
+        return gender;
     }
 
-    public void setSchool(String school) {
-        this.school = school;
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
+
+    public String getUser_province() {
+        return user_province;
+    }
+
+    public void setUser_province(String user_province) {
+        this.user_province = user_province;
+    }
+
+    public String getUser_district() {
+        return user_district;
+    }
+
+    public void setUser_district(String user_district) {
+        this.user_district = user_district;
+    }
+
+    public String getUser_ward() {
+        return user_ward;
+    }
+
+    public void setUser_ward(String user_ward) {
+        this.user_ward = user_ward;
+    }
+
+    public String getUser_address() {
+        return user_address;
+    }
+
+    public void setUser_address(String user_address) {
+        this.user_address = user_address;
+    }
+
 }
