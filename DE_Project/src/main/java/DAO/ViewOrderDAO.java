@@ -5,6 +5,7 @@
 package DAO;
 
 import DB.DBConnect;
+import Model.OrderDetail;
 import Model.OrderHistory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -109,10 +110,38 @@ public class ViewOrderDAO {
         return false;
     }
 
+    public List<OrderDetail> getOrderDetailsWithProducts(int orderId) {
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        String query = "SELECT od.product_id, od.product_quantity, od.total_price, p.product_name, p.image_url "
+                + "FROM order_details od JOIN product p ON od.product_id = p.product_id "
+                + "WHERE od.order_id = ?";
+
+        try {
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, orderId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                OrderDetail detail = new OrderDetail(
+                        rs.getInt("product_id"),
+                        rs.getInt("product_quantity"),
+                        rs.getDouble("total_price"),
+                        rs.getString("product_name"),
+                        rs.getString("image_url")
+                );
+                orderDetails.add(detail);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderDetails;
+    }
+
     public static void main(String[] args) {
         ViewOrderDAO orderDAO = new ViewOrderDAO();
 
-        int userId = 26; 
+        int userId = 26;
         List<OrderHistory> orders = orderDAO.getOrdersByUserId(userId);
 
         if (orders != null && !orders.isEmpty()) {
@@ -123,6 +152,15 @@ public class ViewOrderDAO {
                         + ", Total Amount: " + order.getTotal_amount()
                         + ", Order Status: " + order.getOrderStatusString()
                         + ", Shipping Fee: " + order.getFee_shipp());
+
+                List<OrderDetail> orderDetails = orderDAO.getOrderDetailsWithProducts(order.getOrder_id());
+                for (OrderDetail detail : orderDetails) {
+                    System.out.println(" - Product ID: " + detail.getProductId()
+                            + ", Quantity: " + detail.getQuantity()
+                            + ", Total Price: " + detail.getTotalPrice()
+                            + ", Product Name: " + detail.getProductName()
+                            + ", Product Image: " + detail.getProductImage());
+                }
             }
         } else {
             System.out.println("Không tìm thấy đơn hàng cho người dùng ID: " + userId);

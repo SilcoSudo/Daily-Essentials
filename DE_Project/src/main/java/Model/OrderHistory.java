@@ -19,8 +19,10 @@ public class OrderHistory {
     private int order_status;
     private String orderStatusString;
     private double fee_shipp;
+    
+    
 
-     public OrderHistory(int order_id, int user_id, Date order_date, double total_amount, int order_status) {
+    public OrderHistory(int order_id, int user_id, Date order_date, double total_amount, int order_status) {
         this.order_id = order_id;
         this.user_id = user_id;
         this.order_date = order_date;
