@@ -77,7 +77,7 @@ public class AuthenticatorController extends HttpServlet {
         if (part[3].equalsIgnoreCase("Logout")) {
             logout(request, response);
         }
-        
+
     }
 
     /**
@@ -260,14 +260,19 @@ public class AuthenticatorController extends HttpServlet {
 
             session.setAttribute("username", username);
             session.setAttribute("userID", userID);
-
+            String role = authen.getRole(username);
+            
+            if (role.equals("admin")) {
+                response.sendRedirect(request.getContextPath() + "/Homes");
+                return;
+            }
             session.setAttribute("userFullName", fullNameUser);
             response.addCookie(usernameCookie);
-            
+
             CartDAO cartDAO = new CartDAO();
             int totalCartItems = cartDAO.getTotalCartItems(userID);
             session.setAttribute("totalCartItems", totalCartItems);
-            
+
 //            System.out.println("Session ID: " + session.getId());
 //            System.out.println("Session username: " + session.getAttribute("username"));
 //            System.out.println("Session userID: " + session.getAttribute("userID"));

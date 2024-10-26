@@ -7,7 +7,9 @@ package Controller;
 import DAO.AccountDAO;
 import DAO.AuthenDAO;
 import DAO.CartDAO;
+import DAO.CategoryDAO;
 import DAO.ProductDAO;
+import Model.CategoryModel;
 import Model.ProductModel;
 import Model.UserProfile;
 import java.io.IOException;
@@ -73,6 +75,7 @@ public class HomeController extends HttpServlet {
                 List<UserProfile> userProfiles = accountDAO.getInfoUser(username);
                 HttpSession session = request.getSession();
                 session.setAttribute("userProfiles", userProfiles);
+
                 request.getRequestDispatcher("/View/customerInfo.jsp").forward(request, response);
             } else {
                 ProductDAO productDAO = new ProductDAO();
@@ -90,6 +93,10 @@ public class HomeController extends HttpServlet {
                 int userID = authenDAO.getUserIdByUsername(username);
                 int totalCartItems = cartDAO.getTotalCartItems(userID);
                 session.setAttribute("totalCartItems", totalCartItems);
+
+                CategoryDAO categoryDAO = new CategoryDAO();
+                List<CategoryModel> categoryModel = categoryDAO.getFullLabel();
+                session.setAttribute("fullLabel", categoryModel);
                 request.getRequestDispatcher("/View/homeCus.jsp").forward(request, response);
             }
         }

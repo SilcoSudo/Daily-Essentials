@@ -20,7 +20,7 @@
                     <div class="w-side-menu">
                         <div class="side-menu-item">
                             <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
-                        <a href="customerInfo.html">Tài khoản</a>
+                        <a href="${pageContext.request.contextPath}/Home/Info">Tài khoản</a>
                     </div>
                     <div class="side-menu-item">
                         <img src="${pageContext.request.contextPath}/Component/IMG/order-icon.png" alt="Order Icon">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="side-menu-item">
                         <img src="${pageContext.request.contextPath}/Component/IMG/product-icon.png" alt="Product Icon">
-                        <a href="productDetail.html">Sản phẩm đã mua</a>
+                        <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Đổi mật khẩu</a>
                     </div>
                     <div class="side-menu-item">
                         <img src="${pageContext.request.contextPath}/Component/IMG/logout-icon.png" alt="Logout Icon">

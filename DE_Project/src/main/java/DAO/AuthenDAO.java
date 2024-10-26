@@ -87,6 +87,32 @@ public class AuthenDAO {
         return userId;
     }
 
+    public String getRole(String username) {
+        Connection conn;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            conn = DBConnect.getConnection();
+
+            String sql = "SELECT role\n"
+                    + "FROM account\n"
+                    + "WHERE username = '?'";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("role");
+            }
+        } catch (SQLException e) {
+            System.out.println("getRole: " + e.getMessage());
+        }
+
+        return null;
+    }
+
     public String getFullNameUser(String username) {
         Connection conn = null;
         PreparedStatement ps = null;

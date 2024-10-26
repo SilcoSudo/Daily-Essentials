@@ -14,7 +14,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class CategoryController extends HttpServlet {
 
@@ -60,15 +64,25 @@ public class CategoryController extends HttpServlet {
         String part[] = path.split("/");
         if (part[3].equalsIgnoreCase("Search")) {
             String searchTerm = request.getParameter("search");
+            System.out.println("search: " + searchTerm);
             CategoryDAO categoryDAO = new CategoryDAO();
             List<ProductModel> searchProducts = categoryDAO.searchProducts(searchTerm);
             HttpSession session = request.getSession();
             session.setAttribute("productList", searchProducts);
-            String label = !searchProducts.isEmpty() ? searchProducts.get(0).getLabelName() : null;
-            session.setAttribute("productLabel", label);
-            List<CategoryModel> categoryList = categoryDAO.getCategoriesByLabelName(label);
-            session.setAttribute("categoryList", categoryList);
-            
+
+            Set<String> uniLabel = new HashSet<>();
+            for (ProductModel e : searchProducts) {
+                uniLabel.add(e.getLabelName());
+            }
+
+            Map<String, List<CategoryModel>> labelCategoryMap = new HashMap<>();
+
+            for (String label : uniLabel) {
+                List<CategoryModel> categoryList = categoryDAO.getCategoriesByLabelName(label);
+                labelCategoryMap.put(label, categoryList);
+            }
+            session.setAttribute("labelCategoryMap", labelCategoryMap);
+
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("{\"status\":\"success\"}");
@@ -87,7 +101,21 @@ public class CategoryController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        String path = request.getRequestURI();
+        String part[] = path.split("/");
+
+        if (part[3].equalsIgnoreCase("Search")) {
+            int categoryID = Integer.parseInt(request.getParameter("categoryId"));
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<ProductModel> productList = categoryDAO.getProductByCategoryID(categoryID);
+            HttpSession session = request.getSession();
+            session.setAttribute("productList", productList);
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"status\":\"success\"}");
+        }
     }
 
     /**
