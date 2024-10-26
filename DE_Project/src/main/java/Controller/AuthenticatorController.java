@@ -264,14 +264,13 @@ public class AuthenticatorController extends HttpServlet {
             
             if (role.equals("admin")) {
                 response.sendRedirect(request.getContextPath() + "/Homes");
-                return;
-            }
-            session.setAttribute("userFullName", fullNameUser);
-            response.addCookie(usernameCookie);
+            } else {
+                session.setAttribute("userFullName", fullNameUser);
+                response.addCookie(usernameCookie);
 
-            CartDAO cartDAO = new CartDAO();
-            int totalCartItems = cartDAO.getTotalCartItems(userID);
-            session.setAttribute("totalCartItems", totalCartItems);
+                CartDAO cartDAO = new CartDAO();
+                int totalCartItems = cartDAO.getTotalCartItems(userID);
+                session.setAttribute("totalCartItems", totalCartItems);
 
 //            System.out.println("Session ID: " + session.getId());
 //            System.out.println("Session username: " + session.getAttribute("username"));
@@ -279,13 +278,11 @@ public class AuthenticatorController extends HttpServlet {
 //            System.out.println("Cookie name: " + usernameCookie.getName());
 //            System.out.println("Cookie value: " + usernameCookie.getValue());
 //            System.out.println("Cookie max age: " + usernameCookie.getMaxAge());
-
-            response.sendRedirect(request.getContextPath() + "/Home");
-            return;
+                response.sendRedirect(request.getContextPath() + "/Home");
+            }
         } else {
             request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
             request.getRequestDispatcher("/View/login.jsp").forward(request, response);
-            return;
         }
     }
 

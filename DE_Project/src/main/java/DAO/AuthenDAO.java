@@ -96,7 +96,7 @@ public class AuthenDAO {
 
             String sql = "SELECT role\n"
                     + "FROM account\n"
-                    + "WHERE username = '?'";
+                    + "WHERE username = ?";
 
             ps = conn.prepareStatement(sql);
             ps.setString(1, username);
