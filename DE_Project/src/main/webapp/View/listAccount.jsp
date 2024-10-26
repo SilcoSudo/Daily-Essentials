@@ -91,6 +91,8 @@
                 </div>
             </form>
 
+            <button type="submit" class="btn-create" href="register.jsp" >Tạo tài khoản</button>
+
             <table class="account-table">
                 <thead>
                     <tr>
