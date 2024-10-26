@@ -81,7 +81,6 @@
                                 <th>Ngày mua</th>
                                 <th>Tổng tiền</th>
                                 <th>Trạng thái đơn hàng</th>
-                                <th>Phí</th>
                                 <th>Chi tiết</th>
                             </tr>
                         </thead>
@@ -92,7 +91,7 @@
                                     <td>${order.order_date}</td>
                                     <td>${order.total_amount}</td>
                                     <td>${order.orderStatusString}</td>
-                                    <td>${order.fee_shipp}</td>
+                                    <td style="display:none;">${order.fee_shipp}</td>
                                     <td class="actions">
                                         <a href="#" class="view-details" data-order-id="${order.order_id}">Xem chi tiết</a>
                                     </td>
@@ -197,7 +196,7 @@
                         var orderDate = row.cells[1].textContent;
                         var totalAmount = row.cells[2].textContent.toLowerCase();
                         var orderStatus = row.cells[3].textContent.toLowerCase();
-
+                        
 
                         var matchesId = (orderId.includes(searchId) || searchId === '');
                         var matchesAmount = (totalAmount.includes(searchAmount) || searchAmount === '');
@@ -238,6 +237,7 @@
                                 order_date: orderDetails.cells[1].textContent,
                                 total_amount: orderDetails.cells[2].textContent,
                                 orderStatusString: orderDetails.cells[3].textContent,
+                                fee_shipp: orderDetails.cells[4].textContent
 
                             };
 
@@ -246,6 +246,7 @@
                             tds[0].textContent = orderData.order_id;
                             tds[1].textContent = orderData.orderStatusString;
                             tds[2].textContent = orderData.order_date;
+                            tds[3].textContent = orderData.fee_shipp;
                             tds[4].textContent = orderData.total_amount;
                         }
                     });
