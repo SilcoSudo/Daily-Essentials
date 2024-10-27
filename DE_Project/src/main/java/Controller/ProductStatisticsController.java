@@ -4,12 +4,18 @@
  */
 package Controller;
 
+import DAO.ProductStatisticsDAO;
+import DAO.ViewOrderDAO;
+import Model.OrderHistory;
+import Model.ProductStatistics;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -45,7 +51,34 @@ public class ProductStatisticsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("View/staffViewStatistics.jsp").forward(request, response);
+        String categoryIdParam = request.getParameter("category_id");
+        int categoryId = 0;
+
+        if (categoryIdParam != null && !categoryIdParam.isEmpty()) {
+            try {
+                categoryId = Integer.parseInt(categoryIdParam);
+            } catch (NumberFormatException e) {
+                request.setAttribute("errorMessage", "ID danh mục không hợp lệ.");
+            }
+        }
+
+        ProductStatisticsDAO products = new ProductStatisticsDAO();
+        List<ProductStatistics> productlist;
+
+        if (categoryId == 0) {
+            productlist = products.getAllProductStatistics();
+        } else {
+            productlist = products.getProductsByCategoryId(categoryId);
+        }
+
+        if (productlist != null && !productlist.isEmpty()) {
+            request.setAttribute("productlist", productlist);
+        } else {
+            request.setAttribute("errorMessage", "Không có sản phẩm nào trong danh mục đã chọn.");
+        }
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("View/staffViewStatistics.jsp");
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -59,7 +92,7 @@ public class ProductStatisticsController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

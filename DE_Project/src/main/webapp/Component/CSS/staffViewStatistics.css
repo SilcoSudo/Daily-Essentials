@@ -14,7 +14,7 @@ body {
     background-color: #f4f4f4;
 }
 .container {
-    width: 95%;
+    width: 70%;
     margin: 20px auto;
 }
 .header {
@@ -88,3 +88,21 @@ table img {
     height: 40px;
     object-fit: cover;
 }
+
+.filter-section table {
+    display: block;
+    max-height: 300px; 
+    overflow-y: auto; 
+}
+
+/*.filter-section table thead,
+.filter-section table tbody {
+    
+    display: table;
+}*/
+
+/*.filter-section table tbody {
+    display: block;
+    max-height: 300px;  Giới hạn chiều cao của phần nội dung 
+    overflow-y: auto;
+}*/

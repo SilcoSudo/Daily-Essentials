@@ -6,6 +6,8 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="java.util.List" %>
+<%@page import="Model.ProductStatistics" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -33,18 +35,35 @@
                 </div>
             </div>
 
-             <!-- Bảng thống kê danh mục -->
+            <!-- Bảng thống kê sản phẩm -->
             <div class="filter-section">
-                <h3>Danh mục</h3>
-                <select>
-                    <option>Đồ uống</option>
-                    <option>Thức ăn</option>
-                </select>
-                <select>
-                    <option>Cafe</option>
-                    <option>Nước ngọt</option>
-                </select>
-
+                <h3>Danh sách thống kê sản phẩm</h3>
+                <br>
+                <form action="${pageContext.request.contextPath}/ViewProductStatistics" method="get">
+                    <label for="category">Danh mục:</label>
+                    <select name="category_id" id="category" onchange="this.form.submit()">
+                        <option value="0" ${param.category_id == '0' ? 'selected' : ''}>Tất cả</option>
+                        <option value="1" ${param.category_id == '1' ? 'selected' : ''}>Trứng</option>
+                        <option value="2" ${param.category_id == '2' ? 'selected' : ''}>Đậu hủ</option>
+                        <option value="3" ${param.category_id == '3' ? 'selected' : ''}>Sữa tươi</option>
+                        <option value="4" ${param.category_id == '4' ? 'selected' : ''}>Sữa hạt đậu</option>
+                        <option value="5" ${param.category_id == '5' ? 'selected' : ''}>Sữa bột</option>
+                        <option value="6" ${param.category_id == '6' ? 'selected' : ''}>Rau lá</option>
+                        <option value="7" ${param.category_id == '7' ? 'selected' : ''}>Củ quả</option>
+                        <option value="8" ${param.category_id == '8' ? 'selected' : ''}>Trái cây tươi</option>
+                        <option value="9" ${param.category_id == '9' ? 'selected' : ''}>Thịt</option>
+                        <option value="10" ${param.category_id == '10' ? 'selected' : ''}>Hải sản tươi</option>
+                        <option value="11" ${param.category_id == '11' ? 'selected' : ''}>Bia</option>
+                        <option value="12" ${param.category_id == '12' ? 'selected' : ''}>Cà phê</option>
+                        <option value="13" ${param.category_id == '13' ? 'selected' : ''}>Nước suối</option>
+                        <option value="14" ${param.category_id == '14' ? 'selected' : ''}>Nước ngọt</option>
+                        <c:forEach var="category" items="${categoryList}">
+                            <option value="${category.category_id}" ${category.category_id == param.category_id ? 'selected' : ''}>
+                                ${category.category_name}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </form>
                 <table>
                     <thead>
                         <tr>
@@ -55,14 +74,16 @@
                             <th>Doanh thu sản phẩm</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Đồ uống</td>
-                            <td>Café</td>
-                            <td>50</td>
-                            <td>200.000</td>
-                        </tr>
+                    <c:forEach items="${productlist}" var="product">
+                        <tbody>
+                            <tr>
+                                <td>${product.product_id}</td>
+                                <td>${product.category_name}</td>
+                                <td>${product.product_name}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
             </div>
@@ -70,7 +91,6 @@
             <!-- Bảng sản phẩm bán chạy nhất -->
             <div class="filter-section">
                 <h3>Top sản phẩm bán chạy nhất</h3>
-
                 <table>
                     <thead>
                         <tr>

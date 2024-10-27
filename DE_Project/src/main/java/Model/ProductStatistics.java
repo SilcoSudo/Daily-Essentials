@@ -4,22 +4,26 @@
  */
 package Model;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author nhatl
  */
 public class ProductStatistics {
     private int product_id;
-    private String product_name; 
+    private String product_name;
+    private String image_url;
     private int category_id;
     private String category_name;
 
     public ProductStatistics() {
     }
 
-    public ProductStatistics(int product_id, String product_name, int category_id, String category_name) {
+    public ProductStatistics(int product_id, String product_name, String image_url, int category_id, String category_name) {
         this.product_id = product_id;
         this.product_name = product_name;
+        this.image_url = image_url;
         this.category_id = category_id;
         this.category_name = category_name;
     }
@@ -40,6 +44,14 @@ public class ProductStatistics {
         this.product_name = product_name;
     }
 
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
     public int getCategory_id() {
         return category_id;
     }
@@ -55,9 +67,9 @@ public class ProductStatistics {
     public void setCategory_name(String category_name) {
         this.category_name = category_name;
     }
-    
-    
-    
-    
-        
+
+    @Override
+    public String toString() {
+        return "ProductStatistics{" + "product_id=" + product_id + ", product_name=" + product_name + ", image_url=" + image_url + ", category_id=" + category_id + ", category_name=" + category_name + '}';
+    }
 }
