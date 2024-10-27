@@ -1,6 +1,6 @@
-/* Popup CSS */
+@import url('./mainStyle.css');
+
 .popup {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -50,7 +50,8 @@
 
 .popup-footer {
     text-align: right;
-    margin-top: 20px;
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
 .popup-footer button {
@@ -60,4 +61,18 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.update-button {
+    background-color: #3a3a99;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.update-button:hover {
+    background-color: #2a2a77;
 }

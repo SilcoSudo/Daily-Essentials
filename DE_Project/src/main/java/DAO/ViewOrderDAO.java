@@ -110,6 +110,35 @@ public class ViewOrderDAO {
         return false;
     }
 
+    public OrderHistory getOrderById(int orderId) {
+        OrderHistory order = null;
+        String sql = "SELECT o.order_id, o.user_id, o.order_date, o.total_amount, o.order_status, i.fee_shipp "
+                + "FROM [order] o "
+                + "JOIN invoice i ON o.order_id = i.order_id "
+                + "WHERE o.order_id = ?";
+
+        try {
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, orderId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                order = new OrderHistory(
+                        rs.getInt("order_id"),
+                        rs.getInt("user_id"),
+                        rs.getDate("order_date"),
+                        rs.getDouble("total_amount"),
+                        rs.getInt("order_status"),
+                        rs.getDouble("fee_shipp"));
+
+                order.setOrderStatusString(getOrderStatus(order.getOrder_status()));
+            }
+        } catch (SQLException e) {
+        }
+        return order;
+    }
+
     public List<OrderDetail> getOrderDetailsWithProducts(int orderId) {
         List<OrderDetail> orderDetails = new ArrayList<>();
         String query = "SELECT od.product_id, od.product_quantity, od.total_price, p.product_name, p.image_url "
@@ -133,7 +162,6 @@ public class ViewOrderDAO {
                 orderDetails.add(detail);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return orderDetails;
     }
@@ -141,29 +169,19 @@ public class ViewOrderDAO {
     public static void main(String[] args) {
         ViewOrderDAO orderDAO = new ViewOrderDAO();
 
-        int userId = 26;
-        List<OrderHistory> orders = orderDAO.getOrdersByUserId(userId);
+        int orderIdToCheck = 16; 
+        OrderHistory order = orderDAO.getOrderById(orderIdToCheck);
 
-        if (orders != null && !orders.isEmpty()) {
-            for (OrderHistory order : orders) {
-                System.out.println("Order ID: " + order.getOrder_id()
-                        + ", User ID: " + order.getUser_id()
-                        + ", Order Date: " + order.getOrder_date()
-                        + ", Total Amount: " + order.getTotal_amount()
-                        + ", Order Status: " + order.getOrderStatusString()
-                        + ", Shipping Fee: " + order.getFee_shipp());
-
-                List<OrderDetail> orderDetails = orderDAO.getOrderDetailsWithProducts(order.getOrder_id());
-                for (OrderDetail detail : orderDetails) {
-                    System.out.println(" - Product ID: " + detail.getProductId()
-                            + ", Quantity: " + detail.getQuantity()
-                            + ", Total Price: " + detail.getTotalPrice()
-                            + ", Product Name: " + detail.getProductName()
-                            + ", Product Image: " + detail.getProductImage());
-                }
-            }
+        if (order != null) {
+            System.out.println("Thông tin đơn hàng:");
+            System.out.println("Order ID: " + order.getOrder_id());
+            System.out.println("User ID: " + order.getUser_id());
+            System.out.println("Order Date: " + order.getOrder_date());
+            System.out.println("Total Amount: " + order.getTotal_amount());
+            System.out.println("Order Status: " + order.getOrderStatusString());
+            System.out.println("Shipping Fee: " + order.getFee_shipp());
         } else {
-            System.out.println("Không tìm thấy đơn hàng cho người dùng ID: " + userId);
+            System.out.println("Không tìm thấy đơn hàng với ID: " + orderIdToCheck);
         }
     }
 }

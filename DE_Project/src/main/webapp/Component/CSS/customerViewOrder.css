@@ -47,13 +47,12 @@ th {
 
 .filter-section {
     display: flex;
-    gap: 20px;
-    justify-content: flex-start;
-    margin-top: 22px;
-    align-items: center;
+    gap: 70px;
+    margin-top: 15px;
 }
 .filter-section-item {
-   display: ruby;
+    display: ruby;
+    width: 200px;
 }
 
 .filter-section input, .filter-section select {

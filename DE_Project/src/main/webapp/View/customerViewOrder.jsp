@@ -46,9 +46,19 @@
             <div class="main-content">
                 <h2>Danh sách đơn hàng</h2>
                 <div class="filter-section">
-                    <div>
+                    <div class="filter-section-item">
                         <label>ID Đơn hàng :</label>
                         <input type="text" id="searchOrderId" placeholder="Nhập ID đơn hàng"/>
+                    </div>
+                    <div class="filter-section-item">
+                        <label>Tổng số tiền :</label>
+                        <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-section-item">
+                        <label for="Date"> Ngày tạo :</label>
+                        <input type="Date"  id="searchDate">
                     </div>
                     <div class="filter-section-item">
                         <label>Tình trạng đơn :</label>
@@ -61,17 +71,8 @@
                             <option value="Ðã hủy">Ðã hủy</option>
                         </select>
                     </div>
-                    <div class="filter-section-item">
-                        <label>Tổng số tiền :</label>
-                        <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
-                    </div>
                 </div>
-                <div class="filter-section">
-                    <div class="filter-section-item">
-                        <label for="Date"> Ngày tạo :</label>
-                        <input type="Date"  id="searchDate">
-                    </div>
-                </div>
+
 
                 <div class="table-container" items="${orderlist}" var="order">
                     <table>
@@ -84,8 +85,8 @@
                                 <th>Chi tiết</th>
                             </tr>
                         </thead>
-                        <c:forEach items="${orderlist}" var="order">
-                            <tbody id="orderBody">
+                        <tbody id="orderBody">
+                            <c:forEach items="${orderlist}" var="order">
                                 <tr>
                                     <td>${order.order_id}</td>
                                     <td>${order.order_date}</td>
@@ -93,95 +94,19 @@
                                     <td>${order.orderStatusString}</td>
                                     <td style="display:none;">${order.fee_shipp}</td>
                                     <td class="actions">
-                                        <a href="#" class="view-details" data-order-id="${order.order_id}">Xem chi tiết</a>
+                                        <a href="${pageContext.request.contextPath}/OrderDetail?order_id=${order.order_id}">Xem chi tiết</a>
                                     </td>
-                                </tr>       
-                            </tbody>
-                        </c:forEach>
+                                </tr>  
+                            </c:forEach>
+                        </tbody>
                     </table>
                 </div>
             </div>     
         </div>
-
-        <!-- Popup Xem chi tiết -->
-        <div class="popup" id="popup-details">
-            <div class="popup-content">
-                <div class="popup-header">
-                    <h2>Chi tiết đơn hàng</h2>
-                </div>
-                <div class="popup-body">
-                    <table>
-                        <tr>
-                            <th>ID Đơn hàng</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Tình trạng đơn hàng</th>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <th>Ngày tạo</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Phí vận chuyển</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Tổng số tiền</th>
-                            <td></td>
-                        </tr>
-                    </table>
-
-                    <br />
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Giá</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><img src="" alt="product-image"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><img src="" alt="product-image"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="popup-footer">
-                    <td></td>
-                    <br/><br/>
-                    <button class="close-btn" data-popup-id="popup-details">Đóng</button>
-                </div>
-            </div>
-        </div>
-
+                    
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const viewDetailsLinks = document.querySelectorAll('.view-details');
-                const closeButtons = document.querySelectorAll('.close-btn');
-                const toggleMenuButtons = document.querySelectorAll('.toggle-menu-btn');
-
-                function openPopup(popupId) {
-                    document.getElementById(popupId).style.display = 'flex';
-                }
-
-                function closePopup(popupId) {
-                    document.getElementById(popupId).style.display = 'none';
-                }
 
                 function filterTable() {
                     var searchId = document.getElementById('searchOrderId').value.toLowerCase();
@@ -196,7 +121,7 @@
                         var orderDate = row.cells[1].textContent;
                         var totalAmount = row.cells[2].textContent.toLowerCase();
                         var orderStatus = row.cells[3].textContent.toLowerCase();
-                        
+
 
                         var matchesId = (orderId.includes(searchId) || searchId === '');
                         var matchesAmount = (totalAmount.includes(searchAmount) || searchAmount === '');
@@ -218,77 +143,8 @@
                 document.getElementById('searchDate').addEventListener('input', filterTable);
                 document.getElementById('statusFilter').addEventListener('change', filterTable);
 
-                viewDetailsLinks.forEach(link => {
-                    link.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const orderId = this.getAttribute('data-order-id');
-                        openPopup('popup-details');
-
-                        const orderDetails = Array.from(document.querySelectorAll('#orderBody tr'))
-                                .find(row => row.cells[0].textContent.trim() === orderId);
-
-                        const actions = e.target.closest('.actions');
-                        actions.classList.remove('active');
-
-
-                        if (orderDetails) {
-                            const orderData = {
-                                order_id: orderDetails.cells[0].textContent,
-                                order_date: orderDetails.cells[1].textContent,
-                                total_amount: orderDetails.cells[2].textContent,
-                                orderStatusString: orderDetails.cells[3].textContent,
-                                fee_shipp: orderDetails.cells[4].textContent
-
-                            };
-
-                            const popupBody = document.querySelector('#popup-details .popup-body');
-                            const tds = popupBody.querySelectorAll('td');
-                            tds[0].textContent = orderData.order_id;
-                            tds[1].textContent = orderData.orderStatusString;
-                            tds[2].textContent = orderData.order_date;
-                            tds[3].textContent = orderData.fee_shipp;
-                            tds[4].textContent = orderData.total_amount;
-                        }
-                    });
-                });
-
-                closeButtons.forEach(button => {
-                    button.addEventListener('click', function () {
-                        const popupId = this.getAttribute('data-popup-id');
-                        closePopup(popupId);
-                    });
-                });
-
-                toggleMenuButtons.forEach(button => {
-                    button.addEventListener('click', function (e) {
-                        const actions = e.target.closest('.actions');
-                        actions.classList.toggle('active');
-
-                        const menus = document.querySelectorAll('.actions');
-                        menus.forEach(menu => {
-                            if (menu !== actions) {
-                                menu.classList.remove('active');
-                            }
-                        });
-                    });
-                });
-
-                window.addEventListener('click', function (event) {
-                    const popups = document.querySelectorAll('.popup');
-                    popups.forEach(popup => {
-                        if (event.target === popup) {
-                            closePopup(popup.id);
-                        }
-                    });
-
-                    const menus = document.querySelectorAll('.actions');
-                    menus.forEach(menu => {
-                        if (!menu.contains(event.target)) {
-                            menu.classList.remove('active');
-                        }
-                    });
-                });
             });
+
         </script>
     </body>
 </html>
