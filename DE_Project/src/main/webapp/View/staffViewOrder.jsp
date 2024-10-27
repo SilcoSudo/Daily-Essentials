@@ -75,7 +75,7 @@
                                         <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
                                     </a>
                                     <div class="actions-menu">
-                                        <a href="#" class="view-details" data-order-id="${order.order_id}">Xem chi tiết</a>
+                                        <a href="${pageContext.request.contextPath}/OrderDetails?order_id=${order.order_id}">Xem chi tiết</a>
                                         <a href="#" class="update-status" data-order-id="${order.order_id}">Cập nhật trạng thái đơn hàng</a>
                                     </div>
                                 </td>
@@ -85,74 +85,9 @@
                 </table>
             </div>
         </div>
-
-        <!-- Popup Xem chi tiết -->
-        <div class="popup" id="popup-details">
-            <div class="popup-content">
-                <div class="popup-header">
-                    <h2>Chi tiết đơn hàng</h2>
-                </div>
-                <div class="popup-body">
-                    <table>
-                        <tr>
-                            <th>ID Đơn hàng</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>ID Khách hàng</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Tình trạng đơn hàng</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Ngày tạo</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Tổng số tiền</th>
-                            <td></td>
-                        </tr>
-                    </table>
-
-                    <br />
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Giá</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><img src="" alt="product-image"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><img src="" alt="product-image"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="popup-footer">
-                    <td></td>
-                    <br/><br/>
-                    <button class="close-btn" data-popup-id="popup-details">Đóng</button>
-                </div>
-            </div>
-        </div>
-
+                
         <!-- Popup Cập nhật trạng thái đơn -->
-        <div class="popup" id="popup-update">
+        <div class="popup" id="popup-update" style="display: none">
             <div class="popup-content popup-update-content">
                 <div class="popup-header">
                     <h2>Cập nhật trạng thái đơn hàng</h2>
@@ -189,7 +124,6 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const viewDetailsLinks = document.querySelectorAll('.view-details');
                 const updateStatusLinks = document.querySelectorAll('.update-status');
                 const closeButtons = document.querySelectorAll('.close-btn');
                 const toggleMenuButtons = document.querySelectorAll('.toggle-menu-btn');
@@ -251,40 +185,6 @@
                         document.getElementById('hidden-order-id').value = orderId;
                         document.getElementById('order-status-select').value = getStatusValue(currentStatus);
 
-                    });
-                });
-
-                viewDetailsLinks.forEach(link => {
-                    link.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const orderId = this.getAttribute('data-order-id');
-                        openPopup('popup-details');
-
-                        const orderDetails = Array.from(document.querySelectorAll('#orderBody tr'))
-                                .find(row => row.cells[0].textContent.trim() === orderId);
-
-                        const actions = e.target.closest('.actions');
-                        actions.classList.remove('active');
-
-
-                        if (orderDetails) {
-                            const orderData = {
-                                order_id: orderDetails.cells[0].textContent,
-                                user_id: orderDetails.cells[1].textContent,
-                                total_amount: orderDetails.cells[2].textContent,
-                                orderStatusString: orderDetails.cells[3].textContent,
-                                order_date: orderDetails.cells[4].textContent,
-
-                            };
-
-                            const popupBody = document.querySelector('#popup-details .popup-body');
-                            const tds = popupBody.querySelectorAll('td');
-                            tds[0].textContent = orderData.order_id;
-                            tds[1].textContent = orderData.user_id;
-                            tds[2].textContent = orderData.orderStatusString;
-                            tds[3].textContent = orderData.order_date;
-                            tds[4].textContent = orderData.total_amount;
-                        }
                     });
                 });
 

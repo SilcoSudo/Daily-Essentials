@@ -60,6 +60,10 @@
         <servlet-name>OrderDetailController</servlet-name>
         <servlet-class>Controller.OrderDetailsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffOrderDetailController</servlet-name>
+        <servlet-class>Controller.StaffOrderDetailController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticatorController</servlet-name>
         <url-pattern>/Authen/*</url-pattern>
@@ -107,6 +111,10 @@
     <servlet-mapping>
         <servlet-name>OrderDetailController</servlet-name>
         <url-pattern>/OrderDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffOrderDetailController</servlet-name>
+        <url-pattern>/OrderDetails</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
