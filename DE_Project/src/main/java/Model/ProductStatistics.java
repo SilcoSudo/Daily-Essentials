@@ -11,13 +11,53 @@ import java.math.BigDecimal;
  * @author nhatl
  */
 public class ProductStatistics {
+
     private int product_id;
     private String product_name;
     private String image_url;
+
     private int category_id;
     private String category_name;
 
+    private int order_status;
+    private int orderstatus_count;
+    private String orderStatusString;
+
+    public ProductStatistics(int order_status, int orderstatus_count) {
+        this.order_status = order_status;
+        this.orderstatus_count = orderstatus_count;
+    }
+
+    public int getOrder_status() {
+        return order_status;
+    }
+
+    public void setOrder_status(int order_status) {
+        this.order_status = order_status;
+    }
+
+    public int getOrderstatus_count() {
+        return orderstatus_count;
+    }
+
+    public void setOrderstatus_count(int orderstatus_count) {
+        this.orderstatus_count = orderstatus_count;
+    }
+
+    public String getOrderStatusString() {
+        return orderStatusString;
+    }
+
+    public void setOrderStatusString(String orderStatusString) {
+        this.orderStatusString = orderStatusString;
+    }
+
     public ProductStatistics() {
+    }
+
+    public ProductStatistics(int category_id, String category_name) {
+        this.category_id = category_id;
+        this.category_name = category_name;
     }
 
     public ProductStatistics(int product_id, String product_name, String image_url, int category_id, String category_name) {
@@ -70,6 +110,7 @@ public class ProductStatistics {
 
     @Override
     public String toString() {
-        return "ProductStatistics{" + "product_id=" + product_id + ", product_name=" + product_name + ", image_url=" + image_url + ", category_id=" + category_id + ", category_name=" + category_name + '}';
+        return "ProductStatistics{" + "product_id=" + product_id + ", product_name=" + product_name + ", image_url=" + image_url + ", category_id=" + category_id + ", category_name=" + category_name + ", order_status=" + order_status + ", orderstatus_count=" + orderstatus_count + ", orderStatusString=" + orderStatusString + '}';
     }
+
 }

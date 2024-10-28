@@ -23,6 +23,23 @@ public class ProductStatisticsDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
+    private String getOrderStatus(int status) {
+        switch (status) {
+            case 0:
+                return "Đang xử lý";
+            case 1:
+                return "Ðã xác nhận";
+            case 2:
+                return "Đang vận chuyển";
+            case 3:
+                return "Ðã hoàn thành";
+            case 4:
+                return "Ðã hủy";
+            default:
+                return "Đang xử lý";
+        }
+    }
+
     public List<ProductStatistics> getAllProductStatistics() {
         try {
             List<ProductStatistics> productlist = new ArrayList<>();
@@ -54,41 +71,101 @@ public class ProductStatisticsDAO {
         return null;
     }
 
-    public List<ProductStatistics> getProductsByCategoryId(int categoryId) {
+    public List<ProductStatistics> getProductStatisticsByCategory(int categoryId) {
         List<ProductStatistics> productlist = new ArrayList<>();
-        String sql = "SELECT p.product_id, p.product_name, p.image_url, p.category_id, c.category_name "
-                + "FROM product p "
-                + "JOIN category c ON p.category_id = c.category_id "
-                + "WHERE p.category_id = ?";
+        String sql = "SELECT \n"
+                + "    p.product_id,\n"
+                + "    p.product_name,\n"
+                + "    p.image_url,\n"
+                + "    p.category_id,\n"
+                + "    c.category_name\n"
+                + "FROM \n"
+                + "    product p\n"
+                + "JOIN \n"
+                + "    category c ON p.category_id = c.category_id\n"
+                + "WHERE \n"
+                + "    p.category_id = ?;";
 
-        try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, categoryId);
-            try ( ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    productlist.add(new ProductStatistics(
-                            rs.getInt("product_id"),
-                            rs.getString("product_name"),
-                            rs.getString("image_url"),
-                            rs.getInt("category_id"),
-                            rs.getString("category_name")));
-                }
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                productlist.add(new ProductStatistics(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getString("image_url"),
+                        rs.getInt("category_id"),
+                        rs.getString("category_name")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return productlist;
+    }
+
+    public List<ProductStatistics> getAllCategories() {
+        List<ProductStatistics> categoryList = new ArrayList<>();
+        String sql = "SELECT category_id, category_name FROM category";
+
+        try {
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                categoryList.add(new ProductStatistics(
+                        rs.getInt("category_id"),
+                        rs.getString("category_name")
+                ));
+            }
+        } catch (SQLException e) {
+        }
+
+        return categoryList;
+    }
+
+    public List<ProductStatistics> getOrderStatusStatistics() {
+        List<ProductStatistics> statistics = new ArrayList<>();
+        try {
+            String sql = "SELECT \n"
+                    + "    order_status,\n"
+                    + "    COUNT(*) AS order_count \n"
+                    + "FROM \n"
+                    + "    [order] \n"
+                    + "GROUP BY \n"
+                    + "    order_status";
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ProductStatistics order_sta = new ProductStatistics(
+                        rs.getInt("order_status"),
+                        rs.getInt("order_count"));
+
+                order_sta.setOrderStatusString(getOrderStatus(order_sta.getOrder_status()));
+                statistics.add(order_sta);
+
+            }
+        } catch (SQLException e) {
+        }
+
+        return statistics;
     }
 
     public static void main(String[] args) {
         ProductStatisticsDAO dao = new ProductStatisticsDAO();
-        List<ProductStatistics> products = dao.getAllProductStatistics();
+        List<ProductStatistics> products = dao.getOrderStatusStatistics();
 
         if (products != null && !products.isEmpty()) {
-            for (ProductStatistics product : products) {
-                System.out.println(product);
+            for (ProductStatistics stat : products) {
+                System.out.println("Trang thai: " + stat.getOrder_status() + ", So: " + stat.getOrderstatus_count());
             }
         } else {
-            System.out.println("No products found or an error occurred.");
+            System.out.println("Loi");
         }
     }
 }
