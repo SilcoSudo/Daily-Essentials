@@ -46,13 +46,17 @@ public class ProductStatisticsDAO {
             String sql = "SELECT \n"
                     + "    p.product_id,\n"
                     + "    p.product_name,\n"
-                    + "    p.image_url,\n"
-                    + "    p.category_id,\n"
-                    + "    c.category_name\n"
+                    + "    c.category_name,\n"
+                    + "    SUM(od.product_quantity) AS quantity_sold,\n"
+                    + "    SUM(od.product_quantity * od.product_price) AS revenue\n"
                     + "FROM \n"
                     + "    product p\n"
                     + "JOIN \n"
-                    + "    category c ON p.category_id = c.category_id;";
+                    + "    category c ON p.category_id = c.category_id\n"
+                    + "LEFT JOIN \n"
+                    + "    order_details od ON p.product_id = od.product_id\n"
+                    + "GROUP BY \n"
+                    + "    p.product_id, p.product_name, p.image_url, p.category_id, c.category_name;";
             conn = DBConnect.getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -60,9 +64,10 @@ public class ProductStatisticsDAO {
                 productlist.add(new ProductStatistics(
                         rs.getInt("product_id"),
                         rs.getString("product_name"),
-                        rs.getString("image_url"),
-                        rs.getInt("category_id"),
-                        rs.getString("category_name")));
+                        rs.getString("category_name"),
+                        rs.getInt("quantity_sold"),
+                        rs.getDouble("revenue")
+                ));
             }
             return productlist;
         } catch (SQLException e) {
@@ -156,16 +161,90 @@ public class ProductStatisticsDAO {
         return statistics;
     }
 
+    public List<ProductStatistics> getTopSellingProducts(int limit) {
+        List<ProductStatistics> topProducts = new ArrayList<>();
+        String sql = "SELECT TOP " + limit + " "
+                + "    p.product_id, "
+                + "    p.product_name, "
+                + "    c.category_name, "
+                + "    SUM(od.product_quantity) AS quantity_sold, "
+                + "    SUM(od.product_quantity * od.product_price) AS revenue "
+                + "FROM "
+                + "    product p "
+                + "JOIN "
+                + "    order_details od ON p.product_id = od.product_id "
+                + "JOIN "
+                + "    category c ON p.category_id = c.category_id "
+                + "GROUP BY "
+                + "    p.product_id, p.product_name, c.category_name "
+                + "ORDER BY "
+                + "    quantity_sold DESC;";
+
+        try {
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                topProducts.add(new ProductStatistics(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getString("category_name"),
+                        rs.getInt("quantity_sold"),
+                        rs.getDouble("revenue")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return topProducts;
+    }
+
+    public ProductStatistics getTotalRevenue() {
+        ProductStatistics totalRevenue = new ProductStatistics();
+        String sql = "SELECT \n"
+                + "    SUM(od.product_quantity) AS total_quantity_sold,\n"
+                + "    SUM(od.product_quantity * od.total_price) AS total_revenue\n"
+                + "FROM \n"
+                + "    [order] o\n"
+                + "JOIN \n"
+                + "    order_details od ON o.order_id = od.order_id\n"
+                + "WHERE \n"
+                + "    o.order_status = 3;";
+
+        try {
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                totalRevenue.setTotal_revenue(rs.getDouble("total_revenue"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalRevenue;
+    }
+
     public static void main(String[] args) {
         ProductStatisticsDAO dao = new ProductStatisticsDAO();
-        List<ProductStatistics> products = dao.getOrderStatusStatistics();
+        List<ProductStatistics> products = dao.getAllProductStatistics();
+        ProductStatistics stats = dao.getTotalRevenue();
 
-        if (products != null && !products.isEmpty()) {
-            for (ProductStatistics stat : products) {
-                System.out.println("Trang thai: " + stat.getOrder_status() + ", So: " + stat.getOrderstatus_count());
-            }
+        if (stats != null) {
+            System.out.println("Tổng doanh thu: " + stats.getTotal_revenue());
         } else {
-            System.out.println("Loi");
+            System.out.println("Không có dữ liệu hoặc xảy ra lỗi.");
         }
+
+//        for (ProductStatistics product : products) {
+//            System.out.println("Product ID: " + product.getProduct_id());
+//            System.out.println("Product Name: " + product.getProduct_name());
+//            System.out.println("Category Name: " + product.getCategory_name());
+//            System.out.println("Quantity Sold: " + product.getQuantitySold());
+//            System.out.println("Revenue: " + product.getRevenue());
+//            System.out.println("-----");
+//        }
     }
 }

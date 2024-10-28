@@ -50,6 +50,18 @@ public class ProductStatisticsController extends HttpServlet {
             throws ServletException, IOException {
         ProductStatisticsDAO products = new ProductStatisticsDAO();
 
+        //total
+        ProductStatistics total_revenue = products.getTotalRevenue();
+        if (total_revenue != null) {
+            request.setAttribute("totalRevenue", total_revenue.getTotal_revenue());
+        } else {
+            System.out.println("Không có dữ liệu hoặc xảy ra lỗi.");
+        }
+
+        //top product
+        List<ProductStatistics> topSellingProducts = products.getTopSellingProducts(10);
+        request.setAttribute("topSellingProducts", topSellingProducts);
+
         //get order status
         List<ProductStatistics> orderstatus = products.getOrderStatusStatistics();
 
@@ -58,8 +70,7 @@ public class ProductStatisticsController extends HttpServlet {
         } else {
             request.setAttribute("errorMessage", "Không có dữ liệu thống kê nào.");
         }
-        
-        
+
         //sort cate
         List<ProductStatistics> categoryList = products.getAllCategories();
         request.setAttribute("categoryList", categoryList);

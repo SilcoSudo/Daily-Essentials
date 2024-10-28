@@ -22,12 +22,17 @@
         <div class="container">
             <!-- Header cards for Doanh Thu and Đơn Hàng -->
             <div class="header">
+                
+                
                 <!-- Doanh Thu Card -->
                 <div class="card revenue-card">
-                    <h3>Doanh Thu</h3>
-                    <p>Tháng này</p>
-                    <h2>128,732,412 đ</h2>
-                    <p>+ 8% so với tháng trước</p>
+                    <h3>Doanh Thu</h3>  
+                    <br>
+                    <p></p>
+                    <br>
+                    <h2>${totalRevenue}</h2>
+                    <br>
+                    <p></p>
                 </div>
 
                 <!-- Đơn Hàng Card -->
@@ -75,13 +80,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${productlist}" var="product">
+                            <c:forEach items="${productlist}" var="productlist">
                                 <tr>
-                                    <td>${product.product_id}</td>
-                                    <td>${product.category_name}</td>
-                                    <td>${product.product_name}</td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>${productlist.product_id}</td>
+                                    <td>${productlist.category_name}</td>
+                                    <td>${productlist.product_name}</td>
+                                    <td>${productlist.quantitySold}</td>
+                                    <td>${productlist.revenue}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -106,18 +111,20 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Tên</th>
-                                <th>SL bán</th>
-                                <th>Tổng tiền thu</th>
+                                <th>Danh mục</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng bán </th>
+                                <th>Doanh thu sản phẩm</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="" var="topProduct">
+                            <c:forEach var="top_product" items="${topSellingProducts}">
                                 <tr>
-                                    <td>}</td>
-                                    <td> <img src="placeholder-image.png" alt="product" class="product-img"> </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>${top_product.product_id}</td>
+                                    <td>${top_product.category_name}</td>
+                                    <td>${top_product.product_name}</td>
+                                    <td>${top_product.quantitySold}</td>
+                                    <td>${top_product.revenue}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>

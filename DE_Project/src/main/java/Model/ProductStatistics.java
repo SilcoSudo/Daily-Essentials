@@ -4,8 +4,6 @@
  */
 package Model;
 
-import java.math.BigDecimal;
-
 /**
  *
  * @author nhatl
@@ -22,6 +20,47 @@ public class ProductStatistics {
     private int order_status;
     private int orderstatus_count;
     private String orderStatusString;
+
+    private int quantitySold;
+    private double revenue;
+
+    private double total_revenue;
+
+    public ProductStatistics(double total_revenue) {
+        this.total_revenue = total_revenue;
+    }
+
+    public double getTotal_revenue() {
+        return total_revenue;
+    }
+
+    public void setTotal_revenue(double total_revenue) {
+        this.total_revenue = total_revenue;
+    }
+
+    public ProductStatistics(int product_id, String product_name, String category_name, int quantitySold, double revenue) {
+        this.product_id = product_id;
+        this.product_name = product_name;
+        this.category_name = category_name;
+        this.quantitySold = quantitySold;
+        this.revenue = revenue;
+    }
+
+    public int getQuantitySold() {
+        return quantitySold;
+    }
+
+    public void setQuantitySold(int quantitySold) {
+        this.quantitySold = quantitySold;
+    }
+
+    public double getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(double revenue) {
+        this.revenue = revenue;
+    }
 
     public ProductStatistics(int order_status, int orderstatus_count) {
         this.order_status = order_status;
