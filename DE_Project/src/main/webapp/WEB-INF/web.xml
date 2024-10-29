@@ -57,12 +57,17 @@
         <servlet-class>Controller.AccountControler</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>OrderDetailController</servlet-name>
         <servlet-class>Controller.OrderDetailsController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>StaffOrderDetailController</servlet-name>
         <servlet-class>Controller.StaffOrderDetailController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DEHomeController</servlet-name>
+        <servlet-class>Controller.DEHomeController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticatorController</servlet-name>
@@ -115,6 +120,10 @@
     <servlet-mapping>
         <servlet-name>StaffOrderDetailController</servlet-name>
         <url-pattern>/OrderDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DEHomeController</servlet-name>
+        <url-pattern>/DEHome/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -4,21 +4,15 @@
  */
 package Controller;
 
-import DAO.ProductStatisticsDAO;
-import Model.ProductStatistics;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-/**
- *
- * @author nhatl
- */
-public class ProductStatisticsController extends HttpServlet {
+public class DEHomeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,6 +25,19 @@ public class ProductStatisticsController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet DEHomeController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet DEHomeController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -45,50 +52,16 @@ public class ProductStatisticsController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductStatisticsDAO products = new ProductStatisticsDAO();
-
-        //total
-        ProductStatistics total_revenue = products.getTotalRevenue();
-        if (total_revenue != null) {
-            request.setAttribute("totalRevenue", total_revenue.getTotal_revenue());
-        } else {
-            System.out.println("Không có dữ liệu hoặc xảy ra lỗi.");
+        String path = request.getRequestURI();
+        String part[] = path.split("/");
+        if (part.length > 2 && part[2].equalsIgnoreCase("DEHome")) {
+            if (part.length > 3 && part[3].equalsIgnoreCase("Manage-Orders")) {
+                request.getRequestDispatcher("/View/staffViewOrder.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/View/staffViewStatistics.jsp").forward(request, response);
+            }
         }
 
-        //top product
-        List<ProductStatistics> topSellingProducts = products.getTopSellingProducts(10);
-        request.setAttribute("topSellingProducts", topSellingProducts);
-
-        //get order status
-        List<ProductStatistics> orderstatus = products.getOrderStatusStatistics();
-
-        if (orderstatus != null && !orderstatus.isEmpty()) {
-            request.setAttribute("orderStatistics", orderstatus);
-        } else {
-            request.setAttribute("errorMessage", "Không có dữ liệu thống kê nào.");
-        }
-
-        //sort cate
-        List<ProductStatistics> categoryList = products.getAllCategories();
-        request.setAttribute("categoryList", categoryList);
-
-        String categoryIdParam = request.getParameter("category_id");
-        List<ProductStatistics> productlist = new ArrayList<>();
-
-        if (categoryIdParam != null && !categoryIdParam.isEmpty() && !categoryIdParam.equals("0")) {
-            int categoryId = Integer.parseInt(categoryIdParam);
-            productlist = products.getProductStatisticsByCategory(categoryId);
-        } else {
-            productlist = products.getAllProductStatistics();
-        }
-
-        if (productlist != null && !productlist.isEmpty()) {
-            request.setAttribute("productlist", productlist);
-        } else {
-            request.setAttribute("errorMessage", "Không có sản phẩm nào.");
-        }
-
-        request.getRequestDispatcher("View/staffViewStatistics.jsp").forward(request, response);
     }
 
     /**
@@ -102,7 +75,7 @@ public class ProductStatisticsController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -114,4 +87,5 @@ public class ProductStatisticsController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

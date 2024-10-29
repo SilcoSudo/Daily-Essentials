@@ -132,7 +132,7 @@ public class Fillter implements Filter {
                 chain.doFilter(request, response);
                 return;
             }
-            if (path.endsWith("/Authen/Login")) {
+            if (path.endsWith("/Authen/Login") || path.endsWith("/Authen/forgot_changepass") || path.endsWith("/Authen/forgot_otp") || path.endsWith("/Authen/forgot") || path.endsWith("/Authen/forgot_otp-2 ")) {
                 chain.doFilter(request, response);
                 return;
             }
@@ -158,7 +158,7 @@ public class Fillter implements Filter {
                 httpResponse.sendRedirect(httpRequest.getContextPath() + "/Home");
                 return;
             }
-            
+
             if (path.endsWith("/Register") || path.endsWith("/register")) {
                 if (!path.contains("/Authen/")) {
                     httpResponse.sendRedirect(httpRequest.getContextPath() + "/Authen/Register");
@@ -177,7 +177,11 @@ public class Fillter implements Filter {
                 chain.doFilter(request, response);
                 return;
             }
-            if (path.endsWith("/Product/ViewAll")) {
+            if (path.endsWith("/Product/ViewAll") || path.endsWith("/Product/Detail") || path.endsWith("/Product/AddToCart")) {
+                chain.doFilter(request, response);
+                return;
+            }
+            if (path.endsWith("/Category/View") || path.endsWith("/Category/Search")) {
                 chain.doFilter(request, response);
                 return;
             }
@@ -196,7 +200,11 @@ public class Fillter implements Filter {
             int userID = authenDAO.getUserIdByUsername(username);
             int totalCartItems = cartDAO.getTotalCartItems(userID);
             session.setAttribute("totalCartItems", totalCartItems);
-            
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<CategoryModel> categoryModel = categoryDAO.getFullLabel();
+            session.setAttribute("fullLabel", categoryModel);
+
+        } else {
             CategoryDAO categoryDAO = new CategoryDAO();
             List<CategoryModel> categoryModel = categoryDAO.getFullLabel();
             session.setAttribute("fullLabel", categoryModel);

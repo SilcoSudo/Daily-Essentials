@@ -64,9 +64,18 @@ public class CategoryController extends HttpServlet {
         String part[] = path.split("/");
         if (part[3].equalsIgnoreCase("Search")) {
             String searchTerm = request.getParameter("search");
-            System.out.println("search: " + searchTerm);
             CategoryDAO categoryDAO = new CategoryDAO();
             List<ProductModel> searchProducts = categoryDAO.searchProducts(searchTerm);
+            Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
+            int userId = (userIdObj != null) ? userIdObj : 0;
+            List<ProductModel> productHaveInCart = categoryDAO.getProductInCartWhenSearch(searchProducts, userId);
+            for (ProductModel e : searchProducts) {
+                for(ProductModel j: productHaveInCart) {
+                    if(j.getProductId() == e.getProductId()) {
+                        e.setQuantityInCart(j.getQuantityInCart());
+                    }
+                }
+            }
             HttpSession session = request.getSession();
             session.setAttribute("productList", searchProducts);
 
@@ -87,6 +96,9 @@ public class CategoryController extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write("{\"status\":\"success\"}");
 
+        }
+        if (part[3].equalsIgnoreCase("View")) {
+            request.getRequestDispatcher("/View/category.jsp").forward(request, response);
         }
     }
 

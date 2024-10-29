@@ -31,11 +31,6 @@ public class StaffViewOrderController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        ViewOrderDAO orders = new ViewOrderDAO();
-        List<OrderHistory> orderlist = orders.getAllOrder();
-        request.setAttribute("orderlist", orderlist);
-        request.getRequestDispatcher("View/staffViewOrder.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,8 +53,7 @@ public class StaffViewOrderController extends HttpServlet {
         } else {
             request.setAttribute("errorMessage", "Không có đơn hàng nào.");
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("View/staffViewOrder.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("View/staffViewOrder.jsp").forward(request, response);
 
     }
 

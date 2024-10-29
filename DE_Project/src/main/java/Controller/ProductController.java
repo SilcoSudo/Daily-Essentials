@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 public class ProductController extends HttpServlet {
@@ -60,7 +61,7 @@ public class ProductController extends HttpServlet {
         if (part[2].equalsIgnoreCase("Product")) {
             if (part.length > 3 && part[3].equalsIgnoreCase("ViewAll")) {
                 int offset = 15;
-                
+
                 ProductDAO productDAO = new ProductDAO();
                 List<ProductModel> productList = productDAO.getRemainingProducts(offset);
                 response.setContentType("application/json");
@@ -70,6 +71,28 @@ public class ProductController extends HttpServlet {
                 String jsonResponse = gson.toJson(productList);
 
                 response.getWriter().write(jsonResponse);
+            }
+            if (part.length > 3 && part[3].equalsIgnoreCase("Detail")) {
+                int productId = Integer.parseInt(request.getParameter("id"));
+                ProductDAO productDAO = new ProductDAO();
+                HttpSession session = request.getSession();
+                int quantityReal;
+
+                Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
+                int userId = (userIdObj != null) ? userIdObj : 0;
+                if (userId == 0) {
+                    quantityReal = 1;
+                } else {
+                    quantityReal = productDAO.getQuantityRemain(userId, productId);
+                }
+                List<ProductModel> productDetail = productDAO.getProductDetails(productId);
+                int quantiyInWare = productDetail.get(0).getProductQuantity() - quantityReal;
+                productDetail.get(0).setProductQuantity(quantiyInWare);
+                session.setAttribute("productName", productDetail.get(0).getProductName());
+                session.setAttribute("productDetail", productDetail);
+                session.setAttribute("productInCart", quantityReal);
+                request.getRequestDispatcher("/View/productDetail.jsp").forward(request, response);
+
             }
         }
     }
@@ -85,10 +108,13 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String path = request.getRequestURI();
+        String part[] = path.split("/");
+        if(part[3].equalsIgnoreCase("AddToCart")){
+            System.out.println("1");
+        }
+        
     }
-
-  
 
     /**
      * Returns a short description of the servlet.
