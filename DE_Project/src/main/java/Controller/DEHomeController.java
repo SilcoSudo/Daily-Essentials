@@ -4,19 +4,15 @@
  */
 package Controller;
 
-import DAO.ProductDAO;
-import Model.ProductModel;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
+import java.util.Arrays;
 
-public class ProductController extends HttpServlet {
+public class DEHomeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +31,10 @@ public class ProductController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductController</title>");
+            out.println("<title>Servlet DEHomeController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProductController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DEHomeController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,43 +54,14 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         String part[] = path.split("/");
-        if (part[2].equalsIgnoreCase("Product")) {
-            if (part.length > 3 && part[3].equalsIgnoreCase("ViewAll")) {
-                int offset = 15;
-
-                ProductDAO productDAO = new ProductDAO();
-                List<ProductModel> productList = productDAO.getRemainingProducts(offset);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-
-                Gson gson = new Gson();
-                String jsonResponse = gson.toJson(productList);
-
-                response.getWriter().write(jsonResponse);
-            }
-            if (part.length > 3 && part[3].equalsIgnoreCase("Detail")) {
-                int productId = Integer.parseInt(request.getParameter("id"));
-                ProductDAO productDAO = new ProductDAO();
-                HttpSession session = request.getSession();
-                int quantityReal;
-
-                Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
-                int userId = (userIdObj != null) ? userIdObj : 0;
-                if (userId == 0) {
-                    quantityReal = 1;
-                } else {
-                    quantityReal = productDAO.getQuantityRemain(userId, productId);
-                }
-                List<ProductModel> productDetail = productDAO.getProductDetails(productId);
-                int quantiyInWare = productDetail.get(0).getProductQuantity() - quantityReal;
-                productDetail.get(0).setProductQuantity(quantiyInWare);
-                session.setAttribute("productName", productDetail.get(0).getProductName());
-                session.setAttribute("productDetail", productDetail);
-                session.setAttribute("productInCart", quantityReal);
-                request.getRequestDispatcher("/View/productDetail.jsp").forward(request, response);
-
+        if (part.length > 2 && part[2].equalsIgnoreCase("DEHome")) {
+            if (part.length > 3 && part[3].equalsIgnoreCase("Manage-Orders")) {
+                request.getRequestDispatcher("/View/staffViewOrder.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("/View/staffViewStatistics.jsp").forward(request, response);
             }
         }
+
     }
 
     /**
@@ -108,12 +75,7 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getRequestURI();
-        String part[] = path.split("/");
-        if(part[3].equalsIgnoreCase("AddToCart")){
-            System.out.println("1");
-        }
-        
+        processRequest(request, response);
     }
 
     /**

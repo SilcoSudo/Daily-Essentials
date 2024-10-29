@@ -9,7 +9,7 @@ $(document).ready(function () {
         type: "GET",
         data: { search: searchQuery },
         success: function (response) {
-          window.location.href = `${contextPath}/View/category.jsp`;
+          window.location.href = `${contextPath}/Category/View`;
         },
         error: function (xhr, status, error) {
           console.error("Error fetching data: " + error);
@@ -27,7 +27,7 @@ $(document).ready(function () {
       type: "POST",
       data: { categoryId: categoryId },
       success: function () {
-        window.location.href = `${contextPath}/View/category.jsp`;
+        window.location.href = `${contextPath}/Category/View`;
       },
       error: function (xhr, status, error) {
         console.log("Có lỗi xảy ra:", error);

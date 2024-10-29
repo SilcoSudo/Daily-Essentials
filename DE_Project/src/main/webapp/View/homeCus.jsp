@@ -68,7 +68,7 @@
                 <p class="title">Sản Phẩm</p>
                 <div class="w-products">
                     <c:forEach var="product" items="${productList}">
-                        <figure class="product-item">
+                        <figure class="product-item" data-product-id="${product.productId}">
                             <div class="w-product-item">
                                 <img src="${pageContext.request.contextPath}/${product.imageUrl}" class="product-img" />
                                 <div class="product-title">${product.productName}</div>

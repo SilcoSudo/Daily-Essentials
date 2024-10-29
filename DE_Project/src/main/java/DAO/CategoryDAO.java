@@ -36,10 +36,11 @@ public class CategoryDAO {
             if (i > 0) {
                 sql.append(" OR "); // Thêm OR giữa các từ
             }
-            sql.append("(p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE N'% ").append(searchTerms[i]).append(" %' ");
-            sql.append("OR p.product_description COLLATE SQL_Latin1_General_CP1_CI_AI LIKE N'% ").append(searchTerms[i]).append(" %' ");
-            sql.append("OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE N'% ").append(searchTerms[i]).append(" %' ");
-            sql.append("OR l.label_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE N'% ").append(searchTerms[i]).append(" %')");
+            sql.append("(p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE N'%").append(searchTerms[i]).append("%' ");
+            sql.append("OR p.product_description COLLATE SQL_Latin1_General_CP1_CI_AI LIKE N'%").append(searchTerms[i]).append("%' ");
+            sql.append("OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE N'%").append(searchTerms[i]).append("%' ");
+            sql.append("OR l.label_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE N'%").append(searchTerms[i]).append("%')");
+
         }
 
         try ( Connection connection = DB.DBConnect.getConnection();  PreparedStatement statement = connection.prepareStatement(sql.toString())) {
@@ -133,6 +134,48 @@ public class CategoryDAO {
 
         } catch (SQLException e) {
             System.out.println("getFullLabel: " + e);
+        }
+        return result;
+    }
+
+    public List<ProductModel> getProductInCartWhenSearch(List<ProductModel> product_id, int user_id) {
+        List<ProductModel> result = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT p.product_id, c.quantity ");
+        query.append("FROM product p ");
+        query.append("JOIN cart c ON c.product_id = p.product_id ");
+        query.append("JOIN user_profile up ON up.user_id = c.user_id ");
+        if (user_id != 0) {
+            query.append("WHERE c.user_id = ? AND ");
+        } else {
+            query.append("WHERE");
+        }
+        query.append("p.product_id IN (");
+        for (int i = 0; i < product_id.size(); i++) {
+            query.append("?");
+            if (i < product_id.size() - 1) {
+                query.append(", ");
+            }
+        }
+        query.append(")");
+
+        try ( Connection connection = DB.DBConnect.getConnection();  PreparedStatement statement = connection.prepareStatement(query.toString())) {
+
+            statement.setInt(1, user_id);
+
+            for (int i = 0; i < product_id.size(); i++) {
+                statement.setInt(i + 2, product_id.get(i).getProductId());
+            }
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                ProductModel e = new ProductModel();
+                e.setProductId(rs.getInt("product_id"));
+                e.setQuantityInCart(rs.getInt("quantity"));
+                result.add(e);
+            }
+        } catch (SQLException e) {
+            System.out.println("getProductsInCart: " + e);
         }
         return result;
     }

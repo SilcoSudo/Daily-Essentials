@@ -101,4 +101,8 @@ button {
     margin: 5px 0;
 }
 
+figure.product-item:hover {
+    transform: scale(1.01);
+}
+
 /* ------------------------------ */

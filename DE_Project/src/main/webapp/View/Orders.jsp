@@ -16,7 +16,7 @@
             <div class="w-orders">
                 <div class="products-list">
                     <c:forEach var="product" items="${cartProducts}">
-                        <figure>
+                        <figure data-product-id="${product.productId}">
                             <div class="product-info">
                                 <img
                                     src="${pageContext.request.contextPath}/${product.imageUrl}"

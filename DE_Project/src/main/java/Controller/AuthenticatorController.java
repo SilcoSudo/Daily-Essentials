@@ -263,7 +263,7 @@ public class AuthenticatorController extends HttpServlet {
             String role = authen.getRole(username);
             
             if (role.equals("admin")) {
-                response.sendRedirect(request.getContextPath() + "/Homes");
+                response.sendRedirect(request.getContextPath() + "/DEHome");
             } else {
                 session.setAttribute("userFullName", fullNameUser);
                 response.addCookie(usernameCookie);

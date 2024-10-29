@@ -37,7 +37,7 @@ $(document).ready(function () {
       var productHtml = "";
       if (product.quantityInCart > 0) {
         productHtml = `
-          <figure class="product-item">
+          <figure class="product-item" data-product-id="${product.productId}">
               <div class="w-product-item">
                   <img src="${contextPath}/${product.imageUrl}" class="product-img" />
                   <div class="product-title">${product.productName}</div>
@@ -60,7 +60,7 @@ $(document).ready(function () {
         `;
       } else {
         productHtml = `
-          <figure class="product-item">
+          <figure class="product-item" data-product-id="${product.productId}">
               <div class="w-product-item">
                   <img src="${contextPath}/${product.imageUrl}" class="product-img" />
                   <div class="product-title">${product.productName}</div>
@@ -242,5 +242,24 @@ $(document).ready(function () {
         alert(xhr.responseText);
       },
     });
+  });
+
+  const productImages = document.querySelectorAll(".product-img");
+  const productTitles = document.querySelectorAll(".product-title");
+
+  function redirectToProductDetail(event) {
+    const productId = event.currentTarget
+      .closest("figure")
+      .getAttribute("data-product-id");
+    if (productId) {
+      window.location.href = `${contextPath}/Product/Detail?id=${productId}`;
+    }
+  }
+
+  productImages.forEach((img) => {
+    img.addEventListener("click", redirectToProductDetail);
+  });
+  productTitles.forEach((title) => {
+    title.addEventListener("click", redirectToProductDetail);
   });
 });

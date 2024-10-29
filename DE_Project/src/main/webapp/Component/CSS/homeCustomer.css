@@ -166,6 +166,12 @@
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
+    cursor: pointer;
+}
+
+.product-item .product-title,
+.product-item .product-price {
+    cursor: pointer;
 }
 
 .w-product-item {
@@ -300,6 +306,8 @@
 
 .w-container-label {
     display: grid;
+    width: 100%;
+    flex: .7;
 }
 
 .w-label {

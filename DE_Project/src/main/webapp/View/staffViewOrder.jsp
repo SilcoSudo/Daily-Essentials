@@ -20,169 +20,172 @@
         <jsp:useBean id= "listorder" class="DAO.ViewOrderDAO" scope="request"></jsp:useBean>
         </head>
         <body>
-            <div class="container">
-                <h1>Quản lý đơn hàng</h1>
-                <div class="filter-section">
-                    <div>
-                        <label>ID Đơn hàng :</label>
-                        <input type="text" id="searchOrderId" placeholder="Nhập ID đơn hàng"/>
+            <div class="w-container">
+            <jsp:include page="headers.jsp"></jsp:include>
+                <div class="container">
+                    <h1>Quản lý đơn hàng</h1>
+                    <div class="filter-section">
+                        <div>
+                            <label>ID Đơn hàng :</label>
+                            <input type="text" id="searchOrderId" placeholder="Nhập ID đơn hàng"/>
+                        </div>
+                        <div>
+                            <label>Tình trạng đơn :</label>
+                            <select id="statusFilter">
+                                <option value="">Tất cả</option>
+                                <option value="Đang xử lý">Đang xử lý</option>
+                                <option value="Ðã xác nhận">Ðã xác nhận</option>
+                                <option value="Đang vận chuyển">Đang vận chuyển</option>
+                                <option value="Ðã hoàn thành">Ðã hoàn thành</option>
+                                <option value="Ðã hủy">Ðã hủy</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Tổng số tiền :</label>
+                            <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
+                        </div>
                     </div>
-                    <div>
-                        <label>Tình trạng đơn :</label>
-                        <select id="statusFilter">
-                            <option value="">Tất cả</option>
-                            <option value="Đang xử lý">Đang xử lý</option>
-                            <option value="Ðã xác nhận">Ðã xác nhận</option>
-                            <option value="Đang vận chuyển">Đang vận chuyển</option>
-                            <option value="Ðã hoàn thành">Ðã hoàn thành</option>
-                            <option value="Ðã hủy">Ðã hủy</option>
-                        </select>
+                    <div class="filter-section">
+                        <div>
+                            <label for="Date"> Ngày tạo :</label>
+                            <input type="Date"  id="searchDate">
+                        </div>
                     </div>
-                    <div>
-                        <label>Tổng số tiền :</label>
-                        <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
-                    </div>
-                </div>
-                <div class="filter-section">
-                    <div>
-                        <label for="Date"> Ngày tạo :</label>
-                        <input type="Date"  id="searchDate">
-                    </div>
-                </div>
 
-                <div class="table-container" items="${orderlist}" var="order">
-                <table id="orderTable">
-                    <thead>
-                        <tr>
-                            <th>ID Đơn hàng</th>
-                            <th>ID Khách hàng</th>
-                            <th>Tổng số tiền</th>
-                            <th>Trạng thái đơn hàng</th>
-                            <th>Ngày tạo</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <c:forEach items="${listorder.allOrder}" var="order">
-                        <tbody id="orderBody">
-                            <tr>
-                                <td>${order.order_id} </td>
-                                <td>${order.user_id}</td>
-                                <td>${order.total_amount}</td>
-                                <td>${order.orderStatusString}</td>
-                                <td>${order.order_date}</td>
-                                <td class="actions">
-                                    <a href="#" class="toggle-menu-btn">
-                                        <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
-                                    </a>
-                                    <div class="actions-menu">
-                                        <a href="#" class="view-details" data-order-id="${order.order_id}">Xem chi tiết</a>
-                                        <a href="#" class="update-status" data-order-id="${order.order_id}">Cập nhật trạng thái đơn hàng</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </c:forEach>
-                </table>
-            </div>
-        </div>
-
-        <!-- Popup Xem chi tiết -->
-        <div class="popup" id="popup-details">
-            <div class="popup-content">
-                <div class="popup-header">
-                    <h2>Chi tiết đơn hàng</h2>
-                </div>
-                <div class="popup-body">
-                    <table>
-                        <tr>
-                            <th>ID Đơn hàng</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>ID Khách hàng</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Tình trạng đơn hàng</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Ngày tạo</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Tổng số tiền</th>
-                            <td></td>
-                        </tr>
-                    </table>
-
-                    <br />
-
-                    <table>
+                    <div class="table-container" items="${orderlist}" var="order">
+                    <table id="orderTable">
                         <thead>
                             <tr>
-                                <th>Ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Giá</th>
+                                <th>ID Đơn hàng</th>
+                                <th>ID Khách hàng</th>
+                                <th>Tổng số tiền</th>
+                                <th>Trạng thái đơn hàng</th>
+                                <th>Ngày tạo</th>
+                                <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><img src="" alt="product-image"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><img src="" alt="product-image"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
+                        <c:forEach items="${listorder.allOrder}" var="order">
+                            <tbody id="orderBody">
+                                <tr>
+                                    <td>${order.order_id} </td>
+                                    <td>${order.user_id}</td>
+                                    <td>${order.total_amount}</td>
+                                    <td>${order.orderStatusString}</td>
+                                    <td>${order.order_date}</td>
+                                    <td class="actions">
+                                        <a href="#" class="toggle-menu-btn">
+                                            <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
+                                        </a>
+                                        <div class="actions-menu">
+                                            <a href="#" class="view-details" data-order-id="${order.order_id}">Xem chi tiết</a>
+                                            <a href="#" class="update-status" data-order-id="${order.order_id}">Cập nhật trạng thái đơn hàng</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </c:forEach>
                     </table>
                 </div>
-                <div class="popup-footer">
-                    <td></td>
-                    <br/><br/>
-                    <button class="close-btn" data-popup-id="popup-details">Đóng</button>
-                </div>
             </div>
-        </div>
 
-        <!-- Popup Cập nhật trạng thái đơn -->
-        <div class="popup" id="popup-update">
-            <div class="popup-content popup-update-content">
-                <div class="popup-header">
-                    <h2>Cập nhật trạng thái đơn hàng</h2>
-                </div>
-                <div class="popup-body">
-                    <form method="post" action="ViewOrders">
+            <!-- Popup Xem chi tiết -->
+            <div class="popup" id="popup-details">
+                <div class="popup-content">
+                    <div class="popup-header">
+                        <h2>Chi tiết đơn hàng</h2>
+                    </div>
+                    <div class="popup-body">
                         <table>
                             <tr>
                                 <th>ID Đơn hàng</th>
-                                <td id="update-order-id"></td>
-                            <input type="hidden" name="order_id" id="hidden-order-id"> 
+                                <td></td>
                             </tr>
                             <tr>
-                                <th>Trạng thái đơn</th>
-                                <td>
-                                    <select id="order-status-select" name="order_status">
-                                        <option value="0">Đang xử lý</option>
-                                        <option value="1">Ðã xác nhận</option>
-                                        <option value="2">Đang vận chuyển</option>
-                                        <option value="3">Ðã hoàn thành</option>
-                                        <option value="4">Ðã hủy</option>
-                                    </select>
-                                </td>
+                                <th>ID Khách hàng</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Tình trạng đơn hàng</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Ngày tạo</th>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th>Tổng số tiền</th>
+                                <td></td>
                             </tr>
                         </table>
-                        <div class="popup-footer">
-                            <button type="button" class="close-btn" data-popup-id="popup-update">Đóng</button>
-                            <button type="submit">Cập nhật</button>
-                        </div>
-                    </form>
+
+                        <br />
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><img src="" alt="product-image"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><img src="" alt="product-image"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="popup-footer">
+                        <td></td>
+                        <br/><br/>
+                        <button class="close-btn" data-popup-id="popup-details">Đóng</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popup Cập nhật trạng thái đơn -->
+            <div class="popup" id="popup-update">
+                <div class="popup-content popup-update-content">
+                    <div class="popup-header">
+                        <h2>Cập nhật trạng thái đơn hàng</h2>
+                    </div>
+                    <div class="popup-body">
+                        <form method="post" action="ViewOrders">
+                            <table>
+                                <tr>
+                                    <th>ID Đơn hàng</th>
+                                    <td id="update-order-id"></td>
+                                <input type="hidden" name="order_id" id="hidden-order-id"> 
+                                </tr>
+                                <tr>
+                                    <th>Trạng thái đơn</th>
+                                    <td>
+                                        <select id="order-status-select" name="order_status">
+                                            <option value="0">Đang xử lý</option>
+                                            <option value="1">Ðã xác nhận</option>
+                                            <option value="2">Đang vận chuyển</option>
+                                            <option value="3">Ðã hoàn thành</option>
+                                            <option value="4">Ðã hủy</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="popup-footer">
+                                <button type="button" class="close-btn" data-popup-id="popup-update">Đóng</button>
+                                <button type="submit">Cập nhật</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

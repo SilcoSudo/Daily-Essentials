@@ -1,9 +1,6 @@
-@import url('./mainStyle.css');
-
 .container {
-    width: 80%;
-    margin: 20px auto;
-    background-color: #fff;
+    margin: 20px;
+    background-color: var(--white-100);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -26,7 +23,8 @@ h1 {
     margin-bottom: 20px;
 }
 
-.filter-section input, .filter-section select {
+.filter-section input,
+.filter-section select {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -42,20 +40,19 @@ h1 {
     cursor: pointer;
 }
 
-.table-container {
-    
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid #ddd;
 }
 
-th, td {
+th,
+td {
     padding: 12px;
     text-align: left;
 }
