@@ -3,7 +3,7 @@
 <%@ page import="Models.Account" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
-<%@ page import="DAOs.AccountDAO" %>
+<%@ page import="DAO.AccountDAO" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -55,10 +55,10 @@
     <body>
 
         <%
-            // Initialize the AccountDAO
+            
             AccountDAO accountDAO = new AccountDAO();
 
-            // Get search parameters
+            
             String searchId = request.getParameter("search-accountId");
             String searchUsername = request.getParameter("search-username");
             String status = request.getParameter("status");
