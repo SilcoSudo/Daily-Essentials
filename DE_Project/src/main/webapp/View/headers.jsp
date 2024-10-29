@@ -18,7 +18,7 @@
     <ul class="slidebar-list-icon">
       <li
         class="slidebar-icon"
-        data-url="${pageContext.request.contextPath}/DEHome"
+        data-url="${pageContext.request.contextPath}/ViewProductStatistics"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@
       </li>
       <li
         class="slidebar-icon"
-        data-url="${pageContext.request.contextPath}/DEHome/Manage-Orders"
+        data-url="${pageContext.request.contextPath}/ViewOrders"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
