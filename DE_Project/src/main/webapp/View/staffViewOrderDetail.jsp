@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewOrder.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffUpdateStatusOrder.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewOrderDetail.css" type="text/css"/>
+        
     </head>
     <body>
         <div class="container">
@@ -66,7 +67,7 @@
                 </table>
             </div>
             <div class="popup-footer">
-                <a href="${pageContext.request.contextPath}/ViewOrders" class="update-button">Quay lại danh sách đơn hàng</a>
+                <a href="${pageContext.request.contextPath}/DEHome/Manage-Orders" class="update-button">Quay lại danh sách đơn hàng</a>
             </div>
         </div>
     </body>

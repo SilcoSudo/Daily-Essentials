@@ -17,6 +17,7 @@
         <title>Admin/Home</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewStatistics.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/headers.css" type="text/css"/>
+        <jsp:useBean id= "productlist" class="DAO.ProductStatisticsDAO" scope="request"></jsp:useBean>
     </head>
     <body>
         <div class="w-container">
@@ -32,7 +33,7 @@
                             <br>
                             <p></p>
                             <br>
-                            <h2>${totalRevenue}</h2>
+                            <h2>${productlist.totalRevenue.total_revenue}</h2>
                         <br>
                         <p></p>
                     </div>
@@ -41,7 +42,7 @@
                     <div class="card order-card">
                         <h3>Thống kê đơn hàng</h3>
                         <div class="order-content">
-                            <c:forEach items="${orderStatistics}" var="order">
+                            <c:forEach items="${productlist.orderStatusStatistics}" var="order">
                                 <div class="order-row">
                                     <div>
                                         <h5>${order.orderStatusString}</h5> 
@@ -82,7 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${productlist}" var="productlist">
+                                <c:forEach items="${productlist.allProductStatistics}" var="productlist">
                                     <tr>
                                         <td>${productlist.product_id}</td>
                                         <td>${productlist.category_name}</td>
@@ -120,7 +121,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="top_product" items="${topSellingProducts}">
+                                <c:forEach var="top_product" items="${productlist.getTopSellingProducts(2)}">
                                     <tr>
                                         <td>${top_product.product_id}</td>
                                         <td>${top_product.category_name}</td>

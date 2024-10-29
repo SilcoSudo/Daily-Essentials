@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import DAO.ViewOrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -75,7 +76,9 @@ public class DEHomeController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        updateOrderStatus(request, response);
+        doGet(request, response);
     }
 
     /**
@@ -87,5 +90,19 @@ public class DEHomeController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void updateOrderStatus(HttpServletRequest request, HttpServletResponse response) {
+        String orderId = request.getParameter("order_id");
+        String orderStatus = request.getParameter("order_status");
+
+        ViewOrderDAO orderDAO = new ViewOrderDAO();
+        boolean updateSuccess = orderDAO.updateOrderStatus(Integer.parseInt(orderId), Integer.parseInt(orderStatus));
+
+        if (updateSuccess) {
+            request.setAttribute("successMessage", "Trạng thái đơn hàng đã được cập nhật.");
+        } else {
+            request.setAttribute("errorMessage", "Cập nhật trạng thái thất bại.");
+        }
+    }
 
 }

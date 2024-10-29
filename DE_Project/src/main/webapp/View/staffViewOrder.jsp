@@ -96,7 +96,7 @@
                         <h2>Cập nhật trạng thái đơn hàng</h2>
                     </div>
                     <div class="popup-body">
-                        <form method="post" action="ViewOrders">
+                        <form method="post" action="Manage-Orders">
                             <table>
                                 <tr>
                                     <th>ID Đơn hàng</th>
