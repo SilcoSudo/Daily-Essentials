@@ -18,12 +18,22 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewStatistics.css" type="text/css"/>
     </head>
     <body>
-
-        <div class="container">
+        <div class="sidebar" id="sidebar">
+            <button class="toggle-btn" id="toggle-btn">&gt;</button>
+            <div class="logo">DE</div>
+            <ul class="menu">
+                <li><a href="${pageContext.request.contextPath}/ViewProductStatistics">Trang chủ</a></li>
+                <li><a href="#">Quản lý tài khoản</a></li>
+                <li><a href="${pageContext.request.contextPath}/ViewOrders">Quản lý đơn hàng</a></li>
+                <li><a href="#">Quản lý hàng hóa</a></li>   
+            </ul>
+            <div class="footer">Admin</div>
+        </div>
+        <div class="content">
+            <h1>Admin Dashboard</h1>
+            <br>
             <!-- Header cards for Doanh Thu and Đơn Hàng -->
             <div class="header">
-                
-                
                 <!-- Doanh Thu Card -->
                 <div class="card revenue-card">
                     <h3>Doanh Thu</h3>  
@@ -133,5 +143,14 @@
             </div>
         </div>
 
+        <script>
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('toggle-btn');
+
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
+            });
+        </script>
     </body>
 </html>
