@@ -229,13 +229,14 @@ public class AuthenticatorController extends HttpServlet {
             boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, genders, email);
             if (isRegistered) {
                 response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().write("{\"success\": true}");
             } else {
-                response.getWriter().write("Hãy thay đổi tài khoản khác");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"success\": false}");
             }
         } else {
-            response.getWriter().write("Mật khẩu xác nhận không khớp");
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"success\": false}");
         }
         out.flush();
     }

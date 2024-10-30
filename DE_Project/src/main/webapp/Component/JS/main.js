@@ -93,10 +93,15 @@ $(document).ready(function () {
       data: formData,
       dataType: "json",
       success: function (response) {
-          window.location.href = `${contextPath}/Authen/Login`;
+        window.location.href = `${contextPath}/Authen/Login`;
       },
       error: function (response) {
-        alert(response.responseText);
+        // Kiểm tra mã trạng thái HTTP
+        if (response.status === 400) {
+          alert("Hãy thay đổi tài khoản khác.");
+        } else if (response.status === 401) {
+          alert("Mật khẩu xác nhận không khớp.");
+        }
       },
     });
   });

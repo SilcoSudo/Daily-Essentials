@@ -207,8 +207,11 @@ public class Fillter implements Filter {
         } else {
             CategoryDAO categoryDAO = new CategoryDAO();
             List<CategoryModel> categoryModel = categoryDAO.getFullLabel();
-            
-            session.setAttribute("fullLabel", categoryModel);
+            try {
+                session.setAttribute("fullLabel", categoryModel);
+            } catch (Exception e) {
+                System.out.println("session: " + e);
+            }
         }
 
         if (!isLoggedIn && !hasValidCookie) {
