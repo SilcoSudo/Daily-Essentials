@@ -4,6 +4,7 @@
  */
 package Model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -15,14 +16,14 @@ public class OrderHistory {
     private int order_id;
     private int user_id;
     private Date order_date;
-    private double total_amount;
+    private BigDecimal total_amount;
     private int order_status;
     private String orderStatusString;
-    private double fee_shipp;
+    private BigDecimal fee_shipp;
     
     
 
-    public OrderHistory(int order_id, int user_id, Date order_date, double total_amount, int order_status) {
+    public OrderHistory(int order_id, int user_id, Date order_date, BigDecimal total_amount, int order_status) {
         this.order_id = order_id;
         this.user_id = user_id;
         this.order_date = order_date;
@@ -30,7 +31,7 @@ public class OrderHistory {
         this.order_status = order_status;
     }
     
-    public OrderHistory(int order_id, int user_id, Date order_date, double total_amount, int order_status, double fee_shipp) {
+    public OrderHistory(int order_id, int user_id, Date order_date, BigDecimal total_amount, int order_status, BigDecimal fee_shipp) {
         this.order_id = order_id;
         this.user_id = user_id;
         this.order_date = order_date;
@@ -42,11 +43,11 @@ public class OrderHistory {
     public OrderHistory() {
     }
 
-    public double getFee_shipp() {
+    public BigDecimal getFee_shipp() {
         return fee_shipp;
     }
 
-    public void setFee_shipp(double fee_shipp) {
+    public void setFee_shipp(BigDecimal fee_shipp) {
         this.fee_shipp = fee_shipp;
     }
 
@@ -103,11 +104,11 @@ public class OrderHistory {
                 + '}';
     }
 
-    public double getTotal_amount() {
+    public BigDecimal getTotal_amount() {
         return total_amount;
     }
 
-    public void setTotal_amount(double total_amount) {
+    public void setTotal_amount(BigDecimal total_amount) {
         this.total_amount = total_amount;
     }
 }

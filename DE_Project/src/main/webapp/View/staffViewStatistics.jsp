@@ -18,9 +18,9 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewStatistics.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/headers.css" type="text/css"/>
         <jsp:useBean id= "productlist" class="DAO.ProductStatisticsDAO" scope="request"></jsp:useBean>
-    </head>
-    <body>
-        <div class="w-container">
+        </head>
+        <body>
+            <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
                 <div class="container">
                     <!-- Header cards for Doanh Thu and Đơn Hàng -->
@@ -33,7 +33,7 @@
                             <br>
                             <p></p>
                             <br>
-                            <h2>${productlist.totalRevenue.total_revenue}</h2>
+                            <h2 class="product-price">${productlist.totalRevenue.total_revenue}</h2>
                         <br>
                         <p></p>
                     </div>
@@ -89,7 +89,7 @@
                                         <td>${productlist.category_name}</td>
                                         <td>${productlist.product_name}</td>
                                         <td>${productlist.quantitySold}</td>
-                                        <td>${productlist.revenue}</td>
+                                        <td class="product-price">${productlist.revenue}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -136,5 +136,16 @@
                 </div>
             </div>
         </div>
+        <script>
+            function formatPrice(price) {
+                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+
+            $(".product-price").each(function () {
+                var priceText = $(this).text().replace(" ₫", "");
+                var formattedPrice = formatPrice(priceText);
+                $(this).text(formattedPrice + " ₫");
+            });
+        </script>
     </body>
 </html>

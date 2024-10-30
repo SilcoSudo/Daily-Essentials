@@ -70,7 +70,7 @@
                                 <tr>
                                     <td>${order.order_id} </td>
                                     <td>${order.user_id}</td>
-                                    <td>${order.total_amount}</td>
+                                    <td class="product-price">${order.total_amount}</td>
                                     <td>${order.orderStatusString}</td>
                                     <td>${order.order_date}</td>
                                     <td class="actions">
@@ -131,6 +131,16 @@
                 const updateStatusLinks = document.querySelectorAll('.update-status');
                 const closeButtons = document.querySelectorAll('.close-btn');
                 const toggleMenuButtons = document.querySelectorAll('.toggle-menu-btn');
+
+                function formatPrice(price) {
+                    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
+                $(".product-price").each(function () {
+                    var priceText = $(this).text().replace(" ₫", "");
+                    var formattedPrice = formatPrice(priceText);
+                    $(this).text(formattedPrice + " ₫");
+                });
 
                 function openPopup(popupId) {
                     document.getElementById(popupId).style.display = 'flex';

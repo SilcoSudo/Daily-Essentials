@@ -58,9 +58,9 @@ public class ViewOrderDAO {
                         rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
-                        rs.getDouble("total_amount"),
+                        rs.getBigDecimal("total_amount"),
                         rs.getInt("order_status"),
-                        rs.getDouble("fee_shipp"));
+                        rs.getBigDecimal("fee_shipp"));
 
                 orders.setOrderStatusString(getOrderStatus(orders.getOrder_status()));
                 orderlist.add(orders);
@@ -85,7 +85,7 @@ public class ViewOrderDAO {
                         rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
-                        rs.getDouble("total_amount"),
+                        rs.getBigDecimal("total_amount"),
                         rs.getInt("order_status"));
 
                 orders.setOrderStatusString(getOrderStatus(orders.getOrder_status()));
@@ -128,9 +128,9 @@ public class ViewOrderDAO {
                         rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
-                        rs.getDouble("total_amount"),
+                        rs.getBigDecimal("total_amount"),
                         rs.getInt("order_status"),
-                        rs.getDouble("fee_shipp"));
+                        rs.getBigDecimal("fee_shipp"));
 
                 order.setOrderStatusString(getOrderStatus(order.getOrder_status()));
             }
@@ -155,7 +155,7 @@ public class ViewOrderDAO {
                 OrderDetail detail = new OrderDetail(
                         rs.getInt("product_id"),
                         rs.getInt("product_quantity"),
-                        rs.getDouble("total_price"),
+                        rs.getBigDecimal("total_price"),
                         rs.getString("product_name"),
                         rs.getString("image_url")
                 );
