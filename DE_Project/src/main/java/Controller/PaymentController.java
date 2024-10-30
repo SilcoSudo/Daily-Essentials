@@ -6,6 +6,7 @@ package Controller;
 
 import DAO.CartDAO;
 import DAO.OrdersDAO;
+import Model.LocationModel;
 import Model.ProductModel;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -98,6 +99,19 @@ public class PaymentController extends HttpServlet {
             }
 
             // Lấy phí vận chuyển từ session
+            LocationModel userAddress = cartDAO.getUserAddress(userId);
+            LocationModel locationAddress = cartDAO.getLocationAddress(userId);
+
+            if (userAddress == null || userAddress.getDistrict() == null || userAddress.getDistrict().isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("Lỗi trong quá trình thanh toán. \nVui lòng cập nhật địa chỉ cá nhân.");
+                return;
+            }
+            if (locationAddress == null || locationAddress.getDistrict() == null || locationAddress.getDistrict().isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("Lỗi trong quá trình thanh toán. \nVui lòng cập nhật địa chỉ khu vực giao hàng.");
+                return;
+            }
             Object feeShipObj = request.getSession().getAttribute("feeShips");
             BigDecimal feeShip = (feeShipObj != null) ? BigDecimal.valueOf(((Number) feeShipObj).doubleValue()) : BigDecimal.ZERO;
 

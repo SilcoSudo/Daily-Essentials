@@ -213,12 +213,12 @@ public class AuthenDAO {
         return false;
     }
 
-    public boolean registerUser(String username, String password, String fullname, String phone, boolean gender) {
-        Connection conn = null;
-        PreparedStatement psCheck = null;
-        PreparedStatement psInsertUser = null;
-        PreparedStatement psInsertAccount = null;
-        ResultSet rs = null;
+    public boolean registerUser(String username, String password, String fullname, String phone, boolean gender, String email) {
+        Connection conn;
+        PreparedStatement psCheck;
+        PreparedStatement psInsertUser ;
+        PreparedStatement psInsertAccount;
+        ResultSet rs ;
 
         try {
             conn = DBConnect.getConnection();
@@ -232,11 +232,12 @@ public class AuthenDAO {
                 return false;
             }
 
-            String insertUserSql = "INSERT INTO user_profile (user_fullname, user_phone, gender) VALUES (?, ?, ?)";
+            String insertUserSql = "INSERT INTO user_profile (user_fullname, user_phone, gender, user_email) VALUES (?, ?, ?, ?)";
             psInsertUser = conn.prepareStatement(insertUserSql, Statement.RETURN_GENERATED_KEYS);
             psInsertUser.setString(1, fullname);
             psInsertUser.setString(2, phone);
             psInsertUser.setBoolean(3, gender);
+            psInsertUser.setString(4, email);
 
             psInsertUser.executeUpdate();
 

@@ -34,7 +34,7 @@
                             <button class="quantity-btn" id="increment">+</button>
                         </div>
 
-                        <button class="btn-add-to-cart" id="btnAddToCart_details">
+                        <button class="btn-add-to-cart" id="btnAddToCart_details" data-product-id="${p.productId}">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 class="icon"

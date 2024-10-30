@@ -37,6 +37,7 @@ public class CartDAO {
             System.out.println("insertProductToCart :" + e);
         }
     }
+    
 
     public boolean updateProductQuantity(int productId, int userId, boolean increase) {
         String updateQuery = "UPDATE cart SET quantity = quantity + ? WHERE product_id = ? AND user_id = ?";
@@ -91,6 +92,24 @@ public class CartDAO {
         }
     }
 
+    public boolean updateQuantityCartInDetail(int userId, int productId, int quantity) {
+        String query = "UPDATE cart SET quantity = ? WHERE status = 0 AND product_id = ? AND user_id = ?";
+        boolean result = false;
+
+        try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, quantity);
+            ps.setInt(2, productId);
+            ps.setInt(3, userId);
+
+            result = ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("updateQuantityCartInDetail error: " + e.getMessage());
+        }
+        return result;
+    }
+
     public int getProductQuantityInCart(int userId, int productId) {
         String query = "SELECT quantity FROM cart WHERE user_id = ? AND product_id = ? AND status = 0";
         try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
@@ -106,24 +125,27 @@ public class CartDAO {
         return 0;
     }
 
-    public List<ProductModel> getAllProductCart() {
+    public List<ProductModel> getAllProductCart(int userId) {
         List<ProductModel> productList = new ArrayList<>();
         String query = "SELECT p.image_url, p.product_name, p.product_price, c.quantity, c.product_id\n"
                 + "FROM cart c\n"
                 + "JOIN product p on c.product_id = p.product_id \n"
-                + "WHERE c.status = 0";
+                + "WHERE c.status = 0  AND c.user_id = ?";
 
-        try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+        try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
 
-            while (rs.next()) {
-                ProductModel product = new ProductModel();
-                product.setProductId(rs.getInt("product_id"));
-                product.setImageUrl(rs.getString("image_url"));
-                product.setProductName(rs.getString("product_name"));
-                product.setProductPrice(rs.getBigDecimal("product_price"));
-                product.setQuantityInCart(rs.getInt("quantity"));
+            ps.setInt(1, userId);  // Set the userId before executing the query
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ProductModel product = new ProductModel();
+                    product.setProductId(rs.getInt("product_id"));
+                    product.setImageUrl(rs.getString("image_url"));
+                    product.setProductName(rs.getString("product_name"));
+                    product.setProductPrice(rs.getBigDecimal("product_price"));
+                    product.setQuantityInCart(rs.getInt("quantity"));
 
-                productList.add(product);
+                    productList.add(product);
+                }
             }
         } catch (SQLException e) {
             System.out.println("getAllProductCart: " + e);
@@ -153,7 +175,7 @@ public class CartDAO {
 
     public List<LocationModel> getLocation(int userID) {
         List<LocationModel> result = new ArrayList<>();
-        String query = "SELECT la.province, la.district, la.ward\n"
+        String query = "SELECT la.province_name, la.district_name, la.ward_name\n"
                 + "FROM location_area la WHERE la.user_id = ?";
 
         try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
@@ -162,9 +184,9 @@ public class CartDAO {
 
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    String province = rs.getString("province");
-                    String district = rs.getString("district");
-                    String ward = rs.getString("ward");
+                    String province = rs.getString("province_name");
+                    String district = rs.getString("district_name");
+                    String ward = rs.getString("ward_name");
                     LocationModel e = new LocationModel(province, district, ward);
                     result.add(e);
                 }
@@ -194,20 +216,23 @@ public class CartDAO {
         return result;
     }
 
-    public void insertLocation(String thanhPho, String quanHuyen, String phuongXa, int userID) {
+    public void insertLocation(int thanhPho, String thanhPho2, int quanHuyen, String quanHuyen2, int phuongXa, String phuongXa2, int userID) {
         Connection conn = null;
         PreparedStatement ps = null;
 
         try {
             conn = DB.DBConnect.getConnection();
 
-            String sql = "INSERT INTO location_area (user_id, province, district, ward) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO location_area (user_id, province, province_name, district, district_name, ward, ward_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             ps = conn.prepareStatement(sql);
             ps.setInt(1, userID);
-            ps.setString(2, thanhPho);
-            ps.setString(3, quanHuyen);
-            ps.setString(4, phuongXa);
+            ps.setInt(2, thanhPho);
+            ps.setString(3, thanhPho2);
+            ps.setInt(4, quanHuyen);
+            ps.setString(5, quanHuyen2);
+            ps.setInt(6, phuongXa);
+            ps.setString(7, phuongXa2);
 
             ps.executeUpdate();
 
@@ -216,20 +241,23 @@ public class CartDAO {
         }
     }
 
-    public void updateLocation(String thanhPho, String quanHuyen, String phuongXa, int userID) {
+    public void updateLocation(int thanhPho, String thanhPho2, int quanHuyen, String quanHuyen2, int phuongXa, String phuongXa2, int userID) {
         Connection conn = null;
         PreparedStatement ps = null;
 
         try {
             conn = DB.DBConnect.getConnection();
 
-            String sql = "UPDATE location_area SET province = ?, district = ?, ward = ? WHERE user_id = ?";
+            String sql = "UPDATE location_area SET province = ?, province_name = ?, district = ?, district_name = ?, ward = ?, ward_name = ? WHERE user_id = ?";
 
             ps = conn.prepareStatement(sql);
-            ps.setString(1, thanhPho);
-            ps.setString(2, quanHuyen);
-            ps.setString(3, phuongXa);
-            ps.setInt(4, userID);
+            ps.setInt(1, thanhPho);
+            ps.setString(2, thanhPho2);
+            ps.setInt(3, quanHuyen);
+            ps.setString(4, quanHuyen2);
+            ps.setInt(5, phuongXa);
+            ps.setString(6, phuongXa2);
+            ps.setInt(7, userID);
 
             ps.executeUpdate();
 
@@ -240,9 +268,9 @@ public class CartDAO {
 
     public List<ProductModel> getProductInCart(int userID) {
         List<ProductModel> result = new ArrayList<>();
-        String query = "SELECT *\n"
-                + "FROM cart c\n"
-                + "JOIN product p ON p.product_id = c.product_id\n"
+        String query = "SELECT p.product_id, p.product_name, p.image_url, c.quantity, p.product_price "
+                + "FROM cart c "
+                + "JOIN product p ON p.product_id = c.product_id "
                 + "WHERE c.user_id = ? AND c.status = 0";
 
         try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
@@ -251,22 +279,17 @@ public class CartDAO {
 
             try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    int product_id = rs.getInt("product_id");
-                    String product_name = rs.getString("product_name");
-                    String image_url = rs.getString("image_url");
-                    int quantity = rs.getInt("quantity");
-                    BigDecimal product_price = rs.getBigDecimal("product_price");
                     ProductModel e = new ProductModel();
-                    e.setProductId(product_id);
-                    e.setProductName(product_name);
-                    e.setImageUrl(image_url);
-                    e.setProductPrice(product_price);
-                    e.setQuantityInCart(quantity);
+                    e.setProductId(rs.getInt("product_id"));
+                    e.setProductName(rs.getString("product_name"));
+                    e.setImageUrl(rs.getString("image_url"));
+                    e.setProductPrice(rs.getBigDecimal("product_price"));
+                    e.setQuantityInCart(rs.getInt("quantity"));
                     result.add(e);
                 }
             }
         } catch (SQLException e) {
-            System.out.println("getTotalCartItems: " + e);
+            System.out.println("getProductInCart: " + e);
         }
         return result;
     }
@@ -342,6 +365,24 @@ public class CartDAO {
         } catch (SQLException e) {
             System.out.println("createNewOrder: " + e);
         }
+    }
+
+    public boolean removeCart(int userId) {
+        Connection conn;
+        PreparedStatement ps;
+        String query = "DELETE FROM cart WHERE status = 0 AND user_id = ?";
+        try {
+            conn = DB.DBConnect.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, userId);
+
+            if (ps.executeUpdate() > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("removeCart" + e);
+        }
+        return false;
     }
 
     public void insertInvoice(int orderId, BigDecimal feeShip, BigDecimal totalAmount, String invoiceStatus) {

@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import DAO.CartDAO;
 import DAO.ProductDAO;
 import Model.ProductModel;
 import com.google.gson.Gson;
@@ -69,7 +70,6 @@ public class ProductController extends HttpServlet {
 
                 Gson gson = new Gson();
                 String jsonResponse = gson.toJson(productList);
-
                 response.getWriter().write(jsonResponse);
             }
             if (part.length > 3 && part[3].equalsIgnoreCase("Detail")) {
@@ -83,7 +83,7 @@ public class ProductController extends HttpServlet {
                 if (userId == 0) {
                     quantityReal = 1;
                 } else {
-                    quantityReal = productDAO.getQuantityRemain(userId, productId);
+                    quantityReal = Math.max(productDAO.getQuantityRemain(userId, productId), 1);
                 }
                 List<ProductModel> productDetail = productDAO.getProductDetails(productId);
                 int quantiyInWare = productDetail.get(0).getProductQuantity() - quantityReal;
@@ -110,10 +110,31 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         String part[] = path.split("/");
-        if(part[3].equalsIgnoreCase("AddToCart")){
-            System.out.println("1");
+        if (part.length > 3 && part[3].equalsIgnoreCase("AddToCart")) {
+            System.out.println("AddToCart");
+            CartDAO cartDAO = new CartDAO();
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            int productID = Integer.parseInt(request.getParameter("productID"));
+            Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
+            if (userIdObj == null) {
+                response.getWriter().write("Hãy đăng nhập để thực hiện chức năng này.");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                return;
+            }
+            int userId = userIdObj;
+            if (cartDAO.getProductQuantityInCart(userId, productID) > 0) {
+                if (cartDAO.updateQuantityCartInDetail(userId, productID, quantity)) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                } else {
+                    response.getWriter().write("Có lỗi trong việc thêm sản phẩm. \nHãy quay laị sau.");
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
+            } else {
+                cartDAO.insertProductToCart(userId, productID, quantity);
+                response.setStatus(HttpServletResponse.SC_OK);
+            }
         }
-        
     }
 
     /**

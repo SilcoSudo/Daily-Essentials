@@ -97,7 +97,7 @@ public class ProductDAO {
 
     public List<ProductModel> getProductDetails(int product_id) {
         List<ProductModel> result = new ArrayList<>();
-        String query = "SELECT product_name, product_description, image_url, product_quantity, product_price\n"
+        String query = "SELECT product_id, product_name, product_description, image_url, product_quantity, product_price\n"
                 + "FROM product WHERE product_id = ?";
         try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
 
@@ -105,6 +105,7 @@ public class ProductDAO {
             ProductModel product = new ProductModel();
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
+                    product.setProductId(rs.getInt("product_id"));
                     product.setProductName(rs.getString("product_name"));
                     product.setProductDescription(rs.getString("product_description"));
                     product.setImageUrl(rs.getString("image_url"));

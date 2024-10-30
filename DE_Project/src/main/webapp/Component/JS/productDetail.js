@@ -19,14 +19,22 @@ $(document).ready(function () {
     }
   });
   $("#btnAddToCart_details").on("click", function () {
+    var quantity = parseInt($("#quantity").val());
+    var productID = $("#btnAddToCart_details").data("product-id");
     $.ajax({
       url: `${contextPath}/Product/AddToCart`,
       method: "POST",
-      success: function (response) {
+      data: {
+        quantity: quantity,
+        productID: productID,
+      },
+      success: function () {
+        var currentCount = parseInt($("#cart-count").text());
+        $("#cart-count").text(currentCount + quantity);
         alert("Đã thêm sản phẩm thành công.");
       },
-      error: function () {
-        alert("Không thể thêm sản phẩm.");
+      error: function (response) {
+        alert(response.responseText);
       },
     });
   });

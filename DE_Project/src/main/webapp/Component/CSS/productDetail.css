@@ -4,6 +4,7 @@
     width: 1200px;
     margin: 0 auto;
     padding-top: 195px;
+    padding-bottom: 53px;
 }
 
 .product-detail-wrapper {
@@ -35,6 +36,7 @@
 .product-detail-right {
     flex: 1;
     display: flex;
+    height: 100%;
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;

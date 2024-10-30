@@ -63,7 +63,9 @@ public class OrdersController extends HttpServlet {
 
         if (part.length >= 3 && part[2].equalsIgnoreCase("Orders")) {
             CartDAO cartDAO = new CartDAO();
-            List<ProductModel> cartProducts = cartDAO.getAllProductCart();
+            Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
+            int userId = (userIdObj != null) ? userIdObj : 0;
+            List<ProductModel> cartProducts = cartDAO.getAllProductCart(userId);
 
             getLocationArea(request, response);
             setEstimatedOrders(request, response);
@@ -79,12 +81,11 @@ public class OrdersController extends HttpServlet {
         HttpSession session = request.getSession();
         Integer userIDObj = (Integer) session.getAttribute("userID");
         int userID = (userIDObj != null) ? userIDObj : 0;
-
         List<ProductModel> estimatedOrders = cartDAO.getProductInCart(userID);
         if (estimatedOrders == null || estimatedOrders.isEmpty()) {
-            session.setAttribute("provisionals", 0);
-            session.setAttribute("feeShips", 0);
-            session.setAttribute("totalAmounts", 0);
+            session.setAttribute("provisionals", "0");
+            session.setAttribute("feeShips", "0");
+            session.setAttribute("totalAmounts", "0");
             return;
         }
 
@@ -93,16 +94,16 @@ public class OrdersController extends HttpServlet {
         LocationModel userAddress = cartDAO.getUserAddress(userID);
         LocationModel locationAddress = cartDAO.getLocationAddress(userID);
 
-        if (userAddress == null || locationAddress == null) {
-            session.setAttribute("errorMessage", "Vui lòng cập nhật địa chỉ.");
-            return;
-        }
+        int feeShip = 0;
+        if (userAddress != null && locationAddress != null
+                && userAddress.getDistrict() != null && !userAddress.getDistrict().isEmpty()
+                && locationAddress.getDistrict() != null && !locationAddress.getDistrict().isEmpty()) {
 
-        int feeShip = calculateShippingFee(userAddress, locationAddress, price);
+            feeShip = calculateShippingFee(userAddress, locationAddress, price);
+        }
 
         BigDecimal feeShipBigDecimal = BigDecimal.valueOf(feeShip);
         BigDecimal totalAmount = price.add(feeShipBigDecimal);
-
         session.setAttribute("provisionals", price);
         session.setAttribute("feeShips", feeShip);
         session.setAttribute("totalAmounts", totalAmount);
@@ -149,9 +150,9 @@ public class OrdersController extends HttpServlet {
         if (locationModels.isEmpty()) {
             session.setAttribute("location", "Chọn khu vực giao hàng.");
         } else {
-            location = "Địa chỉ đã chọn: P. " + locationModels.get(0).getProvince()
+            location = "Địa chỉ đã chọn: P. " + locationModels.get(0).getWard()
                     + ", Q. " + locationModels.get(0).getDistrict()
-                    + ", TP. " + locationModels.get(0).getWard();
+                    + ", TP. " + locationModels.get(0).getProvince();
             session.setAttribute("location", location);
         }
 
@@ -171,21 +172,24 @@ public class OrdersController extends HttpServlet {
         String path = request.getRequestURI();
         String part[] = path.split("/");
         if (part.length >= 4 && part[3].equalsIgnoreCase("AddressInfo")) {
+            int thanhPho2 = Integer.parseInt(request.getParameter("thanhPho2"));
             String thanhPho = request.getParameter("thanhPho");
+            int quanHuyen2 = Integer.parseInt(request.getParameter("quanHuyen2"));
             String quanHuyen = request.getParameter("quanHuyen");
+            int phuongXa2 = Integer.parseInt(request.getParameter("phuongXa2"));
             String phuongXa = request.getParameter("phuongXa");
             HttpSession session = request.getSession();
             int userID = (int) session.getAttribute("userID");
-            saveLocation(thanhPho, quanHuyen, phuongXa, userID);
+            saveLocation(thanhPho2, thanhPho, quanHuyen2, quanHuyen, phuongXa2, phuongXa, userID);
         }
     }
 
-    private void saveLocation(String thanhPho, String quanHuyen, String phuongXa, int userID) {
+    private void saveLocation(int thanhPho, String thanhPho2, int quanHuyen, String quanHuyen2, int phuongXa, String phuongXa2, int userID) {
         CartDAO cartDAO = new CartDAO();
         if (!cartDAO.isHaveLocation(userID)) {
-            cartDAO.insertLocation(thanhPho, quanHuyen, phuongXa, userID);
+            cartDAO.insertLocation(thanhPho, thanhPho2, quanHuyen, quanHuyen2, phuongXa, phuongXa2, userID);
         } else {
-            cartDAO.updateLocation(thanhPho, quanHuyen, phuongXa, userID);
+            cartDAO.updateLocation(thanhPho, thanhPho2, quanHuyen, quanHuyen2, phuongXa, phuongXa2, userID);
         }
     }
 
