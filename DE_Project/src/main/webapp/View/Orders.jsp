@@ -60,7 +60,7 @@
                         <div class="location-text">
                             <strong class="location-title">Chọn Khu vực</strong>
                             <div class="location-address">
-                                ${location}
+                                ${sessionScope.location}
                             </div>
                         </div>
                     </div>
@@ -68,15 +68,15 @@
                     <div class="payment-info">
                         <div class="row">
                             <div class="title">Tạm tính giỏ hàng:</div>
-                            <div class="money product-price" id="provisional">${provisionals} ₫</div>
+                            <div class="money product-price" id="provisional">${sessionScope.provisionals} ₫</div>
                         </div>
                         <div class="row">
                             <div class="title">Phí vận chuyển:</div>
-                            <div class="money product-price" id="feeShip">${feeShips} ₫</div>
+                            <div class="money product-price" id="feeShip">${sessionScope.feeShips} ₫</div>
                         </div>
                         <div class="row">
                             <div class="title">Thành tiền:</div>
-                            <div class="money product-price" id="totalAmount">${totalAmounts} ₫</div>
+                            <div class="money product-price" id="totalAmount">${sessionScope.totalAmounts} ₫</div>
                         </div>
                         <div class="discount">
                             Hóa đơn từ 300.000 đ sẽ giảm 40% phí giao hàng
@@ -84,7 +84,7 @@
                         <button class="btnPayment btn" id="btnPay" style="display: grid;
                                 justify-content: center;
                                 align-items: center;">
-                            Thanh toán<br/><p class="product-price" style="justify-content: center;">${totalAmounts} ₫</p>
+                            Thanh toán<br/><p class="product-price" style="justify-content: center;">${sessionScope.totalAmounts} ₫</p>
                         </button>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
         </div>
     </div>
     <jsp:include page="noti.jsp"></jsp:include>
-    <script src="${pageContext.request.contextPath}/Component/JS/productDisplay.js"></script>    
+    <script src="${pageContext.request.contextPath}/Component/JS/productDisplay_Order.js"></script>    
     <script>
         if ($(".products-list figure").length === 0) {
             $("#btnDeleteCart").remove();

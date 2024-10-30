@@ -74,8 +74,26 @@ public class CartController extends HttpServlet {
         if (part[3].equalsIgnoreCase("Add")) {
             addToCard(request, response);
         }
+        if (part[3].equalsIgnoreCase("RemoveCart")) {
+            removeCart(request, response);
+        }
         if (part[3].equalsIgnoreCase("UpdateQuantity")) {
             updateQuantity(request, response);
+        }
+    }
+
+    private void removeCart(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int userId = (int) session.getAttribute("userID");
+        CartDAO cartDAO = new CartDAO();
+        boolean isRemove = cartDAO.removeCart(userId);
+        if (isRemove) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Có lỗi khi xóa giỏ hàng. Vui lòng thực hiện sau!");
+
         }
     }
 

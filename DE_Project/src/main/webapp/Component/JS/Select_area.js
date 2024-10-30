@@ -86,19 +86,28 @@ $(document).ready(function () {
     var thanhPho = $("#tinh option:selected").text();
     var quanHuyen = $("#quan option:selected").text();
     var phuongXa = $("#phuong option:selected").text();
+
+    var thanhPho2 = $("#tinh").val();
+    var quanHuyen2 = $("#quan").val();
+    var phuongXa2 = $("#phuong").val();
+
     $.ajax({
       url: `${contextPath}/Orders/AddressInfo`,
       type: "POST",
       data: {
         thanhPho: thanhPho,
+        thanhPho2: thanhPho2,
         quanHuyen: quanHuyen,
+        quanHuyen2: quanHuyen2,
         phuongXa: phuongXa,
+        phuongXa2: phuongXa2,
       },
       success: function (response) {
         var txtLocation = $(".location-address");
         txtLocation.html(
           `Địa chỉ đã chọn: P. ${phuongXa}, Q. ${quanHuyen}, TP. ${thanhPho}`
         );
+        window.location.href = `${contextPath}/Orders`;
       },
       error: function (xhr, status, error) {
         alert("Đã xảy ra lỗi khi gửi địa chỉ: " + error);

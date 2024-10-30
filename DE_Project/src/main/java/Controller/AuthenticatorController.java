@@ -213,26 +213,31 @@ public class AuthenticatorController extends HttpServlet {
 
     private void register(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
         String username = request.getParameter("username");
         String fullname = request.getParameter("fullname");
         String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm-password");
         String gender = request.getParameter("gender");
         boolean genders = gender.equals("male");
         if (password.equals(confirmPassword)) {
             AuthenDAO authenDAO = new AuthenDAO();
-            boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, genders);
+            boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, genders, email);
             if (isRegistered) {
-                request.getRequestDispatcher("/View/login.jsp").forward(request, response);
+                response.setStatus(HttpServletResponse.SC_OK);
             } else {
-                request.setAttribute("errorMessage", "Tên tài khoản đã tồn tại.");
-                request.getRequestDispatcher("/View/register.jsp").forward(request, response);
+                response.getWriter().write("Hãy thay đổi tài khoản khác");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         } else {
-            request.setAttribute("errorMessage", "Mật khẩu xác nhận không khớp.");
-            request.getRequestDispatcher("/View/register.jsp").forward(request, response);
+            response.getWriter().write("Mật khẩu xác nhận không khớp");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
+        out.flush();
     }
 
     private void login(
@@ -261,7 +266,7 @@ public class AuthenticatorController extends HttpServlet {
             session.setAttribute("username", username);
             session.setAttribute("userID", userID);
             String role = authen.getRole(username);
-            
+
             if (role.equals("admin")) {
                 response.sendRedirect(request.getContextPath() + "/DEHome");
             } else {

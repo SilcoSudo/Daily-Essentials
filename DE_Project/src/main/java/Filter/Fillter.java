@@ -137,7 +137,7 @@ public class Fillter implements Filter {
                 return;
             }
 
-            if (path.endsWith("/Authen/Register")) {
+            if (path.endsWith("/Authen/Register") || path.endsWith("/Authen/register")) {
                 chain.doFilter(request, response);
                 return;
             }
@@ -207,6 +207,7 @@ public class Fillter implements Filter {
         } else {
             CategoryDAO categoryDAO = new CategoryDAO();
             List<CategoryModel> categoryModel = categoryDAO.getFullLabel();
+            
             session.setAttribute("fullLabel", categoryModel);
         }
 
