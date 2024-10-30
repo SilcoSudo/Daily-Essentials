@@ -91,7 +91,6 @@ body {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.7); /* Darker background */
-    max-width: 1200px;
 }
 
 .modal-content {
