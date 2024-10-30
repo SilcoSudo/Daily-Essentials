@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="DAOs.ProductWMDAO"%>
-<%@page import="DAOs.LabelDAO"%>
+<%@page import="DAO.ProductWMDAO"%>
+<%@page import="DAO.LabelDAO"%>
 <%@page import="java.sql.ResultSet"%>
 <!DOCTYPE html>
 <html lang="vi">
@@ -221,7 +221,6 @@
                         if (rs == null) {
                             rs = productWMDAO.getAllProducts(); 
                         }
-
                         boolean hasProducts = false;
                         if (rs != null) {
                             while (rs.next()) {
@@ -243,16 +242,15 @@
                             <td class="pm-product-cell"><%= rs.getString("label_name") %></td>
                             <td class="pm-product-cell"><%= rs.getString("warehouse_name") %></td>
                         </tr>
-                        <%
+                        <% 
                             }
-                        }   
-                        if (!hasProducts) {
+                        } else {
                         %>
                         <tr>
-                            <td colspan="6" style="text-align: center;">Không tìm thấy sản phẩm nào.</td>
+                            <td colspan="6" class="pm-product-cell">No products found.</td>
                         </tr>
-                        <%
-                            }
+                        <% 
+                        }
                         %>
                     </tbody>
                 </table>
@@ -294,9 +292,9 @@
                     %>
                 </select>
 
-                <label class="modalproduct">Danh mục</label>
+                <label class="modalproduct">Nhãn</label>
                 <select id="categoryName" name="categoryName">
-                    <option value="">Chọn danh mục</option>
+                    <option value="">Chọn Nhãn</option>
                     <%
                         ResultSet labels = labelDAO.getLabels();
                         while (labels != null && labels.next()) {
@@ -335,6 +333,12 @@
 
             function closeModal() {
                 document.getElementById("productModal").style.display = "none";
+            }
+            window.onclick = function (event) {
+                const modal = document.querySelector('.modal');
+                if (event.target === modal) {
+                    closeModal();
+                }
             }
 
             function saveProduct() {
@@ -427,7 +431,9 @@
                 }
             };
 
-
+            document.querySelector(".close-button").onclick = function () {
+                document.querySelector(".modal").style.display = "none";
+            };
 
             function deleteProduct() {
                 const productId = document.getElementById("productId").value; // Get product ID

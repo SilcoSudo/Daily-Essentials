@@ -1,18 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
-/**
- *
- * @author Qi
- */
+import DB.DBConnect;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import DB.DBConnect;
+import Model.Product;
 import java.math.BigDecimal;
 
 public class ProductWMDAO {
@@ -38,6 +31,7 @@ public class ProductWMDAO {
         return rs;
     }
 
+    // tìm kiếm sản phẩm cái tìm kiếm này oke rồi đừng sửa 
     public ResultSet getFilteredProducts(String productName, String productID, String price, String label, String warehouse) {
         String query = "SELECT p.product_name, p.product_id, p.product_sku, p.product_price, "
                 + "p.product_description, p.product_quantity, p.image_url, l.label_name, c.category_name, w.warehouse_name "
@@ -128,6 +122,7 @@ public class ProductWMDAO {
         }
     }
 
+    // lấy id nhãn để thêm sản phẩm cùng nhãn vào db
     private int getLabelId(String labelName) {
         String query = "SELECT label_id FROM label WHERE label_name = ?";
         try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
@@ -144,6 +139,7 @@ public class ProductWMDAO {
         return -1; // Trả về -1 nếu không tìm thấy
     }
 
+    // lấy id danh mục để thêm sản phẩm cùng danh mục vào db
     private int getCategoryId(String categoryName) {
         String query = "SELECT category_id FROM category WHERE category_name = ?";
         try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
@@ -190,27 +186,60 @@ public class ProductWMDAO {
 
     }
 
-    public ResultSet getProductTypes() {
-        String query = "SELECT type_name FROM product_types"; // Adjust table name based on your database schema
-        try {
-            Connection conn = DBConnect.getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            return ps.executeQuery();
+    // lưu sản phẩm vào db
+    public void saveProduct(Product product) {
+        String sql = "INSERT INTO product (product_name, product_sku, product_price, product_quantity, img_url, product_description, label_id, warehouse_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, product.getProductName());
+            stmt.setString(2, product.getProductSku());
+            stmt.setBigDecimal(3, product.getProductPrice());
+            stmt.setInt(4, product.getProductQuantity());
+            stmt.setString(5, product.getImgUrl());
+            stmt.setString(6, product.getProductDescription());
+            stmt.setInt(7, product.getLabelId()); // Lưu id của nhãn
+            stmt.setString(8, product.getWarehouseCode()); // Lưu mã kho
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            e.printStackTrace(); // Xử lý lỗi
         }
     }
 
-    public ResultSet getProductCategories() {
-        String query = "SELECT category_name FROM product_categories"; // Adjust table name based on your database schema
-        try {
-            Connection conn = DBConnect.getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            return ps.executeQuery();
+    // Thêm sản phẩm mới vào cơ sở dữ liệu
+    public boolean addProduct(Product product) {
+        String sql = "INSERT INTO product (product_name, product_sku, product_price, product_quantity, warehouse_code, label_name) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, product.getProductName());
+            pst.setString(2, product.getProductSku());
+            pst.setBigDecimal(3, product.getProductPrice());
+            pst.setInt(4, product.getProductQuantity());
+            pst.setString(5, product.getWarehouseCode());
+            pst.setString(6, product.getLabelName());
+
+            return pst.executeUpdate() > 0;  // Trả về true nếu thêm thành công
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return false;  // Trả về false nếu có lỗi
+    }
+
+    // Cập nhật thông tin sản phẩm trong cơ sở dữ liệu
+    public boolean updateProduct(Product product) {
+        String sql = "UPDATE product SET product_name = ?, product_price = ?, product_quantity = ?, label_name = ? WHERE product_sku = ?";
+
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, product.getProductName());
+            pst.setBigDecimal(2, product.getProductPrice());
+            pst.setInt(3, product.getProductQuantity());
+            pst.setString(4, product.getLabelName());
+            pst.setString(5, product.getProductSku());
+
+            return pst.executeUpdate() > 0;  // Trả về true nếu cập nhật thành công
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;  // Trả về false nếu có lỗi
     }
 }

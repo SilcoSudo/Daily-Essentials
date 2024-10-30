@@ -17,11 +17,14 @@ import java.sql.Statement;
 
 public class LabelDAO {
 
+    Connection conn = DBConnect.getConnection();
+    
+    
+    // hiển thị danh sách label
     public ResultSet getAllLabels() {
         String query = "SELECT l.label_id, l.label_name, c.category_name FROM label l JOIN category c ON l.label_id = c.label_id";
         ResultSet rs = null;
         try {
-            Connection conn = DBConnect.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
         } catch (SQLException e) {
@@ -29,47 +32,78 @@ public class LabelDAO {
         }
         return rs;
     }
+    
+    
+    // kiểm tra label có không
+    public boolean isLabelExists(String labelName) throws SQLException {
+        String query = "SELECT COUNT(*) FROM label WHERE label_name = ?";
+        try ( PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, labelName);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
+    // thêm label mới với điều kiện nếu danh mục đã có thì chỉ thêm label còn nếu không thì thêm nhanx lẫn label
     public void addLabel(String labelName, String categoryType) {
         if (labelName == null || labelName.trim().isEmpty() || categoryType == null || categoryType.trim().isEmpty()) {
             System.out.println("Label name or category type is empty. Aborting insertion.");
             return; // Ngừng thực hiện nếu đầu vào không hợp lệ
         }
 
+        String checkCategoryQuery = "SELECT category_id FROM category WHERE category_name = ?";
         String insertLabelQuery = "INSERT INTO label (label_name) VALUES (?)";
         String insertCategoryQuery = "INSERT INTO category (label_id, category_name) VALUES (?, ?)";
+        String updateLabelCategoryLinkQuery = "UPDATE label SET category_id = ? WHERE label_id = ?";
 
         try ( Connection conn = DBConnect.getConnection()) {
             conn.setAutoCommit(false); // Bắt đầu giao dịch
 
-            // Thêm nhãn vào bảng label
+            int categoryId = -1;
+
+            // Kiểm tra xem danh mục đã tồn tại chưa
+            try ( PreparedStatement psCheckCategory = conn.prepareStatement(checkCategoryQuery)) {
+                psCheckCategory.setString(1, categoryType);
+                ResultSet rsCategory = psCheckCategory.executeQuery();
+                if (rsCategory.next()) {
+                    categoryId = rsCategory.getInt("category_id"); // Lấy ID của danh mục đã tồn tại
+                } else {
+                    System.out.println("Category does not exist. Please add the category first.");
+                    return; // Dừng nếu danh mục không tồn tại
+                }
+            }
+
+            // Thêm nhãn mới vào bảng label
+            int labelId = -1;
             try ( PreparedStatement psLabel = conn.prepareStatement(insertLabelQuery, Statement.RETURN_GENERATED_KEYS)) {
                 psLabel.setString(1, labelName);
                 psLabel.executeUpdate();
 
-                // Lấy ID của nhãn vừa thêm
                 ResultSet generatedKeys = psLabel.getGeneratedKeys();
                 if (generatedKeys.next()) {
-                    int labelId = generatedKeys.getInt(1); // Lấy ID của nhãn
-
-                    // Thêm danh mục vào bảng category
-                    try ( PreparedStatement psCategory = conn.prepareStatement(insertCategoryQuery)) {
-                        psCategory.setInt(1, labelId); // Đặt ID nhãn vào danh mục
-                        psCategory.setString(2, categoryType); // Đặt tên danh mục
-                        psCategory.executeUpdate();
-
-                        conn.commit(); // Commit giao dịch nếu thành công
-                    }
+                    labelId = generatedKeys.getInt(1); // Lấy ID của nhãn mới thêm
                 }
-            } catch (SQLException e) {
-                conn.rollback(); // Rollback nếu có lỗi xảy ra
-                e.printStackTrace();
+            }
+
+            // Liên kết nhãn mới với danh mục đã tồn tại
+            if (labelId != -1 && categoryId != -1) {
+                try ( PreparedStatement psUpdateLink = conn.prepareStatement(updateLabelCategoryLinkQuery)) {
+                    psUpdateLink.setInt(1, categoryId); // Đặt ID danh mục
+                    psUpdateLink.setInt(2, labelId); // Đặt ID của nhãn
+                    psUpdateLink.executeUpdate();
+                    conn.commit(); // Commit giao dịch nếu thành công
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
+    
+    // lấy danh mục để hiển thị ra phàn chọn danh mục 
     public ResultSet getCategories() {
         String query = "SELECT category_name FROM category";
         Connection conn = null;
@@ -85,7 +119,9 @@ public class LabelDAO {
         }
         return rs; // Trả về ResultSet
     }
-
+    
+    
+    // lấy nhãn để hiển thị ra phàn chọn nhãn
     public ResultSet getLabels() {
         String query = "SELECT DISTINCT label_name FROM label";
         Connection conn = null;
@@ -158,8 +194,8 @@ public class LabelDAO {
             return false;  // Nếu xảy ra lỗi
         }
     }
-    // Trong class LabelDAO.java
-
+   
+    // đang test tính năng cái gì quên ròi :)))
     public ResultSet getLabelsAndCategories() {
         String query = "SELECT l.label_name, c.category_name "
                 + "FROM label l "

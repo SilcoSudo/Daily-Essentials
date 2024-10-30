@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="DAOs.WarehouseDAO"%>
+<%@page import="DAO.WarehouseDAO"%>
+<%@page import="DAO.ProductWMDAO"%>
+<%@page import="DAO.LabelDAO"%>
 <%@page import="java.sql.ResultSet"%>
 <!DOCTYPE html>
-<html>
+<html  lang="vi">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
         <title>Nhập kho</title>
         <style>
@@ -103,19 +106,20 @@
     <body class="warehouse-import">
         <div class="container">
             <h1>Nhập kho</h1>
-            <form action="ImportWarehouseController" method="post" enctype="multipart/form-data">
+            <form action="ImportWarehouseController" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                 <h2>Thông tin kho</h2>
                 <div class="form-group">
                     <label for="warehouseName">Tên kho:</label>
                     <select id="warehouseName" name="warehouseName" onchange="updateWarehouseInfo()">
+                        <option value="">Chọn kho</option>
                         <%
-                          WarehouseDAO warehouseDAO = new WarehouseDAO();
-                          ResultSet rs = warehouseDAO.getAllWarehouses();
-                          while (rs != null && rs.next()) {
+                            WarehouseDAO warehouseDAO = new WarehouseDAO();
+                            ResultSet rs = warehouseDAO.getAllWarehouses();
+                            while (rs != null && rs.next()) {
                         %>
                         <option value="<%= rs.getString("warehouse_code") %>"><%= rs.getString("warehouse_name") %></option>
                         <%
-                          }
+                            }
                         %>
                     </select>
                 </div>
@@ -127,14 +131,7 @@
                     <label for="warehouseAddress">Địa chỉ:</label>
                     <input type="text" id="warehouseAddress" name="warehouseAddress" readonly>
                 </div>
-                <div class="form-group">
-                    <label for="warehouseCapacity">Sức chứa:</label>
-                    <input type="text" id="warehouseCapacity" name="warehouseCapacity">
-                </div>
-                <div class="form-group">
-                    <label for="warehouseType">Loại kho:</label>
-                    <input type="text" id="warehouseType" name="warehouseType">
-                </div>
+
 
                 <h2>Thông tin sản phẩm</h2>
                 <div id="productContainer"></div>
@@ -143,47 +140,62 @@
 
                 <input type="submit" value="Nhập kho">
             </form>
+
             <div id="productTemplate" style="display: none;">
-                <div class="product-group">
-                    <h3 onclick="toggleProductDetails(this)">Sản phẩm <span class="product-number"></span> ∨</h3>
+                <div class="product-group" >
+                    <h3 onclick="toggleProductDetails(this)">Sản phẩm <span class="product-number"></span> </h3>
                     <div class="product-details">
                         <div class="form-group">
-                            <label for="productName">Tên sản phẩm:</label>
-                            <input type="text" name="productName[]" required>
+                            <label for="productName_">Tên sản phẩm:</label>
+                            <input type="text" name="productName" id="productName_" required>
                         </div>
                         <div class="form-group">
-                            <label for="price">Giá:</label>
-                            <input type="number" name="price[]" required>
+                            <label for="productPrice_">Giá:</label>
+                            <input type="number" name="productPrice" id="productPrice_" required>
                         </div>
                         <div class="form-group">
-                            <label for="sku">Mã SKU:</label>
-                            <input type="text" name="sku[]" required>
+                            <label for="sku_">Mã SKU:</label>
+                            <input type="text" name="sku" id="sku_" required>
                         </div>
                         <div class="form-group">
-                            <label for="quantity">Số lượng:</label>
-                            <input type="number" name="quantity[]" required>
+                            <label for="productQuantity_">Số lượng:</label>
+                            <input type="number" name="productQuantity" id="productQuantity_" required>
                         </div>
                         <div class="form-group">
-                            <label for="category">Phân loại:</label>
-                            <select name="category[]" required>
+                            <label for="category_">Phân loại:</label>
+                            <select name="category" id="category_" required>
                                 <option value="">Chọn phân loại</option>
-                                <!-- Populate categories if available -->
+                                <% 
+                                    LabelDAO labelDAO = new LabelDAO();
+                                    ResultSet categories = labelDAO.getCategories();
+                                    while (categories != null && categories.next()) {
+                                        String categoryName = categories.getString("category_name");
+                                %>
+                                <option value="<%= categoryName %>"><%= categoryName %></option>
+                                <% } %>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="label">Nhãn:</label>
-                            <select name="label[]" required>
-                                <option value="">Chọn nhãn</option>
-                                <!-- Populate labels if available -->
+                            <label for="label_">Nhãn:</label>
+                            <select name="label" id="label_" required>
+                                <option value="">Chọn Nhãn</option>
+                                <% 
+                                    ResultSet labels = labelDAO.getLabels();
+                                    while (labels != null && labels.next()) {
+                                        String labelName = labels.getString("label_name");
+                                %>
+                                <option value="<%= labelName %>"><%= labelName %></option>
+                                <% } %>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="image">Ảnh:</label>
-                            <input type="file" name="image[]" accept="image/*">
+                            <label for="image_">Ảnh:</label>
+                            <input type="file" name="image" id="image_" accept="image/*">
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <script>
                 let productCount = 0;
@@ -205,9 +217,21 @@
                     // Set the product number in the header
                     newProductSection.querySelector(".product-number").innerText = productCount;
 
+                    // Set unique IDs for each input/select in the cloned product section
+                    const inputs = newProductSection.querySelectorAll("input, select, label");
+                    inputs.forEach((input) => {
+                        if (input.id) {
+                            input.id = input.id.replace("_", `_${productCount}`);
+                        }
+                        if (input.htmlFor) {
+                            input.htmlFor = input.htmlFor.replace("_", `_${productCount}`);
+                        }
+                    });
+
                     // Append the new product section to the container
                     document.getElementById("productContainer").appendChild(newProductSection);
                 }
+
 
                 // Function to toggle product details visibility
                 function toggleProductDetails(header) {
@@ -218,17 +242,45 @@
                 // Function to update warehouse info
                 function updateWarehouseInfo() {
                     var warehouseCode = document.getElementById("warehouseName").value;
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4 && this.status == 200) {
-                            var warehouse = JSON.parse(this.responseText);
-                            document.getElementById("warehouseCode").value = warehouse.warehouseCode;
-                            document.getElementById("warehouseAddress").value = warehouse.warehouseAddress;
-                        }
-                    };
-                    xhttp.open("GET", "WarehouseController?warehouseCode=" + warehouseCode, true);
-                    xhttp.send();
+                    if (warehouseCode) {
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                var warehouse = JSON.parse(this.responseText);
+                                document.getElementById("warehouseCode").value = warehouse.warehouseCode;
+                                document.getElementById("warehouseAddress").value = warehouse.warehouseAddress;
+                            }
+                        };
+                        xhttp.open("GET", "WarehouseController?warehouseCode=" + warehouseCode, true);
+                        xhttp.send();
+                    } else {
+                        // Xóa giá trị nếu không có kho nào được chọn
+                        document.getElementById("warehouseCode").value = "";
+                        document.getElementById("warehouseAddress").value = "";
+                    }
                 }
+
+
+                function validateForm() {
+                    const inputs = document.querySelectorAll('input[required], select[required]');
+                    for (let input of inputs) {
+                        if (input.offsetParent === null) { // Kiểm tra xem phần tử có bị ẩn không
+                            alert(`Trường ${input.name} đang bị ẩn và không thể được nhập liệu. Vui lòng kiểm tra lại.`);
+                            return false;
+                        }
+                        if (!input.value) {
+                            alert(`Vui lòng nhập giá trị cho trường: ${input.name}`);
+                            input.focus();
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                document.querySelector('form').onsubmit = validateForm;
+
+
             </script>
+        </div>
     </body>
 </html>

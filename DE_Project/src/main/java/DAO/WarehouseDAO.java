@@ -17,6 +17,8 @@ import java.sql.SQLException;
  */
 public class WarehouseDAO {
 
+    
+    // hiển thị danh sách kho hàng
     public ResultSet getAllWarehouses() {
         ResultSet rs = null;
         try {
@@ -101,7 +103,7 @@ public class WarehouseDAO {
         return false;
     }
 
-    // Trong WarehouseDAO.java
+    // hàm tìm kiếm cho kho
     public ResultSet getWarehousesByCriteria(String warehouseName, String warehouseCode, String warehouseAddress, String warehouseStatus) {
         ResultSet rs = null;
         try {
@@ -138,5 +140,39 @@ public class WarehouseDAO {
             e.printStackTrace();
         }
         return rs;
+    }
+
+    // hàm tìm kiếm cho kho
+    public Warehouse getWarehouseByName(String warehouseName) throws SQLException {
+        String query = "SELECT * FROM warehouse WHERE warehouse_name = ?";
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, warehouseName);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Warehouse(
+                            rs.getString("warehouse_code"),
+                            rs.getString("warehouse_name"),
+                            rs.getString("warehouse_address"),
+                            rs.getInt("warehouse_capacity"),
+                            rs.getString("warehouse_type"),
+                            rs.getString("warehouse_status")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+    
+    // đang test lưu kho chưa qua chỉnh sửa 
+    public void saveWarehouse(String name, String code, String address) {
+        String sql = "INSERT INTO warehouse (warehouse_name, warehouse_code, warehouse_address) VALUES (?, ?, ?)";
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            stmt.setString(2, code);
+            stmt.setString(3, address);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exception appropriately
+        }
     }
 }
