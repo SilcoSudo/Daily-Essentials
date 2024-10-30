@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="Models.Account" %>
+<%@ page import="Model.Account" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="DAO.AccountDAO" %>
@@ -65,89 +65,91 @@
 
          
         %>
-        <div class="container">
-            <form method="post" action="AccountController">
-                <input type="hidden" name="action" value="search">
-                <div class="filter-section">
-                    <div class="filter-item">
-                        <label for="search-accountId">ID tài khoản</label>
-                        <input type="text" id="search-accountId" name="search-accountId" placeholder="Tất cả" 
-                               value="<%= request.getParameter("search-accountId") != null ? request.getParameter("search-accountId") : "" %>">
+        <div class="w-container">
+            <jsp:include page="headers.jsp"></jsp:include>
+                <div class="container">
+                    <form method="post" action="AccountController">
+                        <input type="hidden" name="action" value="search">
+                        <div class="filter-section">
+                            <div class="filter-item">
+                                <label for="search-accountId">ID tài khoản</label>
+                                <input type="text" id="search-accountId" name="search-accountId" placeholder="Tất cả" 
+                                       value="<%= request.getParameter("search-accountId") != null ? request.getParameter("search-accountId") : "" %>">
+                        </div>
+                        <div class="filter-item">
+                            <label for="status">Trạng thái</label>
+                            <select id="status" name="status">
+                                <option value="">Tất cả</option>
+                                <option value="active" <%= "active".equals(request.getParameter("status")) ? "selected" : "" %>>Hoạt động</option>
+                                <option value="locked" <%= "locked".equals(request.getParameter("status")) ? "selected" : "" %>>Đã khóa</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="search-username">Username</label>
+                            <input type="text" id="search-username" name="search-username" placeholder="Tất cả" 
+                                   value="<%= request.getParameter("search-username") != null ? request.getParameter("search-username") : "" %>">
+                        </div>
+                        <button type="submit" class="filter-btn">Tìm</button>
                     </div>
-                    <div class="filter-item">
-                        <label for="status">Trạng thái</label>
-                        <select id="status" name="status">
-                            <option value="">Tất cả</option>
-                            <option value="active" <%= "active".equals(request.getParameter("status")) ? "selected" : "" %>>Hoạt động</option>
-                            <option value="locked" <%= "locked".equals(request.getParameter("status")) ? "selected" : "" %>>Đã khóa</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label for="search-username">Username</label>
-                        <input type="text" id="search-username" name="search-username" placeholder="Tất cả" 
-                               value="<%= request.getParameter("search-username") != null ? request.getParameter("search-username") : "" %>">
-                    </div>
-                    <button type="submit" class="filter-btn">Tìm</button>
-                </div>
-            </form>
+                </form>
 
-            <button type="submit" class="btn-create" href="register.jsp" >Tạo tài khoản</button>
+                <button type="submit" class="btn-create" href="register.jsp" >Tạo tài khoản</button>
 
-            <table class="account-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Tên</th>
-                        <th>Phone</th>
-                        <th>Mail</th>
-                        <th>Role</th>
-                        <th>Trạng thái</th>
-                        <th>Cập nhật</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        ResultSet rs = (ResultSet) request.getAttribute("accountResultSet");
+                <table class="account-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Tên</th>
+                            <th>Phone</th>
+                            <th>Mail</th>
+                            <th>Role</th>
+                            <th>Trạng thái</th>
+                            <th>Cập nhật</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            ResultSet rs = (ResultSet) request.getAttribute("accountResultSet");
 
-                        // If no filtered results are available, retrieve all accounts
-                        if (rs == null) {
-                            rs = accountDAO.getAllAccountsResultSet(); // Retrieve all accounts if filtered result is null
-                        }
-
-                        boolean hasAccounts = false; // Flag to track if any accounts are found
-                        if (rs != null) {
-                            while (rs.next()) {
-                                hasAccounts = true; // We found at least one account
-                    %>
-                    <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= rs.getString("password") %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %>')">
-                        <td><%= rs.getInt("account_id") %></td>
-                        <td><%= rs.getString("username") %></td>
-                        <td><%= rs.getString("user_fullname") %></td>
-                        <td><%= rs.getString("user_phone") %></td>
-                        <td><%= rs.getString("user_email") %></td>
-                        <td><%= rs.getString("role") %></td>
-                        <td><%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %></td>
-                        <td><%= rs.getDate("update_at") != null ? rs.getDate("update_at").toString() : "N/A" %></td>
-                    </tr>
-                    <%
+                            // If no filtered results are available, retrieve all accounts
+                            if (rs == null) {
+                                rs = accountDAO.getAllAccountsResultSet(); // Retrieve all accounts if filtered result is null
                             }
-                        }
+
+                            boolean hasAccounts = false; // Flag to track if any accounts are found
+                            if (rs != null) {
+                                while (rs.next()) {
+                                    hasAccounts = true; // We found at least one account
+                        %>
+                        <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= rs.getString("password") %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %>')">
+                            <td><%= rs.getInt("account_id") %></td>
+                            <td><%= rs.getString("username") %></td>
+                            <td><%= rs.getString("user_fullname") %></td>
+                            <td><%= rs.getString("user_phone") %></td>
+                            <td><%= rs.getString("user_email") %></td>
+                            <td><%= rs.getString("role") %></td>
+                            <td><%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %></td>
+                            <td><%= rs.getDate("update_at") != null ? rs.getDate("update_at").toString() : "N/A" %></td>
+                        </tr>
+                        <%
+                                }
+                            }
         
-                        // If no accounts are found, display a message
-                        if (!hasAccounts) {
-                    %>
-                    <tr>
-                        <td colspan="8" style="text-align: center;">Không tìm thấy tài khoản nào.</td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </tbody>
+                            // If no accounts are found, display a message
+                            if (!hasAccounts) {
+                        %>
+                        <tr>
+                            <td colspan="8" style="text-align: center;">Không tìm thấy tài khoản nào.</td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                    </tbody>
 
-            </table>
+                </table>
+            </div>
         </div>
-
         <!-- Modal for Editing Account -->
         <div id="accountModal" class="modal">
             <div class="modal-content">
