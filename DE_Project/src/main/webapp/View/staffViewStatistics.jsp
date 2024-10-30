@@ -17,7 +17,6 @@
         <title>Admin/Home</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewStatistics.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/headers.css" type="text/css"/>
-        <jsp:useBean id= "productlist" class="DAO.ProductStatisticsDAO" scope="request"></jsp:useBean>
         </head>
         <body>
             <div class="w-container">
@@ -33,7 +32,7 @@
                             <br>
                             <p></p>
                             <br>
-                            <h2 class="product-price">${productlist.totalRevenue.total_revenue}</h2>
+                            <h2 class="product-price">${totalRevenue}</h2>
                         <br>
                         <p></p>
                     </div>
@@ -42,7 +41,7 @@
                     <div class="card order-card">
                         <h3>Thống kê đơn hàng</h3>
                         <div class="order-content">
-                            <c:forEach items="${productlist.orderStatusStatistics}" var="order">
+                            <c:forEach items="${orderStatistics}" var="order">
                                 <div class="order-row">
                                     <div>
                                         <h5>${order.orderStatusString}</h5> 
@@ -60,7 +59,7 @@
                 <div class="filter-section">
                     <h3>Danh sách thống kê sản phẩm</h3>
                     <br>
-                    <form action="${pageContext.request.contextPath}/ViewProductStatistics" method="get">
+                    <form action="${pageContext.request.contextPath}/DEHome" method="get">
                         <label for="category">Danh mục:</label>
                         <select name="category_id" id="category" onchange="this.form.submit()">
                             <option value="0">Tất cả</option>
@@ -83,7 +82,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${productlist.allProductStatistics}" var="productlist">
+                                <c:forEach items="${productlist}" var="productlist">
                                     <tr>
                                         <td>${productlist.product_id}</td>
                                         <td>${productlist.category_name}</td>
@@ -121,7 +120,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="top_product" items="${productlist.getTopSellingProducts(2)}">
+                                <c:forEach var="top_product" items="${topSellingProducts}">
                                     <tr>
                                         <td>${top_product.product_id}</td>
                                         <td>${top_product.category_name}</td>

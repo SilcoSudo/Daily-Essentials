@@ -4,14 +4,18 @@
  */
 package Controller;
 
+import DAO.ProductStatisticsDAO;
 import DAO.ViewOrderDAO;
+import Model.ProductStatistics;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class DEHomeController extends HttpServlet {
 
@@ -59,6 +63,7 @@ public class DEHomeController extends HttpServlet {
             if (part.length > 3 && part[3].equalsIgnoreCase("Manage-Orders")) {
                 request.getRequestDispatcher("/View/staffViewOrder.jsp").forward(request, response);
             } else {
+                ProductStatistic(request, response);
                 request.getRequestDispatcher("/View/staffViewStatistics.jsp").forward(request, response);
             }
         }
@@ -77,6 +82,7 @@ public class DEHomeController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        ProductStatistic(request, response);
         updateOrderStatus(request, response);
         doGet(request, response);
     }
@@ -97,11 +103,50 @@ public class DEHomeController extends HttpServlet {
 
         ViewOrderDAO orderDAO = new ViewOrderDAO();
         boolean updateSuccess = orderDAO.updateOrderStatus(Integer.parseInt(orderId), Integer.parseInt(orderStatus));
+    }
 
-        if (updateSuccess) {
-            request.setAttribute("successMessage", "Trạng thái đơn hàng đã được cập nhật.");
+    private void ProductStatistic(HttpServletRequest request, HttpServletResponse response) {
+        ProductStatisticsDAO products = new ProductStatisticsDAO();
+
+        //total
+        ProductStatistics total_revenue = products.getTotalRevenue();
+        if (total_revenue != null) {
+            request.setAttribute("totalRevenue", total_revenue.getTotal_revenue());
         } else {
-            request.setAttribute("errorMessage", "Cập nhật trạng thái thất bại.");
+            System.out.println("Không có dữ liệu hoặc xảy ra lỗi.");
+        }
+
+        //top product
+        List<ProductStatistics> topSellingProducts = products.getTopSellingProducts(2);
+        request.setAttribute("topSellingProducts", topSellingProducts);
+
+        //get order status
+        List<ProductStatistics> orderstatus = products.getOrderStatusStatistics();
+
+        if (orderstatus != null && !orderstatus.isEmpty()) {
+            request.setAttribute("orderStatistics", orderstatus);
+        } else {
+            request.setAttribute("errorMessage", "Không có dữ liệu thống kê nào.");
+        }
+
+        //sort cate
+        List<ProductStatistics> categoryList = products.getAllCategories();
+        request.setAttribute("categoryList", categoryList);
+
+        String categoryIdParam = request.getParameter("category_id");
+        List<ProductStatistics> productlist = new ArrayList<>();
+
+        if (categoryIdParam != null && !categoryIdParam.isEmpty() && !categoryIdParam.equals("0")) {
+            int categoryId = Integer.parseInt(categoryIdParam);
+            productlist = products.getProductStatisticsByCategory(categoryId);
+        } else {
+            productlist = products.getAllProductStatistics();
+        }
+
+        if (productlist != null && !productlist.isEmpty()) {
+            request.setAttribute("productlist", productlist);
+        } else {
+            request.setAttribute("errorMessage", "Không có sản phẩm nào.");
         }
     }
 
