@@ -3,7 +3,7 @@
 <%@ page import="Models.Account" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
-<%@ page import="DAOs.AccountDAO" %>
+<%@ page import="DAO.AccountDAO" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
