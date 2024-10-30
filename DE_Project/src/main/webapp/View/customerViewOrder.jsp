@@ -90,9 +90,9 @@
                                 <tr>
                                     <td>${order.order_id}</td>
                                     <td>${order.order_date}</td>
-                                    <td>${order.total_amount}</td>
+                                    <td class="product-price">${order.total_amount}</td>
                                     <td>${order.orderStatusString}</td>
-                                    <td style="display:none;">${order.fee_shipp}</td>
+                                    <td class="product-price" style="display:none;">${order.fee_shipp}</td>
                                     <td class="actions">
                                         <a href="${pageContext.request.contextPath}/OrderDetail?order_id=${order.order_id}">Xem chi tiết</a>
                                     </td>
@@ -103,10 +103,20 @@
                 </div>
             </div>     
         </div>
-                    
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const viewDetailsLinks = document.querySelectorAll('.view-details');
+
+                function formatPrice(price) {
+                    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
+                $(".product-price").each(function () {
+                    var priceText = $(this).text().replace(" ₫", "");
+                    var formattedPrice = formatPrice(priceText);
+                    $(this).text(formattedPrice + " ₫");
+                });
 
                 function filterTable() {
                     var searchId = document.getElementById('searchOrderId').value.toLowerCase();

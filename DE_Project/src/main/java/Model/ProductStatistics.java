@@ -4,6 +4,8 @@
  */
 package Model;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author nhatl
@@ -22,23 +24,23 @@ public class ProductStatistics {
     private String orderStatusString;
 
     private int quantitySold;
-    private double revenue;
+    private BigDecimal revenue;
 
-    private double total_revenue;
+    private BigDecimal total_revenue;
 
-    public ProductStatistics(double total_revenue) {
+    public ProductStatistics(BigDecimal total_revenue) {
         this.total_revenue = total_revenue;
     }
 
-    public double getTotal_revenue() {
+    public BigDecimal getTotal_revenue() {
         return total_revenue;
     }
 
-    public void setTotal_revenue(double total_revenue) {
+    public void setTotal_revenue(BigDecimal total_revenue) {
         this.total_revenue = total_revenue;
     }
 
-    public ProductStatistics(int product_id, String product_name, String category_name, int quantitySold, double revenue) {
+    public ProductStatistics(int product_id, String product_name, String category_name, int quantitySold, BigDecimal revenue) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.category_name = category_name;
@@ -54,11 +56,11 @@ public class ProductStatistics {
         this.quantitySold = quantitySold;
     }
 
-    public double getRevenue() {
+    public BigDecimal getRevenue() {
         return revenue;
     }
 
-    public void setRevenue(double revenue) {
+    public void setRevenue(BigDecimal revenue) {
         this.revenue = revenue;
     }
 

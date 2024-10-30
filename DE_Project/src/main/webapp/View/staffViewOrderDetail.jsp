@@ -43,7 +43,7 @@
                         </tr>
                         <tr>
                             <th>Tổng số tiền</th>
-                            <td>${orderlist.total_amount}</td>
+                            <td class="product-price">${orderlist.total_amount}</td>
                         </tr>
                     </table>
                     <br />
@@ -72,5 +72,17 @@
                     <a href="${pageContext.request.contextPath}/DEHome/Manage-Orders" class="update-button">Quay lại danh sách đơn hàng</a>
                 </div>
             </div>
+
+            <script>
+                function formatPrice(price) {
+                    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
+                $(".product-price").each(function () {
+                    var priceText = $(this).text().replace(" ₫", "");
+                    var formattedPrice = formatPrice(priceText);
+                    $(this).text(formattedPrice + " ₫");
+                });
+            </script>
     </body>
 </html>

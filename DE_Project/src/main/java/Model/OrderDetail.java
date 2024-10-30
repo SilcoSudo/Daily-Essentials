@@ -4,6 +4,8 @@
  */
 package Model;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author nhatl
@@ -11,14 +13,14 @@ package Model;
 public class OrderDetail {
     private int productId;
     private int quantity;
-    private double totalPrice;
+    private BigDecimal totalPrice;
     private String productName;
     private String productImage;
 
     public OrderDetail() {
     }
 
-    public OrderDetail(int productId, int quantity, double totalPrice, String productName, String productImage) {
+    public OrderDetail(int productId, int quantity, BigDecimal totalPrice, String productName, String productImage) {
         this.productId = productId;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
@@ -42,11 +44,11 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
-    public double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

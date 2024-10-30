@@ -59,11 +59,11 @@
                         </tr>
                         <tr>
                             <th>Phí vận chuyển</th>
-                            <td>${orderlist.fee_shipp}</td>
+                            <td class="product-price">${orderlist.fee_shipp}</td>
                         </tr>
                         <tr>
                             <th>Tổng số tiền</th>
-                            <td>${orderlist.total_amount}</td>
+                            <td class="product-price">${orderlist.total_amount}</td>
                         </tr>
                     </table>
 
@@ -84,7 +84,7 @@
                                     <td><img src="${detail.productImage}" alt="Product Image" width="100" height="100"></td>
                                     <td>${detail.productName}</td>
                                     <td>${detail.quantity}</td>
-                                    <td>${detail.totalPrice}</td>
+                                    <td class="product-price">${detail.totalPrice}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -94,6 +94,17 @@
                     <a href="${pageContext.request.contextPath}/CustomerViewOrder" class="update-button">Quay lại danh sách đơn hàng</a>
                 </div>
             </div>
+            <script>
+                function formatPrice(price) {
+                    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
+                $(".product-price").each(function () {
+                    var priceText = $(this).text().replace(" ₫", "");
+                    var formattedPrice = formatPrice(priceText);
+                    $(this).text(formattedPrice + " ₫");
+                });
+            </script>
     </body>
 </html>
 

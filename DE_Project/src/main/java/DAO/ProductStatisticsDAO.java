@@ -69,7 +69,7 @@ public class ProductStatisticsDAO {
                         rs.getString("product_name"),
                         rs.getString("category_name"),
                         rs.getInt("quantity_sold"),
-                        rs.getDouble("revenue")
+                        rs.getBigDecimal("revenue")
                 ));
             }
             return productlist;
@@ -112,7 +112,7 @@ public class ProductStatisticsDAO {
                         rs.getString("product_name"),
                         rs.getString("category_name"),
                         rs.getInt("quantity_sold"),
-                        rs.getDouble("revenue")
+                        rs.getBigDecimal("revenue")
                 ));
             }
         } catch (SQLException e) {
@@ -205,7 +205,7 @@ public class ProductStatisticsDAO {
                         rs.getString("product_name"),
                         rs.getString("category_name"),
                         rs.getInt("quantity_sold"),
-                        rs.getDouble("revenue")
+                        rs.getBigDecimal("revenue")
                 ));
             }
         } catch (SQLException e) {
@@ -233,7 +233,7 @@ public class ProductStatisticsDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                totalRevenue.setTotal_revenue(rs.getDouble("total_revenue"));
+                totalRevenue.setTotal_revenue(rs.getBigDecimal("total_revenue"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
