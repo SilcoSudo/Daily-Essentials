@@ -5,20 +5,15 @@
 package Controller;
 
 import DAO.AccountDAO;
-import Models.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class AccountControler extends HttpServlet {
 
-    private AccountDAO accountDAO = new AccountDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,15 +53,7 @@ public class AccountControler extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        if ("update".equals(action)) {
-            updateAccount(request, response);
-        } else if ("delete".equals(action)) {
-            deleteAccount(request, response);
-        } else {
-            listAccounts(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -110,107 +97,6 @@ public class AccountControler extends HttpServlet {
                 request.setAttribute("errorMessage", "Có lỗi khi cập nhật thông tin.");
                 request.getRequestDispatcher("/View/customerInfo.jsp").forward(request, response);
             }
-        }
-        String action = request.getParameter("action");
-
-        if ("search".equals(action)) {
-            handleSearch(request, response);
-        } else if ("updatestaff".equals(action)) {
-            updateAccount(request, response);
-        } else {
-            listAccounts(request, response);
-        }
-    }
-
-    private void handleSearch(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String accountId = request.getParameter("search-accountId");
-        String status = request.getParameter("status");
-        String username = request.getParameter("search-username");
-
-        try {
-            // Get the ResultSet from the DAO
-            ResultSet rs = accountDAO.getFilteredAccountsResultSet(accountId, status, username);
-            request.setAttribute("accountResultSet", rs); // Set ResultSet in the request
-            request.getRequestDispatcher("listAccount.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "An error occurred while searching for accounts.");
-            request.getRequestDispatcher("listAccount.jsp").forward(request, response);
-        }
-    }
-
-    private void updateAccount(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        String idStr = request.getParameter("id");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String fullName = request.getParameter("fullName");
-        String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
-        String role = request.getParameter("role");
-        String status = request.getParameter("status");
-
-        if (idStr == null || username == null || password == null || fullName == null || phone == null || email == null || role == null || status == null) {
-            request.setAttribute("error", "Required fields are missing.");
-            listAccounts(request, response);
-            return;
-        }
-
-        boolean isLocked = "Đã khóa".equals(status);
-
-        Account account = new Account(
-                Integer.parseInt(idStr),
-                username,
-                password,
-                fullName,
-                phone,
-                email,
-                role,
-                isLocked,
-                new java.sql.Date(System.currentTimeMillis())
-        );
-
-        boolean success = accountDAO.updateAccount(account);
-
-        if (success) {
-            request.getSession().setAttribute("message", "Account updated successfully.");
-        } else {
-            request.getSession().setAttribute("error", "Error updating account.");
-        }
-
-        response.sendRedirect("listAccount.jsp");
-    }
-
-    private void deleteAccount(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        String idStr = request.getParameter("id");
-        if (idStr != null) {
-            try {
-                int id = Integer.parseInt(idStr);
-                boolean success = accountDAO.deleteAccount(id);
-                if (success) {
-                    response.sendRedirect("listAccount.jsp");
-                } else {
-                    response.getWriter().write("Error deleting account.");
-                }
-            } catch (NumberFormatException e) {
-                response.getWriter().write("Invalid account ID.");
-            }
-        } else {
-            response.getWriter().write("Account ID is required.");
-        }
-    }
-
-    private void listAccounts(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try ( ResultSet rs = accountDAO.getAllAccountsResultSet()) { // Automatically close ResultSet
-            request.setAttribute("accountResultSet", rs); // Set ResultSet in request
-            request.getRequestDispatcher("listAccount.jsp").forward(request, response); // Forward to JSP
-        } catch (SQLException e) {
-            e.printStackTrace(); // Consider using a logging framework for production
-            request.setAttribute("error", "An error occurred while retrieving accounts. Please try again later.");
-            request.getRequestDispatcher("listAccount.jsp").forward(request, response);
         }
     }
 
