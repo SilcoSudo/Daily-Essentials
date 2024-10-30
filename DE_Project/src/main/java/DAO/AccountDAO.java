@@ -6,7 +6,7 @@ package DAO;
 
 import DB.DBConnect;
 import Model.UserProfile;
-import Models.Account;
+import Model.Account;
 import jakarta.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.Date;

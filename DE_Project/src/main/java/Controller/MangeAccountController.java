@@ -5,7 +5,7 @@
 package Controller;
 
 import DAO.AccountDAO;
-import Models.Account;
+import Model.Account;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
