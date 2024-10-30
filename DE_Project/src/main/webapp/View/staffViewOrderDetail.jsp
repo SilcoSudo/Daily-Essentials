@@ -18,57 +18,59 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewOrder.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffUpdateStatusOrder.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewOrderDetail.css" type="text/css"/>
-        
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/headers.css" type="text/css"/>
     </head>
     <body>
-        <div class="container">
-            <h2>Chi tiết đơn hàng</h2>
-            <br />
-            <div class="table-container">
-                <table>
+        <div class="w-container">
+            <jsp:include page="headers.jsp"></jsp:include>
+                <div class="container">
+                    <h2>Chi tiết đơn hàng</h2>
+                    <br />
+                    <div class="table-container">
+                        <table>
 
-                    <tr>
-                        <th>ID Đơn hàng</th>
-                        <td>${orderlist.order_id}</td>
-                    </tr>
-                    <tr>
-                        <th>Tình trạng đơn hàng</th>
-                        <td>${orderlist.orderStatusString}</td>
-                    </tr>
-                    <tr>
-                        <th>Ngày tạo</th>
-                        <td>${orderlist.order_date}</td>
-                    </tr>
-                    <tr>
-                        <th>Tổng số tiền</th>
-                        <td>${orderlist.total_amount}</td>
-                    </tr>
-                </table>
-                <br />
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Ảnh</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Giá tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${orderDetails}" var="detail">
                             <tr>
-                                <td><img src="${detail.productImage}" alt="Product Image" width="100" height="100"></td>
-                                <td>${detail.productName}</td>
-                                <td>${detail.quantity}</td>
-                                <td>${detail.totalPrice}</td>
+                                <th>ID Đơn hàng</th>
+                                <td>${orderlist.order_id}</td>
+                        </tr>
+                        <tr>
+                            <th>Tình trạng đơn hàng</th>
+                            <td>${orderlist.orderStatusString}</td>
+                        </tr>
+                        <tr>
+                            <th>Ngày tạo</th>
+                            <td>${orderlist.order_date}</td>
+                        </tr>
+                        <tr>
+                            <th>Tổng số tiền</th>
+                            <td>${orderlist.total_amount}</td>
+                        </tr>
+                    </table>
+                    <br />
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Giá tiền</th>
                             </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${orderDetails}" var="detail">
+                                <tr>
+                                    <td><img src="${detail.productImage}" alt="Product Image" width="100" height="100"></td>
+                                    <td>${detail.productName}</td>
+                                    <td>${detail.quantity}</td>
+                                    <td>${detail.totalPrice}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="popup-footer">
+                    <a href="${pageContext.request.contextPath}/DEHome/Manage-Orders" class="update-button">Quay lại danh sách đơn hàng</a>
+                </div>
             </div>
-            <div class="popup-footer">
-                <a href="${pageContext.request.contextPath}/DEHome/Manage-Orders" class="update-button">Quay lại danh sách đơn hàng</a>
-            </div>
-        </div>
     </body>
 </html>
