@@ -241,6 +241,62 @@ public class ProductStatisticsDAO {
         return totalRevenue;
     }
 
+    public ProductStatistics getTotalRevenueComparison(int currentMonth, int currentYear, int previousMonth, int previousYear) {
+        ProductStatistics totalRevenue = new ProductStatistics();
+        String sql = "WITH MonthlyRevenue AS (\n"
+                + "    SELECT \n"
+                + "        MONTH(o.order_date) AS month, \n"
+                + "        YEAR(o.order_date) AS year, \n"
+                + "        SUM(od.product_quantity * od.total_price) AS total_revenue\n"
+                + "    FROM \n"
+                + "        [order] o\n"
+                + "    JOIN \n"
+                + "        order_details od ON o.order_id = od.order_id\n"
+                + "    WHERE \n"
+                + "        o.order_status = 3\n"
+                + "    GROUP BY \n"
+                + "        MONTH(o.order_date), YEAR(o.order_date)\n"
+                + "), \n"
+                + "CurrentMonth AS (\n"
+                + "    SELECT total_revenue FROM MonthlyRevenue WHERE month = ? AND year = ?\n"
+                + "), \n"
+                + "PreviousMonth AS (\n"
+                + "    SELECT total_revenue FROM MonthlyRevenue WHERE month = ? AND year = ?\n"
+                + ")\n"
+                + "SELECT \n"
+                + "    CM.total_revenue AS current_revenue, \n"
+                + "    PM.total_revenue AS previous_revenue,\n"
+                + "    CASE \n"
+                + "        WHEN PM.total_revenue IS NULL THEN NULL\n"
+                + "        ELSE ((CM.total_revenue - PM.total_revenue) / PM.total_revenue) * 100\n"
+                + "    END AS percent_change\n"
+                + "FROM \n"
+                + "    CurrentMonth CM \n"
+                + "LEFT JOIN \n"
+                + "    PreviousMonth PM ON CM.total_revenue IS NOT NULL;";
+
+        try {
+            conn = DBConnect.getConnection();
+            ps = conn.prepareStatement(sql);
+
+            // Set parameters for current month and previous month
+            ps.setInt(1, currentMonth);
+            ps.setInt(2, currentYear);
+            ps.setInt(3, previousMonth);
+            ps.setInt(4, previousYear);
+
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                totalRevenue.setCurrentRevenue(rs.getBigDecimal("current_revenue"));
+                totalRevenue.setPreviousRevenue(rs.getBigDecimal("previous_revenue"));
+                totalRevenue.setPercentChange(rs.getBigDecimal("percent_change"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalRevenue;
+    }
+
     public static void main(String[] args) {
         ProductStatisticsDAO dao = new ProductStatisticsDAO();
         List<ProductStatistics> products = dao.getAllProductStatistics();

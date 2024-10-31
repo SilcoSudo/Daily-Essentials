@@ -17,29 +17,31 @@
         <title>Admin/Home</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/staffViewStatistics.css" type="text/css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/headers.css" type="text/css"/>
-        </head>
-        <body>
-            <div class="w-container">
+    </head>
+    <body>
+        <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
                 <div class="container">
                     <!-- Header cards for Doanh Thu and Đơn Hàng -->
                     <div class="header">
 
-
                         <!-- Doanh Thu Card -->
                         <div class="card revenue-card">
-                            <h3>Doanh Thu</h3>  
+                            <h3>Thống kê Doanh Thu</h3>  
                             <br>
-                            <p></p>
-                            <br>
-                            <h2 class="product-price">${totalRevenue}</h2>
+                            <p><strong>Doanh thu tháng ${currentMonth}</strong></p>
+
+                        <h2 class="product-price card_items">${getCurrentMonthRevenue}</h2>
                         <br>
-                        <p></p>
+                        <p><strong>So với Doanh thu tháng ${previousMonth}</strong></p>
+                        <br>
+                        <h2 class="product-price card_items">${getPreviousMonthRevenue}</h2>
+                        <h3 class="card_items">${getPercentChange} %</h3>
                     </div>
 
                     <!-- Đơn Hàng Card -->
                     <div class="card order-card">
-                        <h3>Thống kê đơn hàng</h3>
+                        <h3>Thống kê Ðơn hàng</h3>
                         <div class="order-content">
                             <c:forEach items="${orderStatistics}" var="order">
                                 <div class="order-row">
@@ -98,16 +100,7 @@
 
                 <!-- Bảng sản phẩm bán chạy nhất -->
                 <div class="filter-section">
-                    <h3> Sản phẩm bán chạy nhất trong </h3>
-                    <br>
-                    <label>Thoi gian</label>
-                    <select name="month">
-                        <option value="10" selected>Tháng 10</option>
-
-                    </select>
-                    <select name="year">
-                        <option value="2024" selected>2024</option>
-                    </select>
+                    <h3>Danh sách sản phẩm bán chạy nhất</h3>
                     <div class="table-container">
                         <table>
                             <thead>

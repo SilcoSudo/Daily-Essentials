@@ -27,9 +27,36 @@ public class ProductStatistics {
     private BigDecimal revenue;
 
     private BigDecimal total_revenue;
+    private BigDecimal currentRevenue;
+    private BigDecimal previousRevenue;
+    private BigDecimal percentChange;
 
     public ProductStatistics(BigDecimal total_revenue) {
         this.total_revenue = total_revenue;
+    }
+
+    public BigDecimal getCurrentRevenue() {
+        return currentRevenue;
+    }
+
+    public void setCurrentRevenue(BigDecimal currentRevenue) {
+        this.currentRevenue = currentRevenue;
+    }
+
+    public BigDecimal getPreviousRevenue() {
+        return previousRevenue;
+    }
+
+    public void setPreviousRevenue(BigDecimal previousRevenue) {
+        this.previousRevenue = previousRevenue;
+    }
+
+    public BigDecimal getPercentChange() {
+        return percentChange;
+    }
+
+    public void setPercentChange(BigDecimal percentChange) {
+        this.percentChange = percentChange;
     }
 
     public BigDecimal getTotal_revenue() {

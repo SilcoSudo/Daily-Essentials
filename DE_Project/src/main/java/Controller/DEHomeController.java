@@ -13,6 +13,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -113,6 +115,27 @@ public class DEHomeController extends HttpServlet {
 
     private void ProductStatistic(HttpServletRequest request, HttpServletResponse response) {
         ProductStatisticsDAO products = new ProductStatisticsDAO();
+
+        //total_revenue compar
+        //get time now
+        LocalDate now = LocalDate.now();
+        int currentMonth = now.getMonthValue();
+        int currentYear = now.getYear();
+
+        // cal last month n year
+        YearMonth previousMonthYear = YearMonth.of(currentYear, currentMonth).minusMonths(1);
+        int previousMonth = previousMonthYear.getMonthValue();
+        int previousYear = previousMonthYear.getYear();
+
+        ProductStatisticsDAO dao = new ProductStatisticsDAO();
+        ProductStatistics revenueComparison = dao.getTotalRevenueComparison(currentMonth, currentYear, previousMonth, previousYear);
+
+        request.setAttribute("revenueComparison", revenueComparison);
+        request.setAttribute("getCurrentMonthRevenue", revenueComparison.getCurrentRevenue());
+        request.setAttribute("getPreviousMonthRevenue", revenueComparison.getPreviousRevenue());
+        request.setAttribute("getPercentChange", revenueComparison.getPercentChange());
+        request.setAttribute("currentMonth", currentMonth);
+        request.setAttribute("previousMonth", previousMonth);
 
         //total
         ProductStatistics total_revenue = products.getTotalRevenue();
