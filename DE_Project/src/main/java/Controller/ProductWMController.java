@@ -6,12 +6,12 @@ package Controller;
 
 import DAO.ProductWMDAO;
 import jakarta.servlet.RequestDispatcher;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 
@@ -59,7 +59,6 @@ public class ProductWMController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String productName = request.getParameter("productName");
         String productID = request.getParameter("productID");
         String price = request.getParameter("price");
@@ -124,7 +123,7 @@ public class ProductWMController extends HttpServlet {
                 response.getWriter().write("failure");
                 System.out.println("Update failed for product ID: " + productId);
             }
-         } else if ("delete".equals(action)) { // Add this delete action block
+        } else if ("delete".equals(action)) { // Add this delete action block
             int productId = Integer.parseInt(request.getParameter("productId"));
             ProductWMDAO productWMDAO = new ProductWMDAO();
 
