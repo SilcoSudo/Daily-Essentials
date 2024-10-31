@@ -72,6 +72,22 @@
         <servlet-name>MangeAccountController</servlet-name>
         <servlet-class>Controller.MangeAccountController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ImportWarehouseController</servlet-name>
+        <servlet-class>Controller.ImportWarehouseController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LabelController</servlet-name>
+        <servlet-class>Controller.LabelController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WarehouseController</servlet-name>
+        <servlet-class>Controller.WarehouseController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductWMController</servlet-name>
+        <servlet-class>Controller.ProductWMController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticatorController</servlet-name>
         <url-pattern>/Authen/*</url-pattern>
@@ -131,6 +147,22 @@
     <servlet-mapping>
         <servlet-name>MangeAccountController</servlet-name>
         <url-pattern>/Manage-Account</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportWarehouseController</servlet-name>
+        <url-pattern>/ImportWarehouse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LabelController</servlet-name>
+        <url-pattern>/Label</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WarehouseController</servlet-name>
+        <url-pattern>/Warehouse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductWMController</servlet-name>
+        <url-pattern>/ProductWM</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

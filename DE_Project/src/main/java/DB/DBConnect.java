@@ -12,10 +12,10 @@ public class DBConnect {
 
     public static Connection getConnection() {
         Connection conn;
-        String server = "localhost:1433";
+        String server = "QUSY\\SQLZ:1433";
         String database = "DE"; 
         String user = "sa";
-        String password = "123";
+        String password = "040104";
 
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

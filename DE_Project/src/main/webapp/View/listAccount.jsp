@@ -155,8 +155,8 @@
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h3>Thông tin tài khoản</h3>
-                <form action="AccountController" method="post">
-                    <input type="hidden" name="action" value="updatestaff">
+                <form action="ManageAccountController" method="post">
+                    <input type="hidden" name="action" value="update">
                     <input type="hidden" name="id" id="accountId">
 
                     <label for="username">Tài khoản</label>

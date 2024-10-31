@@ -95,7 +95,7 @@ public class MangeAccountController extends HttpServlet {
 
         if ("search".equals(action)) {
             handleSearch(request, response);
-        } else if ("updatestaff".equals(action)) {
+        } else if ("update".equals(action)) {
             updateAccount(request, response);
         } else {
             listAccounts(request, response);
