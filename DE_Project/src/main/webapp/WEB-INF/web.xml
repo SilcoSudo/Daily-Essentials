@@ -146,7 +146,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MangeAccountController</servlet-name>
-        <url-pattern>/Manage-Account</url-pattern>
+        <url-pattern>/ManageAccount</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ImportWarehouseController</servlet-name>

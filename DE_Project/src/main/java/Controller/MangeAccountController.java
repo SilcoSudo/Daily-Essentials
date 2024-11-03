@@ -21,7 +21,7 @@ import java.sql.SQLException;
  */
 public class MangeAccountController extends HttpServlet {
 
-        private AccountDAO accountDAO = new AccountDAO();
+    private AccountDAO accountDAO = new AccountDAO();
 
     
     /**
@@ -62,22 +62,11 @@ public class MangeAccountController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String action = request.getParameter("action");
-
-        
-    if ("view".equals(action)) {
-        request.setAttribute("action", "view");
-        request.getRequestDispatcher("/DEHome/Manage-Account/listAccount.jsp").forward(request, response);
-    } else if ("edit".equals(action)) {
-        request.setAttribute("action", "edit");
-        // Fetch the account details here to pre-fill the form if needed
-        request.getRequestDispatcher("/DEHome/Manage-Account/listAccount.jsp").forward(request, response);
-    } else {
-        // Default to listing all accounts
-        listAccounts(request, response);
-    }
-    
+        String path = request.getRequestURI();
+        String part[] = path.split("/");
+        if(part[2].equalsIgnoreCase("ManageAccount")) {
+            
+        }
     }
 
     /**
@@ -91,14 +80,23 @@ public class MangeAccountController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
+        String action = request.getParameter("btnAction");
 
-        if ("search".equals(action)) {
-            handleSearch(request, response);
-        } else if ("update".equals(action)) {
-            updateAccount(request, response);
-        } else {
-            listAccounts(request, response);
+        switch (action) {
+            case "search":
+                System.out.println("1");
+                handleSearch(request, response);
+                System.out.println("2");
+                break;
+            case "update":
+                updateAccount(request, response);
+                break;
+            case "delete":
+                deleteAccount(request, response);
+                break;
+            default:
+                listAccounts(request, response);
+                break;
         }
     }
 
@@ -111,12 +109,14 @@ public class MangeAccountController extends HttpServlet {
         try {
             // Get the ResultSet from the DAO
             ResultSet rs = accountDAO.getFilteredAccountsResultSet(accountId, status, username);
-            request.setAttribute("accountResultSet", rs); // Set ResultSet in the request
-            request.getRequestDispatcher("listAccount.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "An error occurred while searching for accounts.");
-            request.getRequestDispatcher("listAccount.jsp").forward(request, response);
+            
+            request.getSession().setAttribute("accountResultSet", rs);
+            response.sendRedirect(request.getContextPath() + "/DEHome/Manage-Account");
+
+        } catch (IOException e) {
+            request.getSession().setAttribute("error", "An error occurred while searching for accounts.");
+            response.sendRedirect(request.getContextPath() + "/DEHome/Manage-Account");
+
         }
     }
 
@@ -124,6 +124,7 @@ public class MangeAccountController extends HttpServlet {
             throws IOException, ServletException {
         String idStr = request.getParameter("id");
         String username = request.getParameter("username");
+        // admin123
         String password = request.getParameter("password");
         String fullName = request.getParameter("fullName");
         String phone = request.getParameter("phone");
@@ -159,7 +160,7 @@ public class MangeAccountController extends HttpServlet {
             request.getSession().setAttribute("error", "Error updating account.");
         }
 
-        response.sendRedirect("listAccount.jsp");
+        response.sendRedirect("DEHome/Manage-Account");
     }
 
     private void deleteAccount(HttpServletRequest request, HttpServletResponse response)
@@ -170,7 +171,7 @@ public class MangeAccountController extends HttpServlet {
                 int id = Integer.parseInt(idStr);
                 boolean success = accountDAO.deleteAccount(id);
                 if (success) {
-                    response.sendRedirect("listAccount.jsp");
+                    response.sendRedirect("DEHome/Manage-Account");
                 } else {
                     response.getWriter().write("Error deleting account.");
                 }
@@ -186,11 +187,11 @@ public class MangeAccountController extends HttpServlet {
             throws ServletException, IOException {
         try ( ResultSet rs = accountDAO.getAllAccountsResultSet()) { // Automatically close ResultSet
             request.setAttribute("accountResultSet", rs); // Set ResultSet in request
-            request.getRequestDispatcher("listAccount.jsp").forward(request, response); // Forward to JSP
+            request.getRequestDispatcher("DEHome/Manage-Account").forward(request, response); // Forward to JSP
         } catch (SQLException e) {
             e.printStackTrace(); // Consider using a logging framework for production
             request.setAttribute("error", "An error occurred while retrieving accounts. Please try again later.");
-            request.getRequestDispatcher("listAccount.jsp").forward(request, response);
+            request.getRequestDispatcher("DEHome/Manage-Account").forward(request, response);
         }
     }
 

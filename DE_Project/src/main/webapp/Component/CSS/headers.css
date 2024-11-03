@@ -18,8 +18,8 @@ body {
 
 .slidebar {
     position: relative;
-    /* height: 100vh; */
-    max-width: 20%;
+    min-height: 100vh;
+    max-width: 100%;
     flex: 1;
     margin-right: 30px;
     box-shadow: var(--shadow);
