@@ -8,12 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../Component/CSS/warehouseList.css" />
         <title>Warehouse Management</title>
-
     </head>
     <body>
         <!-- Warehouse Management Section -->
         <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
+            <div style="flex:5">
                 <div class="warehouse-container">
                     <div class="container">
                         <h1>Warehouse Management</h1>
@@ -91,6 +91,7 @@
             <!-- Product and Label Management Section (Scoped) -->
             <jsp:include page="productList.jsp" />
             <jsp:include page="labelList.jsp" />
+            </div>
         </div>
     </body>
 </html>

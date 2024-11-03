@@ -12,6 +12,7 @@
         <title>Danh Sách Tài Khoản</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/listAccount.css">
         <script>
+            var contextPaths = '<%= request.getContextPath() %>';
             // Function to open the modal and populate it with account data
             function openModal(id, username, password, fullName, phone, email, role, status) {
                 document.getElementById('accountId').value = id;
@@ -20,7 +21,13 @@
                 document.getElementById('fullName').value = fullName;
                 document.getElementById('phone').value = phone;
                 document.getElementById('email').value = email;
-                document.getElementById('role').value = role;
+                var roleSelect = document.getElementById('role');
+                for (var i = 0; i < roleSelect.options.length; i++) {
+                    if (roleSelect.options[i].value === role) {
+                        roleSelect.selectedIndex = i;
+                        break;
+                    }
+                }
 
                 if (status === "Hoạt động") {
                     document.getElementById('statusActive').checked = true;
@@ -35,20 +42,6 @@
             // Function to close the modal
             function closeModal() {
                 document.getElementById('accountModal').style.display = 'none';
-            }
-
-            // Function to delete the account
-            function deleteAccount() {
-                if (confirm("Xác nhận xóa?")) {
-                    var id = document.getElementById('accountId').value;
-                    window.location.href = "ManageAccountController?action=delete&id=" + id;
-                }
-            }
-            function updateAccount() {
-                if (confirm("Xác nhận lưu?")) {
-                    var id = document.getElementById('accountId').value;
-                    window.location.href = "ManageAccountController?action=update&id=" + id;
-                }
             }
         </script>
     </head>
@@ -68,8 +61,7 @@
         <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
                 <div class="container">
-                    <form method="post" action="ManageAccountController">
-                        <input type="hidden" name="action" value="search">
+                    <form action="${pageContext.request.contextPath}/ManageAccount" method="POST">
                         <div class="filter-section">
                             <div class="filter-item">
                                 <label for="search-accountId">ID tài khoản</label>
@@ -89,11 +81,11 @@
                             <input type="text" id="search-username" name="search-username" placeholder="Tất cả" 
                                    value="<%= request.getParameter("search-username") != null ? request.getParameter("search-username") : "" %>">
                         </div>
-                        <button type="submit" class="filter-btn">Tìm</button>
+                        <button type="submit" name="btnAction" value="search" class="filter-btn">Tìm</button>
                     </div>
                 </form>
 
-                <button type="button" class="btn-create" onclick="window.location.href = '${pageContext.request.contextPath}/Authen/Register'">Tạo tài khoản</button>
+                <button type="button"  class="btn-create" onclick="window.location.href = '${pageContext.request.contextPath}/Authen/Register'">Tạo tài khoản</button>
 
                 <table class="account-table">
                     <thead>
@@ -110,7 +102,7 @@
                     </thead>
                     <tbody>
                         <%
-                            ResultSet rs = (ResultSet) request.getAttribute("accountResultSet");
+                            ResultSet rs = (ResultSet) request.getSession().getAttribute("accountResultSet");
 
                             // If no filtered results are available, retrieve all accounts
                             if (rs == null) {
@@ -128,15 +120,13 @@
                             <td><%= rs.getString("user_fullname") %></td>
                             <td><%= rs.getString("user_phone") %></td>
                             <td><%= rs.getString("user_email") %></td>
-                            <td><%= rs.getString("role") %></td>
+                            <td><%= rs.getString("role")%></td>
                             <td><%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %></td>
                             <td><%= rs.getDate("update_at") != null ? rs.getDate("update_at").toString() : "N/A" %></td>
                         </tr>
                         <%
                                 }
                             }
-        
-                            // If no accounts are found, display a message
                             if (!hasAccounts) {
                         %>
                         <tr>
@@ -155,8 +145,7 @@
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h3>Thông tin tài khoản</h3>
-                <form action="ManageAccountController" method="post">
-                    <input type="hidden" name="action" value="update">
+                <form action="${pageContext.request.contextPath}/ManageAccount" method="post">
                     <input type="hidden" name="id" id="accountId">
 
                     <label for="username">Tài khoản</label>
@@ -193,8 +182,8 @@
                     </div>
 
                     <div class="modal-actions">
-                        <button type="button" class="btn-delete" onclick="deleteAccount()">Xóa</button>
-                        <button type="submit" class="btn-save" onclick="updateAccount()">Lưu</button>
+                        <button type="button" class="btn-delete" name="btnAction" value="delete">Xóa</button>
+                        <button type="submit" class="btn-save" name="btnAction" value="update">Lưu</button>
                     </div>
                 </form>
             </div>

@@ -84,19 +84,16 @@
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.7);
-    /* Darker background */
-    max-width: 1200px;
 }
 
 .modal-content {
     background-color: #fff;
-    margin: 5% auto;
+    margin: 53px auto;
     padding: 20px;
     border-radius: 10px;
     width: 40%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     position: relative;
-    font-family: 'Arial', sans-serif;
 }
 
 .modal-content h3 {
@@ -111,6 +108,7 @@
     position: absolute;
     top: 10px;
     right: 15px;
+    padding: 25px;
     font-size: 24px;
     font-weight: bold;
     color: #000;
@@ -210,4 +208,26 @@
     font-weight: bold;
     border-radius: 6px;
     margin-bottom: 20px;
+}
+
+.account-table tbody {
+    display: block;
+    max-height: 650px;
+    /* Giới hạn chiều cao của tbody là 500px */
+    overflow-y: auto;
+    /* Cho phép cuộn dọc */
+}
+
+.account-table thead,
+.account-table tbody tr {
+    display: table;
+    width: 100%;
+    /* Làm cho thead và các hàng tr trong tbody có độ rộng bằng nhau */
+    table-layout: fixed;
+    /* Giúp các cột giữ nguyên kích thước ngay cả khi cuộn */
+}
+
+.account-table {
+    width: 100%;
+    /* Đảm bảo bảng chiếm toàn bộ độ rộng của container */
 }
