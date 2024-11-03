@@ -27,7 +27,7 @@
 
                         <!-- Doanh Thu Card -->
                         <div class="card revenue-card">
-                            <h3>Thống kê Doanh Thu</h3>  
+                            <h3>Thống kê Doanh thu</h3>  
                             <br>
                             <p><strong>Doanh thu tháng ${currentMonth}</strong></p>
 
@@ -36,7 +36,7 @@
                         <p><strong>So với Doanh thu tháng ${previousMonth}</strong></p>
                         <br>
                         <h2 class="product-price card_items">${getPreviousMonthRevenue}</h2>
-                        <h3 class="card_items">${getPercentChange} %</h3>
+                        <h3 class="percent-price card_items">${getPercentChange}</h3>
                     </div>
 
                     <!-- Đơn Hàng Card -->
@@ -119,7 +119,7 @@
                                         <td>${top_product.category_name}</td>
                                         <td>${top_product.product_name}</td>
                                         <td>${top_product.quantitySold}</td>
-                                        <td>${top_product.revenue}</td>
+                                        <td class="product-price">${top_product.revenue}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -130,13 +130,29 @@
         </div>
         <script>
             function formatPrice(price) {
-                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                if (price === null || price === "" || price === "Chưa có doanh thu") {
+                    return "Chưa có doanh thu";
+                }
+                return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
             }
 
             $(".product-price").each(function () {
                 var priceText = $(this).text().replace(" ₫", "");
                 var formattedPrice = formatPrice(priceText);
-                $(this).text(formattedPrice + " ₫");
+                $(this).text(formattedPrice);
+            });
+
+            function formatPercent(percent) {
+                if (percent === null || percent === "" || percent === "Chưa có dữ liệu để so sánh") {
+                    return "Chưa có dữ liệu để so sánh";
+                }
+                return percent + " %";
+            }
+
+            $(".percent-price").each(function () {
+                var percentText = $(this).text().replace(" %", "");
+                var formattedPercent = formatPercent(percentText);
+                $(this).text(formattedPercent);
             });
         </script>
     </body>

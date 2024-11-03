@@ -117,25 +117,42 @@ public class DEHomeController extends HttpServlet {
         ProductStatisticsDAO products = new ProductStatisticsDAO();
 
         //total_revenue compar
-        //get time now
+        //get time
         LocalDate now = LocalDate.now();
         int currentMonth = now.getMonthValue();
         int currentYear = now.getYear();
 
-        // cal last month n year
+        // calculate last month n year
         YearMonth previousMonthYear = YearMonth.of(currentYear, currentMonth).minusMonths(1);
         int previousMonth = previousMonthYear.getMonthValue();
         int previousYear = previousMonthYear.getYear();
 
-        ProductStatisticsDAO dao = new ProductStatisticsDAO();
-        ProductStatistics revenueComparison = dao.getTotalRevenueComparison(currentMonth, currentYear, previousMonth, previousYear);
+        ProductStatistics revenueComparison = products.getTotalRevenueComparison(currentMonth, currentYear, previousMonth, previousYear);
 
-        request.setAttribute("revenueComparison", revenueComparison);
-        request.setAttribute("getCurrentMonthRevenue", revenueComparison.getCurrentRevenue());
-        request.setAttribute("getPreviousMonthRevenue", revenueComparison.getPreviousRevenue());
-        request.setAttribute("getPercentChange", revenueComparison.getPercentChange());
-        request.setAttribute("currentMonth", currentMonth);
-        request.setAttribute("previousMonth", previousMonth);
+        if (revenueComparison != null) {
+            if (revenueComparison.getCurrentRevenue() == null) {
+                request.setAttribute("getCurrentMonthRevenue", "Chưa có doanh thu");
+            } else {
+                request.setAttribute("getCurrentMonthRevenue", revenueComparison.getCurrentRevenue());
+            }
+
+            if (revenueComparison.getPreviousRevenue() == null) {
+                request.setAttribute("getPreviousMonthRevenue", "Chưa có doanh thu");
+            } else {
+                request.setAttribute("getPreviousMonthRevenue", revenueComparison.getPreviousRevenue());
+            }
+
+            if (revenueComparison.getCurrentRevenue() != null && revenueComparison.getPreviousRevenue() != null) {
+                request.setAttribute("getPercentChange", revenueComparison.getPercentChange());
+            } else {
+                request.setAttribute("getPercentChange", "Chưa có dữ liệu để so sánh");
+            }
+            
+            request.setAttribute("currentMonth", currentMonth);
+            request.setAttribute("previousMonth", previousMonth);
+        } else {
+            System.out.println("Không có dữ liệu hoặc xảy ra lỗi.");
+        }
 
         //total
         ProductStatistics total_revenue = products.getTotalRevenue();
@@ -146,7 +163,7 @@ public class DEHomeController extends HttpServlet {
         }
 
         //top product
-        List<ProductStatistics> topSellingProducts = products.getTopSellingProducts(2);
+        List<ProductStatistics> topSellingProducts = products.getTopSellingProducts(5);
         request.setAttribute("topSellingProducts", topSellingProducts);
 
         //get order status
