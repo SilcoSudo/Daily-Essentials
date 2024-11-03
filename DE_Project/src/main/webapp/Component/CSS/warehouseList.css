@@ -1,0 +1,102 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Oct 31, 2024, 5:27:04 PM
+    Author     : Qi
+*/
+
+.warehouse-container {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+    width: 100%;
+}
+
+.warehouse-container .container {
+    width: 90%;
+    max-width: 1200px; /* Limit width to 1200px */
+    margin: 0 auto; /* Center the container */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.warehouse-container h1 {
+    text-align: center;
+    color: #333;
+}
+
+.warehouse-container .form-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.warehouse-container .form-group select,
+.warehouse-container .form-group input,
+.warehouse-container .form-group button {
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    flex: 1;
+}
+
+.warehouse-container .form-group button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.warehouse-container .form-group button:hover {
+    background-color: #004080;
+}
+
+.warehouse-container table.warehouse-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.warehouse-container table.warehouse-table th,
+.warehouse-container table.warehouse-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.warehouse-container th {
+    background-color: #f2f2f2;
+    border-bottom: 2px solid black;
+}
+
+.warehouse-container td {
+    border-bottom: 1px solid #ddd;
+}
+
+.warehouse-container .btn {
+    padding: 10px;
+    background-color: #0056b3;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+
+    transition: background-color 0.3s;
+}
+
+.warehouse-container .btn:hover {
+    background-color: #004080;
+}
+
+.warehouse-container .action-buttons {
+    margin-bottom: 20px;
+}

@@ -66,7 +66,7 @@ public class DEHomeController extends HttpServlet {
                 request.getRequestDispatcher("/View/staffViewOrder.jsp").forward(request, response);
             }
             if (part.length > 3 && part[3].equalsIgnoreCase("Manage-Products")) {
-                request.getRequestDispatcher("/View/listAccount.jsp").forward(request, response);
+                request.getRequestDispatcher("/View/warehouseList.jsp").forward(request, response);
             }
             if (part.length > 3 && part[3].equalsIgnoreCase("Manage-Account")) {
                 request.getRequestDispatcher("/View/listAccount.jsp").forward(request, response);
