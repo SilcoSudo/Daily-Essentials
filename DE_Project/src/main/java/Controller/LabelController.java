@@ -66,8 +66,8 @@ public class LabelController extends HttpServlet {
 
         request.setAttribute("filteredLabels", filteredLabels);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("warehouseList.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/DEHome/Manage-Products/warehouseList.jsp").forward(request, response);
+  
     }
 
     /**
@@ -114,15 +114,15 @@ public class LabelController extends HttpServlet {
                         response.sendRedirect("warehouseList.jsp?successMessage=Nhãn đã được cập nhật thành công.");
                     } else {
                         request.setAttribute("errorMessage", "Cập nhật nhãn thất bại. Vui lòng thử lại.");
-                        request.getRequestDispatcher("labelList.jsp").forward(request, response);
+                        request.getRequestDispatcher("/DEHome/Manage-Products/warehouseList.jsp").forward(request, response);
                     }
                 } else {
                     request.setAttribute("errorMessage", "Vui lòng điền tất cả các trường.");
-                    request.getRequestDispatcher("warehouseList.jsp").forward(request, response);
+                    request.getRequestDispatcher("/DEHome/Manage-Products/warehouseList.jsp").forward(request, response);
                 }
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "ID nhãn không hợp lệ.");
-                request.getRequestDispatcher("labelList.jsp").forward(request, response);
+                request.getRequestDispatcher("/DEHome/Manage-Products/warehouseList.jsp").forward(request, response);
             }
         }
     }

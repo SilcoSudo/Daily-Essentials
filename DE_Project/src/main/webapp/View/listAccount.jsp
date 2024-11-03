@@ -41,13 +41,13 @@
             function deleteAccount() {
                 if (confirm("Xác nhận xóa?")) {
                     var id = document.getElementById('accountId').value;
-                    window.location.href = "AccountController?action=delete&id=" + id;
+                    window.location.href = "ManageAccountController?action=delete&id=" + id;
                 }
             }
             function updateAccount() {
                 if (confirm("Xác nhận lưu?")) {
                     var id = document.getElementById('accountId').value;
-                    window.location.href = "AccountController?action=update&id=" + id;
+                    window.location.href = "ManageAccountController?action=update&id=" + id;
                 }
             }
         </script>
@@ -68,7 +68,7 @@
         <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
                 <div class="container">
-                    <form method="post" action="AccountController">
+                    <form method="post" action="ManageAccountController">
                         <input type="hidden" name="action" value="search">
                         <div class="filter-section">
                             <div class="filter-item">
@@ -93,7 +93,7 @@
                     </div>
                 </form>
 
-                <button type="submit" class="btn-create" href="register.jsp" >Tạo tài khoản</button>
+                <button type="button" class="btn-create" onclick="window.location.href = '${pageContext.request.contextPath}/Authen/Register'">Tạo tài khoản</button>
 
                 <table class="account-table">
                     <thead>

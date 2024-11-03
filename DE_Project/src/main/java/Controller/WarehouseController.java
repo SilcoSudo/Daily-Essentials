@@ -67,8 +67,8 @@ public class WarehouseController extends HttpServlet {
         ResultSet rs = warehouseDAO.getWarehousesByCriteria(warehouseName, warehouseCode, warehouseAddress, warehouseStatus);
 
         request.setAttribute("warehouses", rs);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("warehouseList.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/DEHome/Manage-Products/warehouseList.jsp").forward(request, response);
+
     }
 
     /**
