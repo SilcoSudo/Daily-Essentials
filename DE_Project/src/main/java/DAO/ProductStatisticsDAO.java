@@ -258,22 +258,22 @@ public class ProductStatisticsDAO {
                 + "        MONTH(o.order_date), YEAR(o.order_date)\n"
                 + "), \n"
                 + "CurrentMonth AS (\n"
-                + "    SELECT total_revenue FROM MonthlyRevenue WHERE month = ? AND year = ?\n"
+                + "    SELECT month, total_revenue FROM MonthlyRevenue WHERE month = ? AND year = ?\n"
                 + "), \n"
                 + "PreviousMonth AS (\n"
-                + "    SELECT total_revenue FROM MonthlyRevenue WHERE month = ? AND year = ?\n"
+                + "    SELECT month, total_revenue FROM MonthlyRevenue WHERE month = ? AND year = ?\n"
                 + ")\n"
                 + "SELECT \n"
-                + "    CM.total_revenue AS current_revenue, \n"
-                + "    PM.total_revenue AS previous_revenue,\n"
+                + "    COALESCE(CM.total_revenue, NULL) AS current_revenue, \n"
+                + "    COALESCE(PM.total_revenue, NULL) AS previous_revenue,\n"
                 + "    CASE \n"
                 + "        WHEN PM.total_revenue IS NULL THEN NULL\n"
-                + "        ELSE ((CM.total_revenue - PM.total_revenue) / PM.total_revenue) * 100\n"
+                + "        ELSE ((COALESCE(CM.total_revenue, 0) - PM.total_revenue) / PM.total_revenue) * 100\n"
                 + "    END AS percent_change\n"
                 + "FROM \n"
                 + "    CurrentMonth CM \n"
-                + "LEFT JOIN \n"
-                + "    PreviousMonth PM ON CM.total_revenue IS NOT NULL;";
+                + "FULL OUTER JOIN \n"
+                + "    PreviousMonth PM ON 1=1;";
 
         try {
             conn = DBConnect.getConnection();
