@@ -14,12 +14,18 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 import UtilsFuction.*;
 import jakarta.mail.MessagingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -149,13 +155,17 @@ public class AuthenticatorController extends HttpServlet {
             int accountID = Integer.parseInt(request.getParameter("accountID"));
             String pass = request.getParameter("pass");
             AuthenDAO authenDAO = new AuthenDAO();
-            if (authenDAO.updatePassword(accountID, md5Hash(pass))) {
-                response.sendRedirect(request.getContextPath() + "/Login");
-                return;
-            } else {
-                request.setAttribute("idacc", accountID);
-                request.getRequestDispatcher("/View/ForgotPassword_ChangePass.jsp").forward(request, response);
-                return;
+            try {
+                if (authenDAO.updatePassword(accountID, UtilsFuction.Encryption.encrypt(pass))) {
+                    response.sendRedirect(request.getContextPath() + "/Login");
+                    return;
+                } else {
+                    request.setAttribute("idacc", accountID);
+                    request.getRequestDispatcher("/View/ForgotPassword_ChangePass.jsp").forward(request, response);
+                    return;
+                }
+            } catch (Exception ex) {
+                System.out.println("Authen: " + ex);
             }
         }
         if (part[3].equalsIgnoreCase("forgot_otp-2")) {
@@ -226,14 +236,20 @@ public class AuthenticatorController extends HttpServlet {
         boolean genders = gender.equals("male");
         if (password.equals(confirmPassword)) {
             AuthenDAO authenDAO = new AuthenDAO();
-            boolean isRegistered = authenDAO.registerUser(username, md5Hash(password), fullname, phone, genders, email);
-            if (isRegistered) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write("{\"success\": true}");
-            } else {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"success\": false}");
+            boolean isRegistered;
+            try {
+                isRegistered = authenDAO.registerUser(username, UtilsFuction.Encryption.encrypt(password), fullname, phone, genders, email);
+                if (isRegistered) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().write("{\"success\": true}");
+                } else {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().write("{\"success\": false}");
+                }
+            } catch (Exception ex) {
+                System.out.println("Authen: " + ex);
             }
+
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"success\": false}");
@@ -252,31 +268,33 @@ public class AuthenticatorController extends HttpServlet {
             request.getRequestDispatcher("/View/login.jsp").forward(request, response);
             return;
         }
-        boolean isLogin = authen.isPassLogin(username, md5Hash(password));
-        String fullNameUser = authen.getFullNameUser(username);
-        int userID = authen.getUserIdByUsername(username);
+        boolean isLogin;
+        try {
+            isLogin = authen.isPassLogin(username, UtilsFuction.Encryption.encrypt(password));
+            String fullNameUser = authen.getFullNameUser(username);
+            int userID = authen.getUserIdByUsername(username);
 
-        if (isLogin) {
-            HttpSession session = request.getSession();
-            String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
-            Cookie usernameCookie = new Cookie("username", encodedUsername);
-            usernameCookie.setMaxAge(24 * 3 * 60 * 60); // 3 days
-            usernameCookie.setPath("/");
-            usernameCookie.setHttpOnly(true);
+            if (isLogin) {
+                HttpSession session = request.getSession();
+                String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
+                Cookie usernameCookie = new Cookie("username", encodedUsername);
+                usernameCookie.setMaxAge(24 * 3 * 60 * 60); // 3 days
+                usernameCookie.setPath("/");
+                usernameCookie.setHttpOnly(true);
 
-            session.setAttribute("username", username);
-            session.setAttribute("userID", userID);
-            String role = authen.getRole(username);
-            session.setAttribute("role", role);
-            if (role.equals("admin")) {
-                response.sendRedirect(request.getContextPath() + "/DEHome");
-            } else {
-                session.setAttribute("userFullName", fullNameUser);
-                response.addCookie(usernameCookie);
+                session.setAttribute("username", username);
+                session.setAttribute("userID", userID);
+                String role = authen.getRole(username);
+                session.setAttribute("role", role);
+                if (role.equals("admin")) {
+                    response.sendRedirect(request.getContextPath() + "/DEHome");
+                } else {
+                    session.setAttribute("userFullName", fullNameUser);
+                    response.addCookie(usernameCookie);
 
-                CartDAO cartDAO = new CartDAO();
-                int totalCartItems = cartDAO.getTotalCartItems(userID);
-                session.setAttribute("totalCartItems", totalCartItems);
+                    CartDAO cartDAO = new CartDAO();
+                    int totalCartItems = cartDAO.getTotalCartItems(userID);
+                    session.setAttribute("totalCartItems", totalCartItems);
 
 //            System.out.println("Session ID: " + session.getId());
 //            System.out.println("Session username: " + session.getAttribute("username"));
@@ -284,31 +302,16 @@ public class AuthenticatorController extends HttpServlet {
 //            System.out.println("Cookie name: " + usernameCookie.getName());
 //            System.out.println("Cookie value: " + usernameCookie.getValue());
 //            System.out.println("Cookie max age: " + usernameCookie.getMaxAge());
-                response.sendRedirect(request.getContextPath() + "/Home");
-            }
-        } else {
-            request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
-            request.getRequestDispatcher("/View/login.jsp").forward(request, response);
-        }
-    }
-
-    public static String md5Hash(String data) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] dataBytes = data.getBytes();
-            byte[] hashBytes = md.digest(dataBytes);
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
+                    response.sendRedirect(request.getContextPath() + "/Home");
                 }
-                hexString.append(hex);
+            } else {
+                request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
+                request.getRequestDispatcher("/View/login.jsp").forward(request, response);
             }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        } catch (Exception ex) {
+            System.out.println("Authen login: " + ex);
         }
+
     }
 
     /**
