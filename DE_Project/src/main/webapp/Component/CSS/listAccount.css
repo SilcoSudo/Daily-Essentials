@@ -49,6 +49,7 @@
     background-color: white;
     border-radius: 10px;
     overflow: hidden;
+    table-layout: fixed;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -57,6 +58,12 @@
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    overflow: hidden;
+    /* Ẩn nội dung thừa */
+    text-overflow: ellipsis;
+    /* Thêm dấu ba chấm nếu nội dung quá dài */
+    white-space: nowrap;
+    /* Không cho phép xuống dòng */
 }
 
 .account-table th {
@@ -133,7 +140,6 @@
     font-size: 14px;
 }
 
-/* Textarea for address */
 .modal-content textarea {
     width: 100%;
     padding: 10px;
@@ -144,7 +150,6 @@
     resize: none;
 }
 
-/* Status Radio Buttons */
 .status-container {
     display: flex;
     align-items: center;
@@ -173,7 +178,6 @@
     border: none;
 }
 
-/* Buttons */
 .modal-actions {
     display: flex;
     justify-content: flex-end;
@@ -211,23 +215,29 @@
 }
 
 .account-table tbody {
-    display: block;
-    max-height: 650px;
-    /* Giới hạn chiều cao của tbody là 500px */
+    display: table-row-group;
+    height: 650px;
     overflow-y: auto;
-    /* Cho phép cuộn dọc */
 }
 
 .account-table thead,
 .account-table tbody tr {
     display: table;
     width: 100%;
-    /* Làm cho thead và các hàng tr trong tbody có độ rộng bằng nhau */
     table-layout: fixed;
-    /* Giúp các cột giữ nguyên kích thước ngay cả khi cuộn */
 }
 
-.account-table {
-    width: 100%;
-    /* Đảm bảo bảng chiếm toàn bộ độ rộng của container */
+.account-table th.username,
+.account-table td.username {
+    min-width: 150px;
+}
+
+.account-table th.name,
+.account-table td.name {
+    min-width: 120px;
+}
+
+.account-table th.email,
+.account-table td.email {
+    min-width: 200px;
 }

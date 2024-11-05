@@ -28,7 +28,7 @@ $(document).ready(function () {
     }
     if (
       !/^[\p{L}\s]+$/u.test(fullname) ||
-      fullname.split(" ").length < 2 ||
+      fullname.split(" ").length <= 2 ||
       fullname.split(" ").length > 7
     ) {
       alert("Tên của bạn không hợp lệ, hãy nhập lại");
@@ -39,7 +39,7 @@ $(document).ready(function () {
       alert("Tên của bạn không hợp lệ, hãy nhập lại");
       return;
     }
-    if (fullname.split(" ").some((name) => name.length < 3)) {
+    if (fullname.split(" ").some((name) => name.length < 2)) {
       alert("Tên của bạn không hợp lệ, hãy nhập lại");
       return;
     }

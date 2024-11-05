@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -64,8 +66,8 @@ public class MangeAccountController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         String part[] = path.split("/");
-        if(part[2].equalsIgnoreCase("ManageAccount")) {
-            
+        if (part[2].equalsIgnoreCase("ManageAccount")) {
+
         }
     }
 
@@ -109,7 +111,7 @@ public class MangeAccountController extends HttpServlet {
         try {
             // Get the ResultSet from the DAO
             ResultSet rs = accountDAO.getFilteredAccountsResultSet(accountId, status, username);
-            
+
             request.getSession().setAttribute("accountResultSet", rs);
             response.sendRedirect(request.getContextPath() + "/DEHome/Manage-Account");
 
@@ -124,7 +126,6 @@ public class MangeAccountController extends HttpServlet {
             throws IOException, ServletException {
         String idStr = request.getParameter("id");
         String username = request.getParameter("username");
-        // admin123
         String password = request.getParameter("password");
         String fullName = request.getParameter("fullName");
         String phone = request.getParameter("phone");
@@ -140,27 +141,30 @@ public class MangeAccountController extends HttpServlet {
 
         boolean isLocked = "Đã khóa".equals(status);
 
-        Account account = new Account(
-                Integer.parseInt(idStr),
-                username,
-                password,
-                fullName,
-                phone,
-                email,
-                role,
-                isLocked,
-                new java.sql.Date(System.currentTimeMillis())
-        );
+        Account account;
+        try {
+            account = new Account(
+                    Integer.parseInt(idStr),
+                    username,
+                    UtilsFuction.Encryption.encrypt(password),
+                    fullName,
+                    phone,
+                    email,
+                    role,
+                    isLocked,
+                    new java.sql.Date(System.currentTimeMillis())
+            );
+            boolean success = accountDAO.updateAccount(account);
+            if (success) {
+                request.getSession().setAttribute("message", "Account updated successfully.");
+            } else {
+                request.getSession().setAttribute("error", "Error updating account.");
+            }
+            response.sendRedirect("DEHome/Manage-Account");
 
-        boolean success = accountDAO.updateAccount(account);
-
-        if (success) {
-            request.getSession().setAttribute("message", "Account updated successfully.");
-        } else {
-            request.getSession().setAttribute("error", "Error updating account.");
+        } catch (Exception ex) {
+            System.out.println("Update account: " + ex);
         }
-
-        response.sendRedirect("DEHome/Manage-Account");
     }
 
     private void deleteAccount(HttpServletRequest request, HttpServletResponse response)

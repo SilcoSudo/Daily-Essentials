@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
+<%@ page import="UtilsFuction.Encryption" %>
 <%@ page import="Model.Account" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.SQLException" %>
@@ -62,11 +63,11 @@
             <jsp:include page="headers.jsp"></jsp:include>
                 <div class="container">
                     <form action="${pageContext.request.contextPath}/ManageAccount" method="POST">
-                        <div class="filter-section">
-                            <div class="filter-item">
-                                <label for="search-accountId">ID tài khoản</label>
-                                <input type="text" id="search-accountId" name="search-accountId" placeholder="Tất cả" 
-                                       value="<%= request.getParameter("search-accountId") != null ? request.getParameter("search-accountId") : "" %>">
+                    <div class="filter-section">
+                        <div class="filter-item">
+                            <label for="search-accountId">ID tài khoản</label>
+                            <input type="text" id="search-accountId" name="search-accountId" placeholder="Tất cả" 
+                                   value="<%= request.getParameter("search-accountId") != null ? request.getParameter("search-accountId") : "" %>">
                         </div>
                         <div class="filter-item">
                             <label for="status">Trạng thái</label>
@@ -104,23 +105,29 @@
                         <%
                             ResultSet rs = (ResultSet) request.getSession().getAttribute("accountResultSet");
 
-                            // If no filtered results are available, retrieve all accounts
                             if (rs == null) {
-                                rs = accountDAO.getAllAccountsResultSet(); // Retrieve all accounts if filtered result is null
+                                rs = accountDAO.getAllAccountsResultSet();
                             }
 
-                            boolean hasAccounts = false; // Flag to track if any accounts are found
+                            boolean hasAccounts = false;
                             if (rs != null) {
                                 while (rs.next()) {
-                                    hasAccounts = true; // We found at least one account
+                                    hasAccounts = true;
+                                    String decryptedPassword = "";
+                                    try {
+                                        decryptedPassword = Encryption.decrypt(rs.getString("password"));
+                                    } catch (Exception e) {
+                                        decryptedPassword = "Lỗi giải mã";
+                                        e.printStackTrace();
+                                    }
                         %>
-                        <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= rs.getString("password") %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %>')">
+                        <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= decryptedPassword %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %>')">
                             <td><%= rs.getInt("account_id") %></td>
                             <td><%= rs.getString("username") %></td>
                             <td><%= rs.getString("user_fullname") %></td>
                             <td><%= rs.getString("user_phone") %></td>
                             <td><%= rs.getString("user_email") %></td>
-                            <td><%= rs.getString("role")%></td>
+                            <td><%= rs.getString("role") %></td>
                             <td><%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %></td>
                             <td><%= rs.getDate("update_at") != null ? rs.getDate("update_at").toString() : "N/A" %></td>
                         </tr>
