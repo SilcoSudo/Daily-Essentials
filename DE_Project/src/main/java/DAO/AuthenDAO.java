@@ -14,6 +14,27 @@ import java.sql.Timestamp;
  */
 public class AuthenDAO {
 
+    public boolean isLock(int userId) {
+        Connection conn;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            conn = DBConnect.getConnection();
+            String sql = "SELECT is_lock FROM account a\n"
+                    + "WHERE a.user_id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Is lock: " + e.getMessage());
+        }
+        return false;
+    }
+
     public boolean isPassLogin(String username, String password) {
         Connection conn;
         PreparedStatement ps;
@@ -216,9 +237,9 @@ public class AuthenDAO {
     public boolean registerUser(String username, String password, String fullname, String phone, boolean gender, String email) {
         Connection conn;
         PreparedStatement psCheck;
-        PreparedStatement psInsertUser ;
+        PreparedStatement psInsertUser;
         PreparedStatement psInsertAccount;
-        ResultSet rs ;
+        ResultSet rs;
 
         try {
             conn = DBConnect.getConnection();
