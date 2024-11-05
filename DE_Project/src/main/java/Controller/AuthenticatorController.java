@@ -270,31 +270,31 @@ public class AuthenticatorController extends HttpServlet {
         }
         boolean isLogin;
         try {
-            isLogin = authen.isPassLogin(username, UtilsFuction.Encryption.encrypt(password));
             String fullNameUser = authen.getFullNameUser(username);
             int userID = authen.getUserIdByUsername(username);
+            if (authen.isLock(userID) == false) {
+                isLogin = authen.isPassLogin(username, UtilsFuction.Encryption.encrypt(password));
+                if (isLogin) {
+                    HttpSession session = request.getSession();
+                    String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
+                    Cookie usernameCookie = new Cookie("username", encodedUsername);
+                    usernameCookie.setMaxAge(24 * 3 * 60 * 60); // 3 days
+                    usernameCookie.setPath("/");
+                    usernameCookie.setHttpOnly(true);
 
-            if (isLogin) {
-                HttpSession session = request.getSession();
-                String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
-                Cookie usernameCookie = new Cookie("username", encodedUsername);
-                usernameCookie.setMaxAge(24 * 3 * 60 * 60); // 3 days
-                usernameCookie.setPath("/");
-                usernameCookie.setHttpOnly(true);
+                    session.setAttribute("username", username);
+                    session.setAttribute("userID", userID);
+                    String role = authen.getRole(username);
+                    session.setAttribute("role", role);
+                    if (role.equals("admin")) {
+                        response.sendRedirect(request.getContextPath() + "/DEHome");
+                    } else {
+                        session.setAttribute("userFullName", fullNameUser);
+                        response.addCookie(usernameCookie);
 
-                session.setAttribute("username", username);
-                session.setAttribute("userID", userID);
-                String role = authen.getRole(username);
-                session.setAttribute("role", role);
-                if (role.equals("admin")) {
-                    response.sendRedirect(request.getContextPath() + "/DEHome");
-                } else {
-                    session.setAttribute("userFullName", fullNameUser);
-                    response.addCookie(usernameCookie);
-
-                    CartDAO cartDAO = new CartDAO();
-                    int totalCartItems = cartDAO.getTotalCartItems(userID);
-                    session.setAttribute("totalCartItems", totalCartItems);
+                        CartDAO cartDAO = new CartDAO();
+                        int totalCartItems = cartDAO.getTotalCartItems(userID);
+                        session.setAttribute("totalCartItems", totalCartItems);
 
 //            System.out.println("Session ID: " + session.getId());
 //            System.out.println("Session username: " + session.getAttribute("username"));
@@ -302,10 +302,14 @@ public class AuthenticatorController extends HttpServlet {
 //            System.out.println("Cookie name: " + usernameCookie.getName());
 //            System.out.println("Cookie value: " + usernameCookie.getValue());
 //            System.out.println("Cookie max age: " + usernameCookie.getMaxAge());
-                    response.sendRedirect(request.getContextPath() + "/Home");
+                        response.sendRedirect(request.getContextPath() + "/Home");
+                    }
+                } else {
+                    request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
+                    request.getRequestDispatcher("/View/login.jsp").forward(request, response);
                 }
             } else {
-                request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
+                request.setAttribute("errorMessage", "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ HOTLINE để hỗ trợ");
                 request.getRequestDispatcher("/View/login.jsp").forward(request, response);
             }
         } catch (Exception ex) {
