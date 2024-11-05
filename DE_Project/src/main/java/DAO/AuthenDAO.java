@@ -27,7 +27,7 @@ public class AuthenDAO {
             ps.setInt(1, userId);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return true;
+                return rs.getBoolean("is_lock");
             }
         } catch (SQLException e) {
             System.out.println("Is lock: " + e.getMessage());
