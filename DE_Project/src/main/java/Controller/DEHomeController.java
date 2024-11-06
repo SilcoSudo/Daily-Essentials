@@ -130,13 +130,13 @@ public class DEHomeController extends HttpServlet {
 
         if (revenueComparison != null) {
             if (revenueComparison.getCurrentRevenue() == null) {
-                request.setAttribute("getCurrentMonthRevenue", "Chưa có doanh thu");
+                request.setAttribute("getCurrentMonthRevenue", "No revenue yet");
             } else {
                 request.setAttribute("getCurrentMonthRevenue", revenueComparison.getCurrentRevenue());
             }
 
             if (revenueComparison.getPreviousRevenue() == null) {
-                request.setAttribute("getPreviousMonthRevenue", "Chưa có doanh thu");
+                request.setAttribute("getPreviousMonthRevenue", "No revenue yet");
             } else {
                 request.setAttribute("getPreviousMonthRevenue", revenueComparison.getPreviousRevenue());
             }
@@ -144,13 +144,13 @@ public class DEHomeController extends HttpServlet {
             if (revenueComparison.getCurrentRevenue() != null && revenueComparison.getPreviousRevenue() != null) {
                 request.setAttribute("getPercentChange", revenueComparison.getPercentChange());
             } else {
-                request.setAttribute("getPercentChange", "Chưa có dữ liệu để so sánh");
+                request.setAttribute("getPercentChange", "No data to compare");
             }
             
             request.setAttribute("currentMonth", currentMonth);
             request.setAttribute("previousMonth", previousMonth);
         } else {
-            System.out.println("Không có dữ liệu hoặc xảy ra lỗi.");
+            System.out.println("No data or an error.");
         }
 
         //total
@@ -158,7 +158,7 @@ public class DEHomeController extends HttpServlet {
         if (total_revenue != null) {
             request.setAttribute("totalRevenue", total_revenue.getTotal_revenue());
         } else {
-            System.out.println("Không có dữ liệu hoặc xảy ra lỗi.");
+            System.out.println("No data or an error.");
         }
 
         //top product
@@ -171,7 +171,7 @@ public class DEHomeController extends HttpServlet {
         if (orderstatus != null && !orderstatus.isEmpty()) {
             request.setAttribute("orderStatistics", orderstatus);
         } else {
-            request.setAttribute("errorMessage", "Không có dữ liệu thống kê nào.");
+            request.setAttribute("errorMessage", "No data or an error.");
         }
 
         //sort cate
@@ -191,7 +191,7 @@ public class DEHomeController extends HttpServlet {
         if (productlist != null && !productlist.isEmpty()) {
             request.setAttribute("productlist", productlist);
         } else {
-            request.setAttribute("errorMessage", "Không có sản phẩm nào.");
+            request.setAttribute("errorMessage", "No data or an error.");
         }
     }
 

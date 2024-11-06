@@ -52,7 +52,7 @@ public class ProductStatisticsController extends HttpServlet {
         if (total_revenue != null) {
             request.setAttribute("totalRevenue", total_revenue.getTotal_revenue());
         } else {
-            System.out.println("Không có dữ liệu hoặc xảy ra lỗi.");
+            System.out.println("No data or an error.");
         }
 
         //top product
@@ -65,7 +65,7 @@ public class ProductStatisticsController extends HttpServlet {
         if (orderstatus != null && !orderstatus.isEmpty()) {
             request.setAttribute("orderStatistics", orderstatus);
         } else {
-            request.setAttribute("errorMessage", "Không có dữ liệu thống kê nào.");
+            request.setAttribute("errorMessage", "No data or an error.");
         }
 
         //sort cate
@@ -85,7 +85,7 @@ public class ProductStatisticsController extends HttpServlet {
         if (productlist != null && !productlist.isEmpty()) {
             request.setAttribute("productlist", productlist);
         } else {
-            request.setAttribute("errorMessage", "Không có sản phẩm nào.");
+            request.setAttribute("errorMessage", "No data or an error.");
         }
 
         request.getRequestDispatcher("View/staffViewStatistics.jsp").forward(request, response);

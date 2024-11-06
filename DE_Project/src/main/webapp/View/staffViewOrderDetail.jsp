@@ -24,25 +24,25 @@
         <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
                 <div class="container">
-                    <h2>Chi tiết đơn hàng</h2>
+                    <h2>Order details</h2>
                     <br />
                     <div class="table-container">
                         <table>
 
                             <tr>
-                                <th>ID Đơn hàng</th>
+                                <th>ID Order</th>
                                 <td>${orderlist.order_id}</td>
                         </tr>
                         <tr>
-                            <th>Tình trạng đơn hàng</th>
+                            <th>Order status</th>
                             <td>${orderlist.orderStatusString}</td>
                         </tr>
                         <tr>
-                            <th>Ngày tạo</th>
+                            <th>Date</th>
                             <td>${orderlist.order_date}</td>
                         </tr>
                         <tr>
-                            <th>Tổng số tiền</th>
+                            <th>Total amount</th>
                             <td class="product-price">${orderlist.total_amount}</td>
                         </tr>
                     </table>
@@ -50,10 +50,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Giá tiền</th>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,7 +69,7 @@
                     </table>
                 </div>
                 <div class="popup-footer">
-                    <a href="${pageContext.request.contextPath}/DEHome/Manage-Orders" class="update-button">Quay lại danh sách đơn hàng</a>
+                    <a href="${pageContext.request.contextPath}/DEHome/Manage-Orders" class="update-button">Back</a>
                 </div>
             </div>
 

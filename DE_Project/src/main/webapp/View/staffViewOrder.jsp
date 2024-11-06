@@ -24,31 +24,31 @@
             <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
                 <div class="container">
-                    <h1>Quản lý đơn hàng</h1>
+                    <h1>Order Management</h1>
                     <div class="filter-section">
                         <div>
-                            <label>ID Đơn hàng :</label>
-                            <input type="text" id="searchOrderId" placeholder="Nhập ID đơn hàng"/>
+                            <label>Order ID :</label>
+                            <input type="text" id="searchOrderId" placeholder="Enter the order ID"/>
                         </div>
                         <div>
-                            <label>Tình trạng đơn :</label>
+                            <label>Order status :</label>
                             <select id="statusFilter">
-                                <option value="">Tất cả</option>
-                                <option value="Đang xử lý">Đang xử lý</option>
-                                <option value="Ðã xác nhận">Ðã xác nhận</option>
-                                <option value="Đang vận chuyển">Đang vận chuyển</option>
-                                <option value="Ðã hoàn thành">Ðã hoàn thành</option>
-                                <option value="Ðã hủy">Ðã hủy</option>
+                                <option value="">All</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Shipping">Shipping</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
                             </select>
                         </div>
                         <div>
-                            <label>Tổng số tiền :</label>
-                            <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
+                            <label>Total amount :</label>
+                            <input type="text" id="searchTotalAmount" placeholder="Enter the amount" />
                         </div>
                     </div>
                     <div class="filter-section">
                         <div>
-                            <label for="Date"> Ngày tạo :</label>
+                            <label for="Date">Date :</label>
                             <input type="Date"  id="searchDate">
                         </div>
                     </div>
@@ -57,11 +57,11 @@
                     <table id="orderTable">
                         <thead>
                             <tr>
-                                <th>ID Đơn hàng</th>
-                                <th>ID Khách hàng</th>
-                                <th>Tổng số tiền</th>
-                                <th>Trạng thái đơn hàng</th>
-                                <th>Ngày tạo</th>
+                                <th>Order ID</th>
+                                <th>Customer ID</th>
+                                <th>Total amount</th>
+                                <th>Order status</th>
+                                <th>Date</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -78,8 +78,8 @@
                                             <img src="${pageContext.request.contextPath}/Component/IMG/ic-3dot.svg" class="verticaldots-button" alt="Vertical Dots Button">
                                         </a>
                                         <div class="actions-menu">
-                                            <a href="${pageContext.request.contextPath}/OrderDetails?order_id=${order.order_id}">Xem chi tiết</a>
-                                            <a href="#" class="update-status" data-order-id="${order.order_id}">Cập nhật trạng thái đơn hàng</a>
+                                            <a href="${pageContext.request.contextPath}/OrderDetails?order_id=${order.order_id}">View details</a>
+                                            <a href="#" class="update-status" data-order-id="${order.order_id}">Update order status</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -93,32 +93,33 @@
             <div class="popup" id="popup-update" style="display: none">
                 <div class="popup-content popup-update-content">
                     <div class="popup-header">
-                        <h2>Cập nhật trạng thái đơn hàng</h2>
+                        <h2>Update order status</h2>
                     </div>
+                    <br>
                     <div class="popup-body">
                         <form method="post" action="Manage-Orders">
                             <table>
                                 <tr>
-                                    <th>ID Đơn hàng</th>
+                                    <th>Order ID</th>
                                     <td id="update-order-id"></td>
                                 <input type="hidden" name="order_id" id="hidden-order-id"> 
                                 </tr>
                                 <tr>
-                                    <th>Trạng thái đơn</th>
+                                    <th>Order status</th>
                                     <td>
                                         <select id="order-status-select" name="order_status">
-                                            <option value="0">Đang xử lý</option>
-                                            <option value="1">Ðã xác nhận</option>
-                                            <option value="2">Đang vận chuyển</option>
-                                            <option value="3">Ðã hoàn thành</option>
-                                            <option value="4">Ðã hủy</option>
+                                            <option value="0">Processing</option>
+                                            <option value="1">Confirmed</option>
+                                            <option value="2">Shipping</option>
+                                            <option value="3">Completed</option>
+                                            <option value="4">Cancelled</option>
                                         </select>
                                     </td>
                                 </tr>
                             </table>
                             <div class="popup-footer">
-                                <button type="button" class="close-btn" data-popup-id="popup-update">Đóng</button>
-                                <button type="submit">Cập nhật</button>
+                                <button type="button" class="close-btn" data-popup-id="popup-update">Close</button>
+                                <button type="submit">Save</button>
                             </div>
                         </form>
                     </div>

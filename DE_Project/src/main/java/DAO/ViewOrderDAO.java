@@ -27,17 +27,17 @@ public class ViewOrderDAO {
     private String getOrderStatus(int status) {
         switch (status) {
             case 0:
-                return "Đang xử lý";
+                return "Processing";
             case 1:
-                return "Ðã xác nhận";
+                return "Confirmed";
             case 2:
-                return "Đang vận chuyển";
+                return "Shipping";
             case 3:
-                return "Ðã hoàn thành";
+                return "Completed";
             case 4:
-                return "Ðã hủy";
+                return "Cancelled";
             default:
-                return "Đang xử lý";
+                return "Processing";
         }
     }
 
