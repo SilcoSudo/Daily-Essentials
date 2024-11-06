@@ -6,7 +6,6 @@ package Controller;
 
 import DAO.ViewOrderDAO;
 import Model.OrderHistory;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -71,8 +70,7 @@ public class CustomerViewOrderController extends HttpServlet {
         List<OrderHistory> orderList = orders.getOrdersByUserId(userID);
         
         request.setAttribute("orderlist", orderList);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("View/customerViewOrder.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("View/customerViewOrder.jsp").forward(request, response);
 
     }
 

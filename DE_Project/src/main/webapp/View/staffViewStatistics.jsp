@@ -27,13 +27,13 @@
 
                         <!-- Doanh Thu Card -->
                         <div class="card revenue-card">
-                            <h3>Thống kê Doanh thu</h3>  
+                            <h3>Revenue Statistics</h3>  
                             <br>
-                            <p><strong>Doanh thu tháng ${currentMonth}</strong></p>
+                            <p><strong>This month's revenue :</strong></p>
 
                         <h2 class="product-price card_items">${getCurrentMonthRevenue}</h2>
                         <br>
-                        <p><strong>So với Doanh thu tháng ${previousMonth}</strong></p>
+                        <p><strong>Compared to last month's revenue :</strong></p>
                         <br>
                         <h2 class="product-price card_items">${getPreviousMonthRevenue}</h2>
                         <h3 class="percent-price card_items">${getPercentChange}</h3>
@@ -41,7 +41,7 @@
 
                     <!-- Đơn Hàng Card -->
                     <div class="card order-card">
-                        <h3>Thống kê Ðơn hàng</h3>
+                        <h3>Order statistics</h3>
                         <div class="order-content">
                             <c:forEach items="${orderStatistics}" var="order">
                                 <div class="order-row">
@@ -59,12 +59,12 @@
 
                 <!-- Bảng thống kê sản phẩm -->
                 <div class="filter-section">
-                    <h3>Danh sách thống kê sản phẩm</h3>
+                    <h3>List of product statistics</h3>
                     <br>
                     <form action="${pageContext.request.contextPath}/DEHome" method="get">
-                        <label for="category">Danh mục:</label>
+                        <label for="category">Category:</label>
                         <select name="category_id" id="category" onchange="this.form.submit()">
-                            <option value="0">Tất cả</option>
+                            <option value="0">All</option>
                             <c:forEach var="category" items="${categoryList}">
                                 <option value="${category.category_id}" ${param.category_id == category.category_id ? 'selected' : ''}>
                                     ${category.category_name}
@@ -76,11 +76,11 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID Sản phẩm</th>
-                                    <th>Danh mục</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Số lượng bán</th>
-                                    <th>Doanh thu sản phẩm</th>
+                                    <th>Product ID</th>
+                                    <th>Category</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity sold</th>
+                                    <th>Product revenue</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,16 +100,16 @@
 
                 <!-- Bảng sản phẩm bán chạy nhất -->
                 <div class="filter-section">
-                    <h3>Danh sách sản phẩm bán chạy nhất</h3>
+                    <h3>List of 10 best-selling products</h3>
                     <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Danh mục</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Số lượng bán </th>
-                                    <th>Doanh thu sản phẩm</th>
+                                    <th>Category</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity sold</th>
+                                    <th>Product revenue</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,7 +130,7 @@
         </div>
         <script>
             function formatPrice(price) {
-                if (price === null || price === "" || price === "Chưa có doanh thu") {
+                if (price === null || price === "" || price === "No revenue yet") {
                     return "Chưa có doanh thu";
                 }
                 return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
@@ -143,8 +143,8 @@
             });
 
             function formatPercent(percent) {
-                if (percent === null || percent === "" || percent === "Chưa có dữ liệu để so sánh") {
-                    return "Chưa có dữ liệu để so sánh";
+                if (percent === null || percent === "" || percent === "No data to compare") {
+                    return "No data to compare";
                 }
                 return percent + " %";
             }

@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Lịch sử đơn hàng</title>
+        <title>Order History</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerViewOrder.css">
@@ -27,48 +27,48 @@
                 <div class="side-menu">
                     <div class="side-menu-item">
                         <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
-                    <a href="${pageContext.request.contextPath}/Home/Info">Tài khoản</a>
+                    <a href="${pageContext.request.contextPath}/Home/Info">Account</a>
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/order-icon.png" alt="Order Icon">
-                    <a href="${pageContext.request.contextPath}/CustomerViewOrder">Quản lý đơn hàng</a>
+                    <a href="${pageContext.request.contextPath}/CustomerViewOrder">Order Management</a>
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/product-icon.png" alt="Product Icon">
-                    <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Đổi mật khẩu</a>
+                    <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Change password</a>
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/logout-icon.png" alt="Logout Icon">
-                    <a href="${pageContext.request.contextPath}/Authen/Logout">Đăng xuất</a>
+                    <a href="${pageContext.request.contextPath}/Authen/Logout">Log out</a>
                 </div>
             </div>
 
             <div class="main-content">
-                <h2>Danh sách đơn hàng</h2>
+                <h2>List of orders</h2>
                 <div class="filter-section">
                     <div class="filter-section-item">
-                        <label>ID Đơn hàng :</label>
-                        <input type="text" id="searchOrderId" placeholder="Nhập ID đơn hàng"/>
+                        <label>Order ID :</label>
+                        <input type="text" id="searchOrderId" placeholder="Enter the order ID"/>
                     </div>
                     <div class="filter-section-item">
-                        <label>Tổng số tiền :</label>
-                        <input type="text" id="searchTotalAmount" placeholder="Nhập số tiền" />
+                        <label>Total amount :</label>
+                        <input type="text" id="searchTotalAmount" placeholder="Enter the amount" />
                     </div>
                 </div>
                 <div class="filter-section">
                     <div class="filter-section-item">
-                        <label for="Date"> Ngày tạo :</label>
+                        <label for="Date"> Date :</label>
                         <input type="Date"  id="searchDate">
                     </div>
                     <div class="filter-section-item">
-                        <label>Tình trạng đơn :</label>
+                        <label>Order status :</label>
                         <select id="statusFilter">
-                            <option value="">Tất cả</option>
-                            <option value="Đang xử lý">Đang xử lý</option>
-                            <option value="Ðã xác nhận">Ðã xác nhận</option>
-                            <option value="Đang vận chuyển">Đang vận chuyển</option>
-                            <option value="Ðã hoàn thành">Ðã hoàn thành</option>
-                            <option value="Ðã hủy">Ðã hủy</option>
+                            <option value="">All</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Shipping">Shipping</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
                         </select>
                     </div>
                 </div>
@@ -78,11 +78,11 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ID Đơn hàng</th>
-                                <th>Ngày mua</th>
-                                <th>Tổng tiền</th>
-                                <th>Trạng thái đơn hàng</th>
-                                <th>Chi tiết</th>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Total amount</th>
+                                <th>Order status</th>
+                                <th>Order details</th>
                             </tr>
                         </thead>
                         <tbody id="orderBody">
@@ -94,7 +94,7 @@
                                     <td>${order.orderStatusString}</td>
                                     <td class="product-price" style="display:none;">${order.fee_shipp}</td>
                                     <td class="actions">
-                                        <a href="${pageContext.request.contextPath}/OrderDetail?order_id=${order.order_id}">Xem chi tiết</a>
+                                        <a href="${pageContext.request.contextPath}/OrderDetail?order_id=${order.order_id}">View details</a>
                                     </td>
                                 </tr>  
                             </c:forEach>
