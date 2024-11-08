@@ -19,7 +19,6 @@ public class OrderHistory {
     private BigDecimal total_amount;
     private int order_status;
     private String orderStatusString;
-    private BigDecimal fee_shipp;
     
     
 
@@ -30,26 +29,11 @@ public class OrderHistory {
         this.total_amount = total_amount;
         this.order_status = order_status;
     }
-    
-    public OrderHistory(int order_id, int user_id, Date order_date, BigDecimal total_amount, int order_status, BigDecimal fee_shipp) {
-        this.order_id = order_id;
-        this.user_id = user_id;
-        this.order_date = order_date;
-        this.total_amount = total_amount;
-        this.order_status = order_status;
-        this.fee_shipp = fee_shipp;
-    }
+
 
     public OrderHistory() {
     }
 
-    public BigDecimal getFee_shipp() {
-        return fee_shipp;
-    }
-
-    public void setFee_shipp(BigDecimal fee_shipp) {
-        this.fee_shipp = fee_shipp;
-    }
 
     public int getOrder_status() {
         return order_status;
@@ -100,7 +84,6 @@ public class OrderHistory {
                 + ", total_amount=" + total_amount
                 + ", order_status=" + order_status
                 + ", orderStatusString='" + orderStatusString
-                + ", fee_shipp='" + fee_shipp + '\''
                 + '}';
     }
 

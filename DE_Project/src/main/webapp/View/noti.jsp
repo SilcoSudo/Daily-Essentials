@@ -7,7 +7,7 @@
                 />
         </svg>
         <div class="message">
-            <span class="text text-1">Thông báo</span>
+            <span class="text text-1">Notifcation</span>
             <span class="text text-2">${errorMessage}</span>
         </div>
         <svg

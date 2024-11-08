@@ -5,6 +5,7 @@
 package Controller;
 
 import DAO.CartDAO;
+import DAO.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -80,9 +81,33 @@ public class CartController extends HttpServlet {
         if (part[3].equalsIgnoreCase("UpdateQuantity")) {
             updateQuantity(request, response);
         }
+        if (part[3].equalsIgnoreCase("RemoveItemInCart")) {
+            removeItemInCart(request, response);
+        }
     }
 
-    private void removeCart(HttpServletRequest request, HttpServletResponse response) 
+    private void removeItemInCart(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        CartDAO cartDAO = new CartDAO();
+        HttpSession session = request.getSession();
+        int userId = (int) session.getAttribute("userID");
+        boolean isRemove = cartDAO.removeItemInCart(productId, userId);
+        if (isRemove) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            out.write("{\"success\": true}");
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("{\"success\": false, \"message\": \"\"Error deleting cart. Please try again later!\"}");
+        }
+        out.flush();
+
+    }
+
+    private void removeCart(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         int userId = (int) session.getAttribute("userID");
@@ -92,25 +117,33 @@ public class CartController extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("Có lỗi khi xóa giỏ hàng. Vui lòng thực hiện sau!");
+            response.getWriter().write("Error deleting cart. Please try again later!");
 
         }
     }
 
     private void updateQuantity(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        boolean increase = Boolean.parseBoolean(request.getParameter("increase"));
-
-        HttpSession session = request.getSession();
-        int userId = (int) session.getAttribute("userID");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
         CartDAO cartDAO = new CartDAO();
-        boolean isUpdate = cartDAO.updateProductQuantity(productId, userId, increase);
+        HttpSession session = request.getSession();
+
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        int userId = (int) session.getAttribute("userID");
+        boolean isUpdate = cartDAO.updateProductQuantityInCart(productId, userId, quantity);
+
         if (isUpdate) {
             response.setStatus(HttpServletResponse.SC_OK);
+            out.write("{\"success\": true}");
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("{\"success\": false, \"message\": \"Update failed :(\"}");
         }
+
+        out.flush();
     }
 
     private void addToCard(HttpServletRequest request, HttpServletResponse respons)
@@ -125,11 +158,14 @@ public class CartController extends HttpServlet {
                 int quantity = Integer.parseInt(quantityStr);
 
                 CartDAO cartDAO = new CartDAO();
-                cartDAO.insertProductToCart(userID, productId, quantity);
-
-                respons.setContentType("application/json");
-                respons.setCharacterEncoding("UTF-8");
-                respons.getWriter().write("{\"status\":\"success\"}");
+                if (cartDAO.insertProductToCart(userID, productId, quantity)) {
+                    respons.setContentType("application/json");
+                    respons.setCharacterEncoding("UTF-8");
+                    respons.getWriter().write("{\"status\":\"success\"}");
+                } else {
+                    respons.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    respons.getWriter().write("{\"status\":\"error\", \"message\": \"Invalid for add to cart\"}");
+                }
 
             } catch (NumberFormatException e) {
                 respons.setStatus(HttpServletResponse.SC_BAD_REQUEST);

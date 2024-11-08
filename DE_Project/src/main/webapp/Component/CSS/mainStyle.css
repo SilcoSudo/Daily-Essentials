@@ -42,6 +42,8 @@
 body {
     overflow-x: hidden;
     /* overflow: scroll; */
+    user-select: none;
+
 }
 
 li {

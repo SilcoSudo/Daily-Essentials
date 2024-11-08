@@ -87,7 +87,7 @@ public class PaymentController extends HttpServlet {
             // Kiểm tra giỏ hàng trống
             if (productsInCart == null || productsInCart.isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("Không có sản phẩm trong giỏ hàng.");
+                response.getWriter().write("There are no products in the cart.");
                 return;
             }
 
@@ -98,32 +98,15 @@ public class PaymentController extends HttpServlet {
                 totalAmount = totalAmount.add(productTotal);
             }
 
-            // Lấy phí vận chuyển từ session
-            LocationModel userAddress = cartDAO.getUserAddress(userId);
-            LocationModel locationAddress = cartDAO.getLocationAddress(userId);
-
-            if (userAddress == null || userAddress.getDistrict() == null || userAddress.getDistrict().isEmpty()) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("Lỗi trong quá trình thanh toán. \nVui lòng cập nhật địa chỉ cá nhân.");
-                return;
-            }
-            if (locationAddress == null || locationAddress.getDistrict() == null || locationAddress.getDistrict().isEmpty()) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("Lỗi trong quá trình thanh toán. \nVui lòng cập nhật địa chỉ khu vực giao hàng.");
-                return;
-            }
-            Object feeShipObj = request.getSession().getAttribute("feeShips");
-            BigDecimal feeShip = (feeShipObj != null) ? BigDecimal.valueOf(((Number) feeShipObj).doubleValue()) : BigDecimal.ZERO;
-
             // Gọi hàm xử lý thanh toán với transaction
-            boolean success = ordersDAO.processPaymentTransaction(userId, totalAmount, productsInCart, feeShip);
+            boolean success = ordersDAO.processPaymentTransaction(userId, totalAmount, productsInCart);
 
             if (success) {
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write("Thanh toán thành công.");
+
+                response.getWriter().write("");
             } else {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("Lỗi trong quá trình thanh toán. Vui lòng thử lại.");
             }
         }
     }

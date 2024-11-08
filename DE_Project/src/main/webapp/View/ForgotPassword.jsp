@@ -4,7 +4,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/login.css">
-        <title>Daily Esstentials</title>
+        <link rel="icon" href="${pageContext.request.contextPath}/Component/IMG/IMG_Product_view/Product_noneImage-48x48.png" type="image/x-icon">
+        <title>Change password</title>
     </head>
     <body>
         <div class="login-container">
@@ -17,11 +18,11 @@
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-home.svg" alt="Home">
                 </a>
             </div>
-            <h2 class="login-title">Quên mật khẩu</h2>
+            <h2 class="login-title">Forgot Password</h2>
             <form action="forgot" method="POST" class="login-form">
                 <label for="email">Email</label>
-                <input type="text" id="email" name="email" tabindex="1" placeholder="Nhập email">
-                <button type="submit" class="btnAuthen" tabindex="2">Tiếp tục</button>
+                <input type="text" id="email" name="email" tabindex="1" placeholder="Enter email">
+                <button type="submit" class="btnAuthen" tabindex="2">Continue</button>
             </form>
         </div>
         <jsp:include page="noti.jsp"></jsp:include>

@@ -14,6 +14,25 @@ import java.util.List;
  */
 public class ProductDAO {
 
+    public int getQuantityProduct(int productId) {
+        String query = "SELECT product_quantity FROM product WHERE product_id = ?";
+        int quantity = 0;
+        try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            // Set the productId parameter
+            ps.setInt(1, productId);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    quantity = rs.getInt("product_quantity");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving product quantity: " + e);
+        }
+        return quantity;
+    }
+
     public List<ProductModel> getListProductMax15Item(int userId) {
         List<ProductModel> products = new ArrayList<>();
         String query = "SELECT TOP 15 product_id, product_name, product_price, product_sku, product_quantity, image_url, product_description, category_id\n"
@@ -120,10 +139,27 @@ public class ProductDAO {
         return result;
     }
 
+    public int getQuantityInWare(int product_id) {
+        int result = 0;
+        String query = "SELECT p.product_quantity FROM product p WHERE p.product_id = ?;";
+        try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, product_id);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = rs.getInt("product_quantity");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("getQuantityInWare: " + e.getMessage());
+        }
+        return result;
+    }
+
     public int getQuantityRemain(int userId, int product_id) {
         int result = 0;
         String query = "SELECT quantity \n"
-                + "FROM cart WHERE user_id = ? AND product_id = ?";
+                + "FROM cart WHERE user_id = ? AND product_id = ? AND status = 0";
         try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, userId);

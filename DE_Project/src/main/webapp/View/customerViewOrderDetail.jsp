@@ -58,10 +58,6 @@
                             <td>${orderlist.order_date}</td>
                         </tr>
                         <tr>
-                            <th>Shipping fee</th>
-                            <td class="product-price">${orderlist.fee_shipp}</td>
-                        </tr>
-                        <tr>
                             <th>Total amount</th>
                             <td class="product-price">${orderlist.total_amount}</td>
                         </tr>

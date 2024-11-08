@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class OrdersDAO {
 
-    public boolean processPaymentTransaction(int userId, BigDecimal totalAmount, List<ProductModel> products, BigDecimal feeShipp) {
+    public boolean processPaymentTransaction(int userId, BigDecimal totalAmount, List<ProductModel> products) {
         Connection conn = null;
         PreparedStatement orderStmt = null;
         PreparedStatement orderDetailsStmt = null;
@@ -57,11 +57,10 @@ public class OrdersDAO {
             orderDetailsStmt.executeBatch();
 
             // 3. Tạo hóa đơn
-            String invoiceSql = "INSERT INTO [invoice] (order_id, fee_shipp, total_amount, invoice_status) VALUES (?, ?, ?, 0)";
+            String invoiceSql = "INSERT INTO [invoice] (order_id, total_amount, invoice_status) VALUES (?, ?, 0)";
             invoiceStmt = conn.prepareStatement(invoiceSql);
             invoiceStmt.setInt(1, orderId);
-            invoiceStmt.setBigDecimal(2, feeShipp);
-            invoiceStmt.setBigDecimal(3, totalAmount);
+            invoiceStmt.setBigDecimal(2, totalAmount);
             invoiceStmt.executeUpdate();
 
             // 4. Cập nhật số lượng sản phẩm sau khi mua
