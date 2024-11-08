@@ -44,7 +44,7 @@ public class ViewOrderDAO {
     public List<OrderHistory> getOrdersByUserId(int user_id) {
         try {
             List<OrderHistory> orderlist = new ArrayList<>();
-            String sql = "SELECT o.order_id, o.user_id, o.order_date, o.total_amount, o.order_status, i.fee_shipp "
+            String sql = "SELECT o.order_id, o.user_id, o.order_date, o.total_amount, o.order_status "
                     + "FROM [order] o "
                     + "JOIN invoice i ON o.order_id = i.order_id "
                     + "WHERE o.user_id = ?";
@@ -59,9 +59,8 @@ public class ViewOrderDAO {
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
                         rs.getBigDecimal("total_amount"),
-                        rs.getInt("order_status"),
-                        rs.getBigDecimal("fee_shipp"));
-
+                        rs.getInt("order_status")
+                );
                 orders.setOrderStatusString(getOrderStatus(orders.getOrder_status()));
                 orderlist.add(orders);
             }
@@ -112,7 +111,7 @@ public class ViewOrderDAO {
 
     public OrderHistory getOrderById(int orderId) {
         OrderHistory order = null;
-        String sql = "SELECT o.order_id, o.user_id, o.order_date, o.total_amount, o.order_status, i.fee_shipp "
+        String sql = "SELECT o.order_id, o.user_id, o.order_date, o.total_amount, o.order_status "
                 + "FROM [order] o "
                 + "JOIN invoice i ON o.order_id = i.order_id "
                 + "WHERE o.order_id = ?";
@@ -129,8 +128,7 @@ public class ViewOrderDAO {
                         rs.getInt("user_id"),
                         rs.getDate("order_date"),
                         rs.getBigDecimal("total_amount"),
-                        rs.getInt("order_status"),
-                        rs.getBigDecimal("fee_shipp"));
+                        rs.getInt("order_status"));
 
                 order.setOrderStatusString(getOrderStatus(order.getOrder_status()));
             }
@@ -166,22 +164,4 @@ public class ViewOrderDAO {
         return orderDetails;
     }
 
-    public static void main(String[] args) {
-        ViewOrderDAO orderDAO = new ViewOrderDAO();
-
-        int orderIdToCheck = 16; 
-        OrderHistory order = orderDAO.getOrderById(orderIdToCheck);
-
-        if (order != null) {
-            System.out.println("Thông tin đơn hàng:");
-            System.out.println("Order ID: " + order.getOrder_id());
-            System.out.println("User ID: " + order.getUser_id());
-            System.out.println("Order Date: " + order.getOrder_date());
-            System.out.println("Total Amount: " + order.getTotal_amount());
-            System.out.println("Order Status: " + order.getOrderStatusString());
-            System.out.println("Shipping Fee: " + order.getFee_shipp());
-        } else {
-            System.out.println("Không tìm thấy đơn hàng với ID: " + orderIdToCheck);
-        }
-    }
 }

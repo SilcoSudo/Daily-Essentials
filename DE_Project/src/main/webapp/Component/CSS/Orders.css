@@ -43,6 +43,7 @@
 
 .product-info .product-name {
     display: -webkit-box;
+    cursor: pointer;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
@@ -62,6 +63,7 @@
 
 .product-info img {
     max-width: 86px;
+    cursor: pointer;
 }
 
 .product-quantity {
@@ -73,6 +75,12 @@
     height: 30px;
     border-radius: 12px;
     border: 1px solid rgb(0, 0, 0, 0.25);
+}
+
+.product-quantity .number {
+    border: none;
+    width: 100%;
+    text-align: center;
 }
 
 .product-quantity img {
@@ -138,4 +146,28 @@
 
 .discount {
     color: rgb(0, 0, 0, 0.45);
+}
+
+.disabled {
+    background-color: lightgray;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.btnRemoveItem {
+    background-color: var(--primary-color);
+    color: var(--white-100);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: .5;
+    height: 50px;
+    padding: 10px;
+    user-select: none;
+}
+
+.btnRemoveItem:hover {
+    cursor: pointer;
+    opacity: .9;
 }

@@ -26,23 +26,23 @@ $(document).ready(function () {
       alert("Vui lòng nhập họ và tên.");
       return;
     }
-    if (
-      !/^[\p{L}\s]+$/u.test(fullname) ||
-      fullname.split(" ").length <= 2 ||
-      fullname.split(" ").length > 7
-    ) {
-      alert("Tên của bạn không hợp lệ, hãy nhập lại");
-      return;
-    }
+    // if (
+    //   !/^[\p{L}\s]+$/u.test(fullname) ||
+    //   fullname.split(" ").length <= 2 ||
+    //   fullname.split(" ").length > 7
+    // ) {
+    //   alert("Tên của bạn không hợp lệ, hãy nhập lại");
+    //   return;
+    // }
 
-    if (/\d{2,}/.test(fullname)) {
-      alert("Tên của bạn không hợp lệ, hãy nhập lại");
-      return;
-    }
-    if (fullname.split(" ").some((name) => name.length < 2)) {
-      alert("Tên của bạn không hợp lệ, hãy nhập lại");
-      return;
-    }
+    // if (/\d{2,}/.test(fullname)) {
+    //   alert("Tên của bạn không hợp lệ, hãy nhập lại");
+    //   return;
+    // }
+    // if (fullname.split(" ").some((name) => name.length < 2)) {
+    //   alert("Tên của bạn không hợp lệ, hãy nhập lại");
+    //   return;
+    // }
 
     if (email === "") {
       alert("Vui lòng nhập địa chỉ email.");

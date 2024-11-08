@@ -14,18 +14,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
 import UtilsFuction.*;
 import jakarta.mail.MessagingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -111,7 +103,7 @@ public class AuthenticatorController extends HttpServlet {
             String email = request.getParameter("email");
             AuthenDAO authenDAO = new AuthenDAO();
             if (email.isEmpty()) {
-                request.setAttribute("errorMessage", "Không được để trống.");
+                request.setAttribute("errorMessage", "Cannot be empty..");
                 request.getRequestDispatcher("/View/ForgotPassword.jsp").forward(request, response);
                 return;
             }
@@ -128,7 +120,7 @@ public class AuthenticatorController extends HttpServlet {
                 request.getRequestDispatcher("/View/ForgotPasswordOTP.jsp").forward(request, response);
                 return;
             } else {
-                request.setAttribute("errorMessage", "Vui lòng nhập email chính xác!");
+                request.setAttribute("errorMessage", "Please enter a valid email!");
                 request.getRequestDispatcher("/View/ForgotPassword.jsp").forward(request, response);
                 return;
             }
@@ -142,7 +134,7 @@ public class AuthenticatorController extends HttpServlet {
             String codeValue = authenDAO.getLatestCodeValue(accountID);
             if (codeOTP.isEmpty()) {
                 request.setAttribute("accountID", accountID);
-                request.setAttribute("errorMessage", "Nhập lại mã");
+                request.setAttribute("errorMessage", "Enter the code again");
                 request.getRequestDispatcher("/View/ForgotPasswordOTP.jsp").forward(request, response);
                 return;
             }
@@ -264,7 +256,7 @@ public class AuthenticatorController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (username.isEmpty() || password.isEmpty()) {
-            request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
+            request.setAttribute("errorMessage", "Username or password incorrect");
             request.getRequestDispatcher("/View/login.jsp").forward(request, response);
             return;
         }
@@ -295,21 +287,14 @@ public class AuthenticatorController extends HttpServlet {
                         CartDAO cartDAO = new CartDAO();
                         int totalCartItems = cartDAO.getTotalCartItems(userID);
                         session.setAttribute("totalCartItems", totalCartItems);
-
-//            System.out.println("Session ID: " + session.getId());
-//            System.out.println("Session username: " + session.getAttribute("username"));
-//            System.out.println("Session userID: " + session.getAttribute("userID"));
-//            System.out.println("Cookie name: " + usernameCookie.getName());
-//            System.out.println("Cookie value: " + usernameCookie.getValue());
-//            System.out.println("Cookie max age: " + usernameCookie.getMaxAge());
                         response.sendRedirect(request.getContextPath() + "/Home");
                     }
                 } else {
-                    request.setAttribute("errorMessage", "Tên đăng nhập hoặc mật khẩu không chính xác");
+                    request.setAttribute("errorMessage", "Username or password incorrect");
                     request.getRequestDispatcher("/View/login.jsp").forward(request, response);
                 }
             } else {
-                request.setAttribute("errorMessage", "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ HOTLINE để hỗ trợ");
+                request.setAttribute("errorMessage", "Your account has been locked. Please contact HOTLINE for support");
                 request.getRequestDispatcher("/View/login.jsp").forward(request, response);
             }
         } catch (Exception ex) {

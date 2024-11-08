@@ -9,12 +9,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="icon" href="${pageContext.request.contextPath}/Component/IMG/IMG_Product_view/Product_noneImage-48x48.png" type="image/x-icon">
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/register.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             var contextPath = '${pageContext.request.contextPath}';
         </script>
-        <title>Đăng ký</title>
+        <title>Register</title>
     </head>
     <body>
         <div class="register-container">
@@ -27,48 +29,48 @@
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-home.svg" alt="Home">
                 </a>
             </div>
-            <h2 class="register-title">Đăng ký</h2>
+            <h2 class="register-title">Register page</h2>
             <form action="Register" method="POST" class="register-form">
-                <label for="username">Tài khoản</label>
-                <input type="text" id="username" name="username" tabindex="1" placeholder="Nhập tài khoản">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" tabindex="1" placeholder="Enter your username">
 
-                <label for="fullname">Họ và tên*</label>
-                <input type="text" id="fullname" name="fullname" tabindex="2" placeholder="Nhập họ và tên">
+                <label for="fullname">Full name*</label>
+                <input type="text" id="fullname" name="fullname" tabindex="2" placeholder="Enter your full name">
 
                 <label for="email">Email*</label>
-                <input type="text" id="email" name="email" tabindex="4" placeholder="Nhập địa chỉ email">
+                <input type="text" id="email" name="email" tabindex="4" placeholder="Enter email">
 
-                <label for="phone">Số điện thoại*</label>
-                <input type="tel" id="phone" name="phone" tabindex="5" placeholder="Nhập số điện thoại">
+                <label for="phone">Phone number*</label>
+                <input type="tel" id="phone" name="phone" tabindex="5" placeholder="Enter your phone">
 
-                <label for="password">Mật khẩu*</label>
+                <label for="password">Password*</label>
                 <div class="password-wrapper">
-                    <input type="password" id="password" name="password" tabindex="6" placeholder="Nhập mật khẩu">
+                    <input type="password" id="password" name="password" tabindex="6" placeholder="Enter your password">
                     <span class="show-password">
                         <img src="${pageContext.request.contextPath}/Component/IMG/ic-eye.svg" alt="Show/Hide Password">
                     </span>
                 </div>
 
-                <label for="confirm-password">Xác nhận mật khẩu*</label>
-                <input type="password" id="confirm-password" name="confirm-password" tabindex="7" placeholder="Xác nhận mật khẩu">
+                <label for="confirm-password">Confirm Password*</label>
+                <input type="password" id="confirm-password" name="confirm-password" tabindex="7" placeholder="Confirm Password">
                 <div class="gender">
-                    <label>Giới tính *</label>
+                    <label>Gender*</label>
                     <label class="custom-radio">
                         <input type="radio" name="gender" value="male" checked>
-                        <span class="radio-btn">Nam</span> 
+                        <span class="radio-btn">Man</span> 
                     </label>
                     <label class="custom-radio">
                         <input type="radio" name="gender" value="female">
-                        <span class="radio-btn">Nữ</span>
+                        <span class="radio-btn">Girl</span>
                     </label>
                 </div>
-                <button type="submit" class="register-button" tabindex="8">Đăng ký</button>
+                <button type="submit" class="register-button" tabindex="8">Rigster</button>
 
             </form>
             <div class="or-divider">
                 <hr><span>Hoặc</span><hr>
             </div>
-            <a href="Login" class="login-button">Đăng nhập</a>
+            <a href="Login" class="login-button">Login</a>
         </div>
         <script src="${pageContext.request.contextPath}/Component/JS/main.js"></script>
     </body>

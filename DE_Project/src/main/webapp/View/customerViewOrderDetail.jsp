@@ -32,7 +32,7 @@
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/product-icon.png" alt="Product Icon">
-                    <a href="productDetail.html">Sản phẩm đã mua</a>
+                    <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Đổi mật khẩu</a>
                 </div>
                 <div class="side-menu-item">
                     <img src="${pageContext.request.contextPath}/Component/IMG/logout-icon.png" alt="Logout Icon">
@@ -56,10 +56,6 @@
                         <tr>
                             <th>Ngày tạo</th>
                             <td>${orderlist.order_date}</td>
-                        </tr>
-                        <tr>
-                            <th>Phí vận chuyển</th>
-                            <td class="product-price">${orderlist.fee_shipp}</td>
                         </tr>
                         <tr>
                             <th>Tổng số tiền</th>

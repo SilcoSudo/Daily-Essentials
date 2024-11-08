@@ -7,6 +7,7 @@ $(document).ready(function () {
     var formattedPrice = formatPrice(priceText);
     $(this).text(formattedPrice + " ₫");
   });
+
   $("#increment").on("click", function () {
     let currentVal = parseInt($("#quantity").val());
     $("#quantity").val(currentVal + 1);
@@ -18,6 +19,7 @@ $(document).ready(function () {
       $("#quantity").val(currentVal - 1);
     }
   });
+
   $("#btnAddToCart_details").on("click", function () {
     var quantity = parseInt($("#quantity").val());
     var productID = $("#btnAddToCart_details").data("product-id");
@@ -28,13 +30,21 @@ $(document).ready(function () {
         quantity: quantity,
         productID: productID,
       },
-      success: function () {
-        var currentCount = parseInt($("#cart-count").text());
-        $("#cart-count").text(currentCount + quantity);
-        alert("Đã thêm sản phẩm thành công.");
+      success: function (response) {
+        if (response.status === "success") {
+          if (response.type === "old") {
+            alert("Product added successfully.");
+          } else if (response.type === "new") {
+            var currentCount = parseInt($("#cart-count").text());
+            $("#cart-count").text((currentCount += 1));
+            alert("Product added successfully.");
+          }
+        } else {
+          alert("Update faild: " + response.message);
+        }
       },
       error: function (response) {
-        alert(response.responseText);
+        alert("error: " + response.responseText);
       },
     });
   });

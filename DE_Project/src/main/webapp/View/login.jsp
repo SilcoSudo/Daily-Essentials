@@ -4,8 +4,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="icon" href="${pageContext.request.contextPath}/Component/IMG/IMG_Product_view/Product_noneImage-48x48.png" type="image/x-icon">
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/login.css">
-        <title>Đăng nhập</title>
+        <title>Login</title>
     </head>
     <body>
         <div class="login-container">
@@ -18,26 +20,26 @@
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-home.svg" alt="Home">
                 </a>
             </div>
-            <h2 class="login-title">Đăng nhập</h2>
+            <h2 class="login-title">Login page</h2>
             <form action="Login" method="POST" class="login-form">
-                <label for="username">Tên tài khoản</label>
-                <input type="text" id="username" name="username" tabindex="1" placeholder="Nhập tài khoản">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" tabindex="1" placeholder="Enter your username">
 
-                <label for="password">Mật khẩu</label>
+                <label for="password">Password</label>
                 <div class="password-wrapper">
-                    <input type="password" id="password" name="password" tabindex="2" placeholder="Nhập mật khẩu" >
+                    <input type="password" id="password" name="password" tabindex="2" placeholder="Enter password" >
                     <span class="show-password">
                         <img src="${pageContext.request.contextPath}/Component/IMG/ic-eye.svg" alt="Show/Hide Password">
                     </span>
                 </div>
                 <div class="forgot-password">
-                    <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Quên mật khẩu?</a>
+                    <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Forgot password?</a>
                 </div>
-                <button type="submit" class="login-button" tabindex="3">Đăng nhập</button>
+                <button type="submit" class="login-button" tabindex="3">Login</button>
                 <div class="or-divider">
-                    <hr><span>Hoặc</span><hr>
+                    <hr><span>Or</span><hr>
                 </div>
-                <a href="${pageContext.request.contextPath}/Authen/Register" class="register-button">Đăng ký</a>
+                <a href="${pageContext.request.contextPath}/Authen/Register" class="register-button">Register</a>
             </form>
         </div>
         <jsp:include page="noti.jsp"></jsp:include>

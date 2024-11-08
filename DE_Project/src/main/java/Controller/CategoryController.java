@@ -70,8 +70,8 @@ public class CategoryController extends HttpServlet {
             int userId = (userIdObj != null) ? userIdObj : 0;
             List<ProductModel> productHaveInCart = categoryDAO.getProductInCartWhenSearch(searchProducts, userId);
             for (ProductModel e : searchProducts) {
-                for(ProductModel j: productHaveInCart) {
-                    if(j.getProductId() == e.getProductId()) {
+                for (ProductModel j : productHaveInCart) {
+                    if (j.getProductId() == e.getProductId()) {
                         e.setQuantityInCart(j.getQuantityInCart());
                     }
                 }
@@ -119,9 +119,24 @@ public class CategoryController extends HttpServlet {
 
         if (part[3].equalsIgnoreCase("Search")) {
             int categoryID = Integer.parseInt(request.getParameter("categoryId"));
-            CategoryDAO categoryDAO = new CategoryDAO();
-            List<ProductModel> productList = categoryDAO.getProductByCategoryID(categoryID);
+            Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
+            int userId = (userIdObj != null) ? userIdObj : 0;
             HttpSession session = request.getSession();
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<ProductModel> productList;
+            List<ProductModel> productHaveInCart;
+
+            productList = categoryDAO.getProductByCategoryID(categoryID);
+
+            productHaveInCart = categoryDAO.getProductInCartWhenSearch(productList, userId);
+            for (ProductModel e : productList) {
+                for (ProductModel j : productHaveInCart) {
+                    if (j.getProductId() == e.getProductId()) {
+                        e.setQuantityInCart(j.getQuantityInCart());
+                    }
+                }
+            }
+
             session.setAttribute("productList", productList);
 
             response.setContentType("application/json");

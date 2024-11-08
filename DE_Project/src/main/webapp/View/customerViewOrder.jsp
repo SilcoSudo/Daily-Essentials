@@ -11,9 +11,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Lịch sử đơn hàng</title>
+        <title>Order history</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="${pageContext.request.contextPath}/Component/IMG/IMG_Product_view/Product_noneImage-48x48.png" type="image/x-icon">
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerViewOrder.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/customerInfo.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/navbar.css">
@@ -25,21 +27,23 @@
 
             <div class="container">
                 <div class="side-menu">
+                    <div class="w-side-menu">
+                        <div class="side-menu-item">
+                            <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
+                        <a href="${pageContext.request.contextPath}/Home/Info">Account information</a>
+                    </div>
                     <div class="side-menu-item">
-                        <img src="${pageContext.request.contextPath}/Component/IMG/account-icon.png" alt="User Icon">
-                    <a href="${pageContext.request.contextPath}/Home/Info">Tài khoản</a>
-                </div>
-                <div class="side-menu-item">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/order-icon.png" alt="Order Icon">
-                    <a href="${pageContext.request.contextPath}/CustomerViewOrder">Quản lý đơn hàng</a>
-                </div>
-                <div class="side-menu-item">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/product-icon.png" alt="Product Icon">
-                    <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Đổi mật khẩu</a>
-                </div>
-                <div class="side-menu-item">
-                    <img src="${pageContext.request.contextPath}/Component/IMG/logout-icon.png" alt="Logout Icon">
-                    <a href="${pageContext.request.contextPath}/Authen/Logout">Đăng xuất</a>
+                        <img src="${pageContext.request.contextPath}/Component/IMG/order-icon.png" alt="Order Icon">
+                        <a href="${pageContext.request.contextPath}/CustomerViewOrder">Order Management</a>
+                    </div>
+                    <div class="side-menu-item">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/product-icon.png" alt="Product Icon">
+                        <a href="${pageContext.request.contextPath}/Authen/ForgotPassword">Change password</a>
+                    </div>
+                    <div class="side-menu-item">
+                        <img src="${pageContext.request.contextPath}/Component/IMG/logout-icon.png" alt="Logout Icon">
+                        <a href="${pageContext.request.contextPath}/Authen/Logout">Log out</a>
+                    </div>
                 </div>
             </div>
 
@@ -92,7 +96,6 @@
                                     <td>${order.order_date}</td>
                                     <td class="product-price">${order.total_amount}</td>
                                     <td>${order.orderStatusString}</td>
-                                    <td class="product-price" style="display:none;">${order.fee_shipp}</td>
                                     <td class="actions">
                                         <a href="${pageContext.request.contextPath}/OrderDetail?order_id=${order.order_id}">Xem chi tiết</a>
                                     </td>

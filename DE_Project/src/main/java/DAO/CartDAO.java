@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class CartDAO {
 
-    public void insertProductToCart(int userID, int productId, int quantity) {
+    public boolean insertProductToCart(int userID, int productId, int quantity) {
         String query = "INSERT INTO cart (user_id, product_id, quantity, status) VALUES (?, ?, ?, ?)";
 
         try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
@@ -31,60 +31,50 @@ public class CartDAO {
             ps.setInt(3, quantity);
             ps.setInt(4, 0);
 
-            ps.executeUpdate();
-
+            int result = ps.executeUpdate();
+            if (result > 0) {
+                return true;
+            }
         } catch (SQLException e) {
             System.out.println("insertProductToCart :" + e);
         }
+        return false;
     }
-    
 
-    public boolean updateProductQuantity(int productId, int userId, boolean increase) {
-        String updateQuery = "UPDATE cart SET quantity = quantity + ? WHERE product_id = ? AND user_id = ?";
-        String deleteQuery = "DELETE FROM cart WHERE product_id = ? AND user_id = ? AND quantity = 0";
-        String selectProductQuantityInWareQuery = "SELECT product_quantity FROM product WHERE product_id = ?";
-        String selectProductQuantityInCartQuery = "SELECT quantity FROM cart WHERE product_id = ? AND user_id = ?";
+    public boolean removeItemInCart(int productId, int userId) {
+        boolean result = false;
+        String query = "DELETE FROM cart WHERE product_id = ? AND user_id = ? AND status = 0"; 
 
-        try ( Connection conn = DB.DBConnect.getConnection()) {
-            int quantityChange = increase ? 1 : -1;
+        try ( Connection connection = DB.DBConnect.getConnection();
+                  PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            // Kiểm tra số lượng trong kho và trong giỏ hàng của người dùng
-            try ( PreparedStatement psSelectWare = conn.prepareStatement(selectProductQuantityInWareQuery);  PreparedStatement psSelectCart = conn.prepareStatement(selectProductQuantityInCartQuery)) {
+            preparedStatement.setInt(1, productId);
+            preparedStatement.setInt(2, userId);
 
-                psSelectWare.setInt(1, productId);
-                psSelectCart.setInt(1, productId);
-                psSelectCart.setInt(2, userId);
+            int rowsAffected = preparedStatement.executeUpdate(); 
 
-                ResultSet rsWare = psSelectWare.executeQuery();
-                ResultSet rsCart = psSelectCart.executeQuery();
-
-                if (rsWare.next() && rsCart.next()) {
-                    int productQuantityInWare = rsWare.getInt("product_quantity");
-                    int productQuantityInCart = rsCart.getInt("quantity");
-
-                    // Nếu đang tăng số lượng và tổng số lượng sẽ lớn hơn số lượng trong kho
-                    if (increase && (productQuantityInCart + quantityChange) > productQuantityInWare) {
-                        return false;
-                    }
-                }
+            if (rowsAffected > 0) {
+                result = true; 
             }
+        } catch (SQLException e) {
+            System.out.println("removeItemInCart: " + e);
+        }
 
-            // Thực hiện UPDATE
+        return result;
+    }
+
+    public boolean updateProductQuantityInCart(int productId, int userId, int quantity) {
+        String updateQuery = "UPDATE cart SET quantity = ? "
+                + "WHERE product_id = ? AND user_id = ? AND status = 0";
+        try ( Connection conn = DB.DBConnect.getConnection()) {
+
             try ( PreparedStatement psUpdate = conn.prepareStatement(updateQuery)) {
-                psUpdate.setInt(1, quantityChange);
+                psUpdate.setInt(1, quantity);
                 psUpdate.setInt(2, productId);
                 psUpdate.setInt(3, userId);
                 psUpdate.executeUpdate();
             }
 
-            // Thực hiện DELETE nếu quantity = 0
-            if (!increase) {
-                try ( PreparedStatement psDelete = conn.prepareStatement(deleteQuery)) {
-                    psDelete.setInt(1, productId);
-                    psDelete.setInt(2, userId);
-                    psDelete.executeUpdate();
-                }
-            }
             return true;
         } catch (SQLException e) {
             System.out.println("updateProductQuantity: " + e);
@@ -97,7 +87,6 @@ public class CartDAO {
         boolean result = false;
 
         try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
-
             ps.setInt(1, quantity);
             ps.setInt(2, productId);
             ps.setInt(3, userId);
@@ -127,7 +116,7 @@ public class CartDAO {
 
     public List<ProductModel> getAllProductCart(int userId) {
         List<ProductModel> productList = new ArrayList<>();
-        String query = "SELECT p.image_url, p.product_name, p.product_price, c.quantity, c.product_id\n"
+        String query = "SELECT p.image_url, p.product_name, p.product_price, p.product_quantity, c.quantity, c.product_id\n"
                 + "FROM cart c\n"
                 + "JOIN product p on c.product_id = p.product_id \n"
                 + "WHERE c.status = 0  AND c.user_id = ?";
@@ -143,7 +132,7 @@ public class CartDAO {
                     product.setProductName(rs.getString("product_name"));
                     product.setProductPrice(rs.getBigDecimal("product_price"));
                     product.setQuantityInCart(rs.getInt("quantity"));
-
+                    product.setProductQuantity(rs.getInt("product_quantity"));
                     productList.add(product);
                 }
             }
@@ -156,7 +145,7 @@ public class CartDAO {
 
     public int getTotalCartItems(int userID) {
         int totalItems = 0;
-        String query = "SELECT SUM(quantity) AS total FROM cart WHERE user_id = ? AND status = 0";
+        String query = "SELECT COUNT(*) AS total FROM cart WHERE user_id = ? AND status = 0";
 
         try ( Connection conn = DB.DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
 
