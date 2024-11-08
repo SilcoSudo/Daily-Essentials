@@ -87,7 +87,6 @@ public class ProductController extends HttpServlet {
                 }
                 List<ProductModel> productDetail = productDAO.getProductDetails(productId);
                 int quantiyInWare = productDetail.get(0).getProductQuantity() - quantityReal;
-                productDetail.get(0).setProductQuantity(quantiyInWare);
                 session.setAttribute("productName", productDetail.get(0).getProductName());
                 session.setAttribute("productDetail", productDetail);
                 session.setAttribute("productInCart", quantityReal);
@@ -110,28 +109,39 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getRequestURI();
         String part[] = path.split("/");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
         if (part.length > 3 && part[3].equalsIgnoreCase("AddToCart")) {
-            System.out.println("AddToCart");
             CartDAO cartDAO = new CartDAO();
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             int productID = Integer.parseInt(request.getParameter("productID"));
             Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
             if (userIdObj == null) {
-                response.getWriter().write("Hãy đăng nhập để thực hiện chức năng này.");
+                response.getWriter().write("Please login to perform this function.");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
+                return;
+            }
+            ProductDAO productDAO = new ProductDAO();
+            int quantityProductInWare = productDAO.getQuantityProduct(productID);
+            if (quantityProductInWare < quantity) {
+                response.getWriter().write("There was an error adding the product. \nPlease come back later.");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
             int userId = userIdObj;
-            if (cartDAO.getProductQuantityInCart(userId, productID) > 0) {
+            int quantityProductInCart = cartDAO.getProductQuantityInCart(userId, productID);
+            if (quantityProductInCart > 0) {
                 if (cartDAO.updateQuantityCartInDetail(userId, productID, quantity)) {
+                    out.write("{\"status\":\"success\",\"type\":\"old\"}");
                     response.setStatus(HttpServletResponse.SC_OK);
                 } else {
-                    response.getWriter().write("Có lỗi trong việc thêm sản phẩm. \nHãy quay laị sau.");
+                    response.getWriter().write("There was an error adding the product. \nPlease come back later.");
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 }
             } else {
                 cartDAO.insertProductToCart(userId, productID, quantity);
+                out.write("{\"status\":\"success\",\"type\":\"old\"}");
                 response.setStatus(HttpServletResponse.SC_OK);
             }
         }

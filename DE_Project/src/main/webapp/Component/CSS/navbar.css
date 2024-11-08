@@ -1,7 +1,7 @@
 /* Navbar Styling */
 header {
     display: grid;
-    position: fixed;
+    position: relative;
     z-index: 99999;
     top: 0;
     width: 100%;
@@ -15,8 +15,10 @@ nav {
     background-color: #0c26a5;
     padding: 15px 20px;
     display: flex;
+    position: fixed;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -49,12 +51,21 @@ nav {
     }
 }
 
+.product-wrapper.hidden {
+    top: 0;
+    transform: translateY(-100%);
+}
+
 .product-wrapper {
     display: flex;
+    z-index: 99;
+    position: fixed;
+    top: 74px;
     width: 100%;
     justify-content: center;
     background-color: #f8f8f8;
     border-bottom: 3px solid black;
+    transition: transform 0.1s ease-in-out, top 0.1s ease-in-out;
 }
 
 /* Product Menu Wrapper */

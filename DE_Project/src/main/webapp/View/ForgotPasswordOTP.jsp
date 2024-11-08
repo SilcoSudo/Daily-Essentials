@@ -4,7 +4,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/login.css" />
-        <title>Đăng nhập</title>
+        <link rel="icon" href="${pageContext.request.contextPath}/Component/IMG/IMG_Product_view/Product_noneImage-48x48.png" type="image/x-icon">
+
+        <title>Change password</title>
     </head>
     <body>
         <div class="login-container">
@@ -17,19 +19,19 @@
                     <img src="${pageContext.request.contextPath}/Component/IMG/ic-home.svg" alt="Home" />
                 </a>
             </div>
-            <h2 class="login-title">Quên mật khẩu</h2>
+            <h2 class="login-title">Forgot Password</h2>
             <form action="forgot_otp" method="POST" class="login-form">
-                <label for="otp">Nhập mã OTP</label>
+                <label for="otp">Enter OTP</label>
                 <input type="hidden" name="email" value="${email}"/>
-                <input type="text" id="otp" name="otp" tabindex="1" placeholder="Nhập mã OTP" />
-                <button type="submit" class="btnAuthen" tabindex="2">Tiếp tục</button>
+                <input type="text" id="otp" name="otp" tabindex="1" placeholder="Enter OTP" />
+                <button type="submit" class="btnAuthen" tabindex="2">Continue</button>
             </form>
 
             <!-- Countdown and Resend Button -->
             <div class="otp-timer">
                 <!-- Initially hidden text -->
-                <p id="countdownText" style="display: none;">Bạn có thể yêu cầu lại mã sau <span id="countdown">30</span> giây</p>
-                <button id="resendOtp">Gửi lại mã OTP</button>
+                <p id="countdownText" style="display: none;">You can request the code again later. <span id="countdown">30</span> s</p>
+                <button id="resendOtp">Resend OT code</button>
             </div>
         </div>
 

@@ -145,9 +145,9 @@ public class CategoryDAO {
         query.append("JOIN cart c ON c.product_id = p.product_id ");
         query.append("JOIN user_profile up ON up.user_id = c.user_id ");
         if (user_id != 0) {
-            query.append("WHERE c.user_id = ? AND ");
+            query.append("WHERE c.status = 0 AND  c.user_id = ? AND ");
         } else {
-            query.append("WHERE");
+            query.append("WHERE c.status = 0 AND ");
         }
         query.append("p.product_id IN (");
         for (int i = 0; i < product_id.size(); i++) {
