@@ -87,64 +87,64 @@
                 </form>
 
                 <button type="button"  class="btn-create" onclick="window.location.href = '${pageContext.request.contextPath}/Authen/Register'">Tạo tài khoản</button>
+                <div class="account-list-table">
+                    <table class="account-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Tên</th>
+                                <th>Phone</th>
+                                <th>Mail</th>
+                                <th>Role</th>
+                                <th>Trạng thái</th>
+                                <th>Cập nhật</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                ResultSet rs = (ResultSet) request.getSession().getAttribute("accountResultSet");
 
-                <table class="account-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Tên</th>
-                            <th>Phone</th>
-                            <th>Mail</th>
-                            <th>Role</th>
-                            <th>Trạng thái</th>
-                            <th>Cập nhật</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            ResultSet rs = (ResultSet) request.getSession().getAttribute("accountResultSet");
-
-                            if (rs == null) {
-                                rs = accountDAO.getAllAccountsResultSet();
-                            }
-
-                            boolean hasAccounts = false;
-                            if (rs != null) {
-                                while (rs.next()) {
-                                    hasAccounts = true;
-                                    String decryptedPassword = "";
-                                    try {
-                                        decryptedPassword = Encryption.decrypt(rs.getString("password"));
-                                    } catch (Exception e) {
-                                        decryptedPassword = "Lỗi giải mã";
-                                        e.printStackTrace();
-                                    }
-                        %>
-                        <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= decryptedPassword %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %>')">
-                            <td><%= rs.getInt("account_id") %></td>
-                            <td><%= rs.getString("username") %></td>
-                            <td><%= rs.getString("user_fullname") %></td>
-                            <td><%= rs.getString("user_phone") %></td>
-                            <td><%= rs.getString("user_email") %></td>
-                            <td><%= rs.getString("role") %></td>
-                            <td><%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %></td>
-                            <td><%= rs.getDate("update_at") != null ? rs.getDate("update_at").toString() : "N/A" %></td>
-                        </tr>
-                        <%
+                                if (rs == null) {
+                                    rs = accountDAO.getAllAccountsResultSet();
                                 }
-                            }
-                            if (!hasAccounts) {
-                        %>
-                        <tr>
-                            <td colspan="8" style="text-align: center;">Không tìm thấy tài khoản nào.</td>
-                        </tr>
-                        <%
-                            }
-                        %>
-                    </tbody>
 
-                </table>
+                                boolean hasAccounts = false;
+                                if (rs != null) {
+                                    while (rs.next()) {
+                                        hasAccounts = true;
+                                        String decryptedPassword = "";
+                                        try {
+                                            decryptedPassword = Encryption.decrypt(rs.getString("password"));
+                                        } catch (Exception e) {
+                                            decryptedPassword = "Lỗi giải mã";
+                                            e.printStackTrace();
+                                        }
+                            %>
+                            <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= decryptedPassword %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %>')">
+                                <td><%= rs.getInt("account_id") %></td>
+                                <td><%= rs.getString("username") %></td>
+                                <td><%= rs.getString("user_fullname") %></td>
+                                <td><%= rs.getString("user_phone") %></td>
+                                <td><%= rs.getString("user_email") %></td>
+                                <td><%= rs.getString("role") %></td>
+                                <td><%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %></td>
+                                <td><%= rs.getDate("update_at") != null ? rs.getDate("update_at").toString() : "N/A" %></td>
+                            </tr>
+                            <%
+                                    }
+                                }
+                                if (!hasAccounts) {
+                            %>
+                            <tr>
+                                <td colspan="8" style="text-align: center;">Không tìm thấy tài khoản nào.</td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <!-- Modal for Editing Account -->

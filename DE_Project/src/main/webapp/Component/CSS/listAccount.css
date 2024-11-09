@@ -1,11 +1,14 @@
+
+/* Container styling */
 .container {
     width: 90%;
-    margin: 20px;
+    margin: 20px auto;
     padding: 20px;
     background-color: var(--white-100);
     border-radius: 12px;
 }
 
+/* Filter section styling */
 .filter-section {
     display: flex;
     justify-content: space-between;
@@ -39,18 +42,24 @@
     padding: 12px;
     font-weight: bold;
     border-radius: 6px;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin: 10px 0;
 }
 
+/* Account table styling */
 .account-table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
     border-radius: 10px;
     overflow: hidden;
-    table-layout: fixed;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.account-table thead {
+    position: sticky;
+    top: 0;
+    background-color: #f1f1f1;
+    z-index: 1;
 }
 
 .account-table th,
@@ -58,17 +67,25 @@
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    overflow: hidden;
-    /* Ẩn nội dung thừa */
-    text-overflow: ellipsis;
-    /* Thêm dấu ba chấm nếu nội dung quá dài */
-    white-space: nowrap;
-    /* Không cho phép xuống dòng */
 }
 
 .account-table th {
     background-color: #f1f1f1;
     font-weight: bold;
+}
+
+.account-table tbody {
+    display: block;
+    max-height: 450px; /* Adjust as needed */
+    overflow-y: auto;
+    width: 100%;
+}
+
+.account-table thead,
+.account-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 
 .account-table tr:hover {
@@ -80,7 +97,22 @@
     font-size: 14px;
 }
 
-/* Modal Styles */
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0px 0px 20px 20px grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000080;
+    border-radius: 10px;
+}
+
+/* Modal styles */
 .modal {
     display: none;
     position: fixed;
@@ -110,7 +142,7 @@
     margin-bottom: 20px;
 }
 
-/* Close Button */
+/* Close button for modal */
 .close {
     position: absolute;
     top: 10px;
@@ -122,7 +154,7 @@
     cursor: pointer;
 }
 
-/* Input Fields */
+/* Input fields in modal */
 .modal-content label {
     display: block;
     font-weight: bold;
@@ -150,6 +182,7 @@
     resize: none;
 }
 
+/* Radio buttons for status */
 .status-container {
     display: flex;
     align-items: center;
@@ -172,12 +205,13 @@
     cursor: pointer;
 }
 
-.status-container input[type="radio"]:checked+label span {
+.status-container input[type="radio"]:checked + label span {
     background-color: #00008B;
     color: white;
     border: none;
 }
 
+/* Modal buttons */
 .modal-actions {
     display: flex;
     justify-content: flex-end;
@@ -212,32 +246,4 @@
     font-weight: bold;
     border-radius: 6px;
     margin-bottom: 20px;
-}
-
-.account-table tbody {
-    display: table-row-group;
-    height: 650px;
-    overflow-y: auto;
-}
-
-.account-table thead,
-.account-table tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-.account-table th.username,
-.account-table td.username {
-    min-width: 150px;
-}
-
-.account-table th.name,
-.account-table td.name {
-    min-width: 120px;
-}
-
-.account-table th.email,
-.account-table td.email {
-    min-width: 200px;
 }
