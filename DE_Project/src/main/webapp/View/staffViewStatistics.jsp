@@ -131,7 +131,7 @@
         <script>
             function formatPrice(price) {
                 if (price === null || price === "" || price === "No revenue yet") {
-                    return "Chưa có doanh thu";
+                    return "No revenue yet";
                 }
                 return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
             }
