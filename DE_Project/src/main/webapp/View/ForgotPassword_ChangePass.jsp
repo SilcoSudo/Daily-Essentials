@@ -23,7 +23,7 @@
             <form action="forgot_changepass" method="POST" class="login-form">
                 <label for="otp">Enter password</label>
                 <input type="hidden" name="accountID" value="${accountID}"/>
-                <input type="text" id="pass" name="pass" tabindex="1" placeholder="Enter passwordu" />
+                <input type="text" id="pass" name="pass" tabindex="1" placeholder="Enter password" />
                 <button type="submit" class="btnAuthen" tabindex="2">Confirm</button>
             </form>
         </div>

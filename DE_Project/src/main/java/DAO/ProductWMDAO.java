@@ -171,20 +171,6 @@ public class ProductWMDAO {
         }
     }
 
-    // Lấy tên kho hàng
-    public ResultSet getWarehouses() {
-        String query = "SELECT warehouse_name FROM warehouse";
-        ResultSet rs = null;
-        try {
-            Connection conn = DBConnect.getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            rs = ps.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rs;
-
-    }
 
     // lưu sản phẩm vào db
     public void saveProduct(Product product) {

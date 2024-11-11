@@ -31,7 +31,7 @@
             <div class="otp-timer">
                 <!-- Initially hidden text -->
                 <p id="countdownText" style="display: none;">You can request the code again later. <span id="countdown">30</span> s</p>
-                <button id="resendOtp">Resend OT code</button>
+                <button id="resendOtp">Resend OTP code</button>
             </div>
         </div>
 

@@ -4,6 +4,8 @@
  */
 package Controller;
 
+import DAO.AuthenDAO;
+import DAO.CartDAO;
 import DAO.CategoryDAO;
 import DAO.LabelDAO;
 import Model.CategoryModel;
@@ -65,9 +67,32 @@ public class CategoryController extends HttpServlet {
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
 
-        if ("searchCategory".equalsIgnoreCase(action)) {
-            handleCategorySearch(request, response, session);
-        } else if ("viewCategory".equalsIgnoreCase(action)) {
+            Set<String> uniLabel = new HashSet<>();
+            for (ProductModel e : searchProducts) {
+                uniLabel.add(e.getLabelName());
+            }
+
+            Map<String, List<CategoryModel>> labelCategoryMap = new HashMap<>();
+
+            for (String label : uniLabel) {
+                List<CategoryModel> categoryList = categoryDAO.getCategoriesByLabelName(label);
+                labelCategoryMap.put(label, categoryList);
+            }
+            session.setAttribute("labelCategoryMap", labelCategoryMap);
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"status\":\"success\"}");
+
+        }
+        if (part[3].equalsIgnoreCase("View")) {
+            AuthenDAO authenDAO = new AuthenDAO();
+            HttpSession session = request.getSession(false);
+            CartDAO cartDAO = new CartDAO();
+            String username = (String) session.getAttribute("username");
+            int userID = authenDAO.getUserIdByUsername(username);
+            int totalCartItems = cartDAO.getTotalCartItems(userID);
+            session.setAttribute("totalCartItems", totalCartItems);
             request.getRequestDispatcher("/View/category.jsp").forward(request, response);
         } else if ("filterLabels".equalsIgnoreCase(action)) {
             handleLabelFilter(request, response);
@@ -96,18 +121,23 @@ public class CategoryController extends HttpServlet {
         }
     }
 
-    private void handleCategorySearch(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
-        String searchTerm = request.getParameter("search");
-        CategoryDAO categoryDAO = new CategoryDAO();
-        List<ProductModel> searchProducts = categoryDAO.searchProducts(searchTerm);
-        Integer userIdObj = (Integer) session.getAttribute("userID");
-        int userId = (userIdObj != null) ? userIdObj : 0;
-        List<ProductModel> productHaveInCart = categoryDAO.getProductInCartWhenSearch(searchProducts, userId);
+        if (part[3].equalsIgnoreCase("Search")) {
+            int labelID = Integer.parseInt(request.getParameter("categoryId"));
+            Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
+            int userId = (userIdObj != null) ? userIdObj : 0;
+            HttpSession session = request.getSession();
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<ProductModel> productList;
+            List<ProductModel> productHaveInCart;
 
-        for (ProductModel e : searchProducts) {
-            for (ProductModel j : productHaveInCart) {
-                if (j.getProductId() == e.getProductId()) {
-                    e.setQuantityInCart(j.getQuantityInCart());
+            productList = categoryDAO.getProductByCategoryID(labelID);
+
+            productHaveInCart = categoryDAO.getProductInCartWhenSearch(productList, userId);
+            for (ProductModel e : productList) {
+                for (ProductModel j : productHaveInCart) {
+                    if (j.getProductId() == e.getProductId()) {
+                        e.setQuantityInCart(j.getQuantityInCart());
+                    }
                 }
             }
         }

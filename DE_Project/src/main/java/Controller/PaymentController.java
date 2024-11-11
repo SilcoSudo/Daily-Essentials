@@ -81,8 +81,8 @@ public class PaymentController extends HttpServlet {
             OrdersDAO ordersDAO = new OrdersDAO();
             CartDAO cartDAO = new CartDAO();
 
-            // Lấy sản phẩm trong giỏ hàng
-            List<ProductModel> productsInCart = cartDAO.getProductInCart(userId);
+            // Lấy sản phẩm trong giỏ hàng 
+           List<ProductModel> productsInCart = cartDAO.getProductInCart(userId);
 
             // Kiểm tra giỏ hàng trống
             if (productsInCart == null || productsInCart.isEmpty()) {

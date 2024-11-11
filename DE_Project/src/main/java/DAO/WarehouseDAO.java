@@ -5,11 +5,15 @@
 package DAO;
 
 import DB.DBConnect;
-import Model.Warehouse;
+import Model.InventoryModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,162 +21,34 @@ import java.sql.SQLException;
  */
 public class WarehouseDAO {
 
-    
-    // hiển thị danh sách kho hàng
-    public ResultSet getAllWarehouses() {
-        ResultSet rs = null;
-        try {
-            Connection conn = DBConnect.getConnection();
-            String query = "SELECT * FROM warehouse";
-            PreparedStatement ps = conn.prepareStatement(query);
-            rs = ps.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rs;
-    }
 
-    // Thêm kho hàng mới
-    public boolean addWarehouse(Warehouse warehouse) {
-        try ( Connection conn = DBConnect.getConnection();  PreparedStatement pst = conn.prepareStatement("INSERT INTO warehouse(warehouse_code, warehouse_name, warehouse_address, warehouse_capacity, warehouse_type, warehouse_status) VALUES (?, ?, ?, ?, ?, ?)")) {
 
-            pst.setString(1, warehouse.getWarehouseCode());
-            pst.setString(2, warehouse.getWarehouseName());
-            pst.setString(3, warehouse.getWarehouseAddress());
-            pst.setInt(4, warehouse.getWarehouseCapacity());
-            pst.setString(5, warehouse.getWarehouseType());
-            pst.setString(6, warehouse.getWarehouseStatus());
+    public List<InventoryModel> getInventoryList() {
+        List<InventoryModel> result = new ArrayList<>();
+        String query = "SELECT * FROM inventory_report";
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
 
-            return pst.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    // Lấy thông tin kho hàng theo mã kho
-    public Warehouse getWarehouseByCode(String warehouseCode) {
-        try ( Connection conn = DBConnect.getConnection();  PreparedStatement pst = conn.prepareStatement("SELECT * FROM warehouse WHERE warehouse_code=?")) {
-
-            pst.setString(1, warehouseCode);
-            try ( ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    return new Warehouse(
-                            rs.getString("warehouse_code"),
-                            rs.getString("warehouse_name"),
-                            rs.getString("warehouse_address"),
-                            rs.getInt("warehouse_capacity"),
-                            rs.getString("warehouse_type"),
-                            rs.getString("warehouse_status")
-                    );
+            while (rs.next()) {
+                InventoryModel inventoryModel = new InventoryModel();
+                inventoryModel.setInventoryId(rs.getInt("inventory_id"));
+                inventoryModel.setInventoryCode(rs.getString("inventory_code"));
+                inventoryModel.setProductId(rs.getInt("product_id"));
+                Timestamp periodDateTimestamp = rs.getTimestamp("period_date");
+                if (periodDateTimestamp != null) {
+                    LocalDateTime periodDate = periodDateTimestamp.toLocalDateTime();
+                    inventoryModel.setPeriodDate(periodDate);
                 }
+                inventoryModel.setBeginningQuantity(rs.getInt("beginning_quantity"));
+                inventoryModel.setIncomingQuantity(rs.getInt("incoming_quantity"));
+                inventoryModel.setOutgoingQuantity(rs.getInt("outgoing_quantity"));
+                inventoryModel.setEndingQuantity(rs.getInt("ending_quantity"));
+                inventoryModel.setCreateAt(rs.getTimestamp("create_at").toLocalDateTime());
+
+                result.add(inventoryModel);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println("getInventoryList: " + ex.getMessage());
         }
-        return null;
-    }
-
-    // Cập nhật thông tin kho hàng
-    public boolean updateWarehouse(Warehouse warehouse) {
-        try ( Connection conn = DBConnect.getConnection();  PreparedStatement pst = conn.prepareStatement("UPDATE warehouse SET warehouse_name=?, warehouse_address=?, warehouse_capacity=?, warehouse_type=?, warehouse_status=? WHERE warehouse_code=?")) {
-
-            pst.setString(1, warehouse.getWarehouseName());
-            pst.setString(2, warehouse.getWarehouseAddress());
-            pst.setInt(3, warehouse.getWarehouseCapacity());
-            pst.setString(4, warehouse.getWarehouseType());
-            pst.setString(5, warehouse.getWarehouseStatus());
-            pst.setString(6, warehouse.getWarehouseCode());
-
-            return pst.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    // Xóa kho hàng theo mã kho
-    public boolean deleteWarehouse(String warehouseCode) {
-        try ( Connection conn = DBConnect.getConnection();  PreparedStatement pst = conn.prepareStatement("DELETE FROM warehouse WHERE warehouse_code=?")) {
-
-            pst.setString(1, warehouseCode);
-            return pst.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    // hàm tìm kiếm cho kho
-    public ResultSet getWarehousesByCriteria(String warehouseName, String warehouseCode, String warehouseAddress, String warehouseStatus) {
-        ResultSet rs = null;
-        try {
-            Connection conn = DBConnect.getConnection();
-            String query = "SELECT * FROM warehouse WHERE 1=1"; // Điều kiện luôn đúng
-            if (warehouseName != null && !warehouseName.isEmpty()) {
-                query += " AND warehouse_name LIKE ?";
-            }
-            if (warehouseCode != null && !warehouseCode.isEmpty()) {
-                query += " AND warehouse_code LIKE ?";
-            }
-            if (warehouseAddress != null && !warehouseAddress.isEmpty()) {
-                query += " AND warehouse_address LIKE ?";
-            }
-            if (warehouseStatus != null && !warehouseStatus.isEmpty()) {
-                query += " AND warehouse_status LIKE ?";
-            }
-            PreparedStatement ps = conn.prepareStatement(query);
-            int index = 1;
-            if (warehouseName != null && !warehouseName.isEmpty()) {
-                ps.setString(index++, "%" + warehouseName + "%");
-            }
-            if (warehouseCode != null && !warehouseCode.isEmpty()) {
-                ps.setString(index++, "%" + warehouseCode + "%");
-            }
-            if (warehouseAddress != null && !warehouseAddress.isEmpty()) {
-                ps.setString(index++, "%" + warehouseAddress + "%");
-            }
-            if (warehouseStatus != null && !warehouseStatus.isEmpty()) {
-                ps.setString(index++, "%" + warehouseStatus + "%");
-            }
-            rs = ps.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return rs;
-    }
-
-    // hàm tìm kiếm cho kho
-    public Warehouse getWarehouseByName(String warehouseName) throws SQLException {
-        String query = "SELECT * FROM warehouse WHERE warehouse_name = ?";
-        try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, warehouseName);
-            try ( ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new Warehouse(
-                            rs.getString("warehouse_code"),
-                            rs.getString("warehouse_name"),
-                            rs.getString("warehouse_address"),
-                            rs.getInt("warehouse_capacity"),
-                            rs.getString("warehouse_type"),
-                            rs.getString("warehouse_status")
-                    );
-                }
-            }
-        }
-        return null;
-    }
-    
-    // đang test lưu kho chưa qua chỉnh sửa 
-    public void saveWarehouse(String name, String code, String address) {
-        String sql = "INSERT INTO warehouse (warehouse_name, warehouse_code, warehouse_address) VALUES (?, ?, ?)";
-        try ( Connection conn = DBConnect.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, name);
-            stmt.setString(2, code);
-            stmt.setString(3, address);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle exception appropriately
-        }
+        return result;
     }
 }

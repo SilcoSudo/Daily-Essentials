@@ -123,7 +123,7 @@ $(document).ready(function () {
       const quantityElement = $(`#quantity-${productId}`);
       const currentQuantity = parseInt(quantityElement.val());
       updateCartQuantity(productId, currentQuantity);
-    }, 100);
+    }, 1000);
   }
 
   $(document).on("click", ".product-img, .product-name", function (event) {

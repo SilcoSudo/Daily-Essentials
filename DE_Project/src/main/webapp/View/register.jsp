@@ -57,11 +57,11 @@
                     <label>Gender*</label>
                     <label class="custom-radio">
                         <input type="radio" name="gender" value="male" checked>
-                        <span class="radio-btn">Man</span> 
+                        <span class="radio-btn">Male</span> 
                     </label>
                     <label class="custom-radio">
                         <input type="radio" name="gender" value="female">
-                        <span class="radio-btn">Girl</span>
+                        <span class="radio-btn">Female</span>
                     </label>
                 </div>
                 <button type="submit" class="register-button" tabindex="8">Rigster</button>
