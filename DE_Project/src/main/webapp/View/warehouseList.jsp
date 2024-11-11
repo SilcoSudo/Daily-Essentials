@@ -92,7 +92,7 @@
 
                 <!-- Product and Label Management Section (Scoped) -->
                 <jsp:include page="productList.jsp" />
-                <jsp:include page="labelList.jsp" />
+                <jsp:include page="categoryList.jsp" />
             </div>
         </div>
     </body>

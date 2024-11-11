@@ -17,7 +17,7 @@
                 <!-- Table Section -->
                 <div class="label-table-section">
                     <div class="label-form-group">
-                        <form action="LabelController" method="GET">
+                        <form action="Category" method="GET">
                             <select name="labelName">
                                 <option value="">Nhãn</option>
                                 <%
@@ -89,7 +89,7 @@
                 <!-- Form Section -->
                 <div class="label-form-section">
                     <h3>Thông tin nhãn</h3>
-                    <form action="LabelController" method="POST">
+                    <form action="Category" method="POST">
                         <!-- Hidden field to specify if it's an update or add -->
                         <input type="hidden" name="action" id="updateAction" value="update" />
 
@@ -117,7 +117,7 @@
                     <div class="label-modal-content">
                         <span class="label-close-btn" onclick="closeModal()">&times;</span>
                         <h2>Thêm nhãn mới</h2>
-                        <form action="LabelController" method="POST">
+                        <form action="Category" method="POST">
                             <input type="hidden" name="action" value="add" /> 
                             <label for="addLabelName">Tên nhãn</label>
                             <input type="text" id="addLabelName" name="labelName" required>
