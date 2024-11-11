@@ -89,15 +89,15 @@ public class CategoryDAO {
         return categoryList;
     }
 
-    public List<ProductModel> getProductByCategoryID(int categoryID) {
+    public List<ProductModel> getProductByCategoryID(int labelID) {
         List<ProductModel> result = new ArrayList<>();
         String query = "SELECT p.product_id, p.product_name, p.product_price, p.image_url, c.category_name, l.label_name \n"
                 + "FROM product p\n"
                 + "JOIN category c ON p.category_id = c.category_id \n"
                 + "JOIN label l ON c.label_id = l.label_id \n"
-                + "WHERE c.category_id = ?";
+                + "WHERE c.label_id = ?";
         try ( Connection connection = DB.DBConnect.getConnection();  PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, categoryID);
+            statement.setInt(1, labelID);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
@@ -138,21 +138,28 @@ public class CategoryDAO {
         return result;
     }
 
-    public List<ProductModel> getProductInCartWhenSearch(List<ProductModel> product_id, int user_id) {
+    public List<ProductModel> getProductInCartWhenSearch(List<ProductModel> product_ids, int user_id) {
         List<ProductModel> result = new ArrayList<>();
+        if (product_ids == null || product_ids.isEmpty()) {
+            return result;
+        }
+
         StringBuilder query = new StringBuilder("SELECT p.product_id, c.quantity ");
         query.append("FROM product p ");
         query.append("JOIN cart c ON c.product_id = p.product_id ");
         query.append("JOIN user_profile up ON up.user_id = c.user_id ");
+        query.append("WHERE c.status = 0 ");
+
+        int paramIndex = 1;
+
         if (user_id != 0) {
-            query.append("WHERE c.status = 0 AND  c.user_id = ? AND ");
-        } else {
-            query.append("WHERE c.status = 0 AND ");
+            query.append("AND c.user_id = ? ");
         }
-        query.append("p.product_id IN (");
-        for (int i = 0; i < product_id.size(); i++) {
+
+        query.append("AND p.product_id IN (");
+        for (int i = 0; i < product_ids.size(); i++) {
             query.append("?");
-            if (i < product_id.size() - 1) {
+            if (i < product_ids.size() - 1) {
                 query.append(", ");
             }
         }
@@ -160,10 +167,12 @@ public class CategoryDAO {
 
         try ( Connection connection = DB.DBConnect.getConnection();  PreparedStatement statement = connection.prepareStatement(query.toString())) {
 
-            statement.setInt(1, user_id);
+            if (user_id != 0) {
+                statement.setInt(paramIndex++, user_id);
+            }
 
-            for (int i = 0; i < product_id.size(); i++) {
-                statement.setInt(i + 2, product_id.get(i).getProductId());
+            for (ProductModel product : product_ids) {
+                statement.setInt(paramIndex++, product.getProductId());
             }
 
             ResultSet rs = statement.executeQuery();
@@ -179,4 +188,5 @@ public class CategoryDAO {
         }
         return result;
     }
+
 }

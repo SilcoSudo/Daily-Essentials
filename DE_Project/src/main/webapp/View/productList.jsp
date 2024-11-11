@@ -154,6 +154,8 @@
             </div>
         </div>
         <script src="${pageContext.request.contextPath}/Component/JS/productList.js"></script>
+        <script src="${pageContext.request.contextPath}/Component/JS/warehouse.js"></script>
+
     </body>
 </html>
 

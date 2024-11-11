@@ -161,6 +161,10 @@
         <url-pattern>/Mange-Products</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>WarehouseController</servlet-name>
+        <url-pattern>/Warehouse/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ProductWMController</servlet-name>
         <url-pattern>/ProductWM</url-pattern>
     </servlet-mapping>

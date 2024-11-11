@@ -4,6 +4,8 @@
  */
 package Controller;
 
+import DAO.AuthenDAO;
+import DAO.CartDAO;
 import DAO.CategoryDAO;
 import Model.CategoryModel;
 import Model.ProductModel;
@@ -98,6 +100,13 @@ public class CategoryController extends HttpServlet {
 
         }
         if (part[3].equalsIgnoreCase("View")) {
+            AuthenDAO authenDAO = new AuthenDAO();
+            HttpSession session = request.getSession(false);
+            CartDAO cartDAO = new CartDAO();
+            String username = (String) session.getAttribute("username");
+            int userID = authenDAO.getUserIdByUsername(username);
+            int totalCartItems = cartDAO.getTotalCartItems(userID);
+            session.setAttribute("totalCartItems", totalCartItems);
             request.getRequestDispatcher("/View/category.jsp").forward(request, response);
         }
     }
@@ -118,7 +127,7 @@ public class CategoryController extends HttpServlet {
         String part[] = path.split("/");
 
         if (part[3].equalsIgnoreCase("Search")) {
-            int categoryID = Integer.parseInt(request.getParameter("categoryId"));
+            int labelID = Integer.parseInt(request.getParameter("categoryId"));
             Integer userIdObj = (Integer) request.getSession().getAttribute("userID");
             int userId = (userIdObj != null) ? userIdObj : 0;
             HttpSession session = request.getSession();
@@ -126,7 +135,7 @@ public class CategoryController extends HttpServlet {
             List<ProductModel> productList;
             List<ProductModel> productHaveInCart;
 
-            productList = categoryDAO.getProductByCategoryID(categoryID);
+            productList = categoryDAO.getProductByCategoryID(labelID);
 
             productHaveInCart = categoryDAO.getProductInCartWhenSearch(productList, userId);
             for (ProductModel e : productList) {
