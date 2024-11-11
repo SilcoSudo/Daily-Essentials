@@ -55,11 +55,11 @@
                             <label>Gender *</label>
                             <label class="custom-radio">
                                 <input type="radio" name="gender" value="male" <c:if test="${info.gender}">checked</c:if>>
-                                    <span class="radio-btn">Man</span> 
+                                    <span class="radio-btn">Male</span> 
                                 </label>
                                 <label class="custom-radio">
                                     <input type="radio" name="gender" value="female" <c:if test="${!info.gender}">checked</c:if>>
-                                    <span class="radio-btn">Girl</span>
+                                    <span class="radio-btn">Female</span>
                                 </label>
                             </div>
 
@@ -79,7 +79,7 @@
                         </select>
 
                         <label for="address">Detailed home address</label>
-                        <input type="text" id="address" name="address" value="${info.user_address != null ? info.user_address : "Chưa có địa chỉ" }">
+                            <input type="text" id="address" name="address" value="${info.user_address != null ? info.user_address : "No address" }">
                     </c:forEach>
 
                     <button type="submit" class="update-button">Confirm update</button>

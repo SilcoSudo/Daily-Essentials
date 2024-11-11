@@ -90,11 +90,11 @@
                     <table class="account-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Username</th>
-                                <th>Full Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
+                                <th class="id-column">ID</th>
+                                <th class="username-column">Username</th>
+                                <th class="fullname-column">Full Name</th>
+                                <th class="phone-column">Phone</th>
+                                <th class="email-column">Email</th>
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Update</th>
@@ -121,11 +121,11 @@
                                         }
                             %>
                             <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= decryptedPassword %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Locked" : "Active" %>')">
-                                <td><%= rs.getInt("account_id") %></td>
-                                <td><%= rs.getString("username") %></td>
-                                <td><%= rs.getString("user_fullname") %></td>
-                                <td><%= rs.getString("user_phone") %></td>
-                                <td><%= rs.getString("user_email") %></td>
+                                <td class="id-column"><%= rs.getInt("account_id") %></td>
+                                <td class="username-column"><%= rs.getString("username") %></td>
+                                <td class="fullname-column"><%= rs.getString("user_fullname") %></td>
+                                <td class="phone-column"><%= rs.getString("user_phone") %></td>
+                                <td class="email-column"><%= rs.getString("user_email") %></td>
                                 <td><%= rs.getString("role") %></td>
                                 <td><%= rs.getBoolean("is_lock") ? "Locked" : "Active" %></td>
                                 <td><%= rs.getDate("update_at") != null ? rs.getDate("update_at").toString() : "N/A" %></td>
@@ -181,7 +181,7 @@
                     <label>Status</label>
                     <div class="status-container">
                         <input type="radio" id="statusActive" name="status" value="Active">
-                        <label for="statusActive"><span>Open</span></label>
+                        <label for="statusActive"><span>Active</span></label>
 
                         <input type="radio" id="statusLocked" name="status" value="Locked">
                         <label for="statusLocked"><span>Locked</span></label>
@@ -189,7 +189,7 @@
 
                     <div class="modal-actions">
                         <button type="button" class="btn-delete" name="btnAction" value="delete">Delete</button>
-                        <button type="submit" class="btn-save" name="btnAction" value="update">Save</button>
+                        <button type="submit" class="btn-save" name="btnAction" value="update">Update</button>
                     </div>
                 </form>
             </div>

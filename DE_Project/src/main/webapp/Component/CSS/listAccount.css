@@ -53,6 +53,7 @@
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    table-layout: fixed;
 }
 
 .account-table thead {
@@ -62,11 +63,12 @@
     z-index: 1;
 }
 
-.account-table th,
-.account-table td {
+/* General adjustments for readability */
+.account-table th, .account-table td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    font-size: 14px;
 }
 
 .account-table th {
@@ -95,6 +97,32 @@
 
 .account-table td {
     font-size: 14px;
+}
+
+/* Account table column widths */
+.account-table th.id-column,
+.account-table td.id-column {
+    width: 5%; /* Adjust as needed to keep it small */
+    text-align: center; /* Center align for a compact look */
+}
+
+.account-table th.username-column,
+.account-table td.username-column {
+    width: 20%; /* Adjust as needed for a wider username column */
+}
+
+.account-table th.phone-column,
+.account-table td.phone-column {
+    width: 10%; /* Adjust as needed for a wider full name column */
+}
+
+.account-table th.fullname-column,
+.account-table td.fullname-column {
+    width: 20%; /* Adjust as needed for a wider full name column */
+}
+.account-table th.email-column,
+.account-table td.email-column {
+    width: 20%; /* Adjust as needed for a wider email column */
 }
 
 /* Custom scrollbar styling */
