@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/navbar.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/Orders.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/notfi.css">
-        <title>Giỏ Hàng</title>
+        <title>Order</title>
     </head>
     <body>
         <jsp:include page="header.jsp" />
