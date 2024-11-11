@@ -6,150 +6,160 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : Nov 10, 2024, 11:29:52 AM
     Author     : Qi
 */
-
-body.warehouse-import {
+.warehouse-import {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
+    background-color: #f9f9f9;
 }
 
-.iw-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    width: 100%;
-}
-
-.iw-container h1 {
-    font-size: 24px;
+.warehouse-import h1 {
     color: #333;
     text-align: center;
-    margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 30px;
 }
 
-.iw-form-group {
-    margin-bottom: 15px;
-}
-
-.iw-form-group label {
-    display: block;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-.iw-form-group input[type="text"],
-.iw-form-group input[type="number"],
-.iw-form-group select,
-.iw-form-group input[type="file"] {
-    width: 100%;
-    padding: 8px;
+.container {
+    background-color: #fff;
+    padding: 35px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 1600px;
+    margin: 30px 30px auto 0; /* Add 10px space above the container */
+    ;
     border: 1px solid #ddd;
-    border-radius: 4px;
     box-sizing: border-box;
 }
 
-.iw-form-group input[type="file"] {
-    padding: 5px;
-}
-
-.iw-product-container {
+.warehouse-import .form-group {
     margin-bottom: 20px;
 }
 
-.iw-product-group {
+.warehouse-import label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+}
+
+.warehouse-import input[type="text"],
+.warehouse-import input[type="number"],
+.warehouse-import select,
+.warehouse-import input[type="file"] {
+    width: 100%;
+    padding: 12px;
     border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 4px;
-    margin-top: 15px;
-    background-color: #fafafa;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s ease-in-out;
 }
 
-.iw-product-group h3 {
+.warehouse-import input[type="text"]:focus,
+.warehouse-import input[type="number"]:focus,
+.warehouse-import select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.warehouse-import input[type="submit"],
+.warehouse-import button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.warehouse-import input[type="submit"]:hover,
+.warehouse-import button:hover {
+    background-color: #45a049;
+}
+
+.warehouse-import .product-group {
+    border: 1px solid #0046b8;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.warehouse-import .product-group h3 {
+    margin-top: 0;
+    background-color: #0046b8;
+    color: #fff;
+    padding: 10px;
     font-size: 18px;
-    margin: 0;
-    color: #007bff;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-.iw-product-details {
+.warehouse-import .product-details {
     display: none;
-    padding-top: 10px;
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
 }
 
-.iw-product-details.show {
+.warehouse-import .product-details.show {
     display: block;
 }
 
-.iw-form-group label[for="productName"] {
-    font-weight: bold;
-}
-
-.iw-add-product-button {
-    display: inline-block;
-    padding: 10px 15px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
+.warehouse-import .product-group button {
+    background-color: #e74c3c;
+    padding: 10px 20px;
+    border-radius: 6px;
+    color: white;
     cursor: pointer;
-    font-size: 16px;
-    margin-top: 15px;
-    text-align: center;
-    text-decoration: none;
-}
-
-.iw-add-product-button:hover {
-    background-color: #0056b3;
-}
-
-.iw-submit-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #28a745;
+    font-size: 14px;
+    font-weight: bold;
     border: none;
+}
+
+.warehouse-import .product-group button:hover {
+    background-color: #c0392b;
+}
+
+#addProductBtn {
+    background-color: #3498db;
     color: white;
     font-size: 16px;
-    border-radius: 4px;
+    font-weight: bold;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
 }
 
-.iw-submit-button:hover {
-    background-color: #218838;
+#addProductBtn:hover {
+    background-color: #2980b9;
 }
 
-.iw-error-message {
-    color: #ff0000;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
-}
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
 
-.iw-form-group select option {
-    padding: 5px;
-}
+    .warehouse-import h1 {
+        font-size: 24px;
+    }
 
-#iw-productTemplate {
-    display: none;
-}
+    .warehouse-import input[type="submit"],
+    .warehouse-import button,
+    #addProductBtn {
+        width: 100%;
+        padding: 12px;
+    }
 
-.iw-product-group h3::after {
-    content: " ▼";
-    font-size: 14px;
-    color: #007bff;
-}
-.iw-product-group h3.active::after {
-    content: " ▲";
-}
-
-.iw-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    .warehouse-import label {
+        font-size: 16px;
+    }
 }
