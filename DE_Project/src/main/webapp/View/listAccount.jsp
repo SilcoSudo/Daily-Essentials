@@ -6,11 +6,11 @@
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="DAO.AccountDAO" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Danh Sách Tài Khoản</title>
+        <title>Account List</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/listAccount.css">
         <script>
             var contextPaths = '<%= request.getContextPath() %>';
@@ -30,7 +30,7 @@
                     }
                 }
 
-                if (status === "Hoạt động") {
+                if (status === "Active") {
                     document.getElementById('statusActive').checked = true;
                 } else {
                     document.getElementById('statusLocked').checked = true;
@@ -65,40 +65,39 @@
                     <form action="${pageContext.request.contextPath}/ManageAccount" method="POST">
                     <div class="filter-section">
                         <div class="filter-item">
-                            <label for="search-accountId">ID tài khoản</label>
-                            <input type="text" id="search-accountId" name="search-accountId" placeholder="Tất cả" 
+                            <label for="search-accountId">Account ID</label>
+                            <input type="text" id="search-accountId" name="search-accountId" placeholder="All" 
                                    value="<%= request.getParameter("search-accountId") != null ? request.getParameter("search-accountId") : "" %>">
                         </div>
                         <div class="filter-item">
-                            <label for="status">Trạng thái</label>
+                            <label for="status">Status</label>
                             <select id="status" name="status">
-                                <option value="">Tất cả</option>
-                                <option value="active" <%= "active".equals(request.getParameter("status")) ? "selected" : "" %>>Hoạt động</option>
-                                <option value="locked" <%= "locked".equals(request.getParameter("status")) ? "selected" : "" %>>Đã khóa</option>
+                                <option value="">All</option>
+                                <option value="active" <%= "active".equals(request.getParameter("status")) ? "selected" : "" %>>Active</option>
+                                <option value="locked" <%= "locked".equals(request.getParameter("status")) ? "selected" : "" %>>Locked</option>
                             </select>
                         </div>
                         <div class="filter-item">
                             <label for="search-username">Username</label>
-                            <input type="text" id="search-username" name="search-username" placeholder="Tất cả" 
-                                   value="<%=   request.getParameter("search-username") != null ? request.getParameter("search-username") : "" %>">
+                            <input type="text" id="search-username" name="search-username" placeholder="All" 
+                                   value="<%= request.getParameter("search-username") != null ? request.getParameter("search-username") : "" %>">
                         </div>
-                        <button type="submit" name="btnAction" value="search" class="filter-btn">Tìm</button>
+                        <button type="submit" name="btnAction" value="search" class="filter-btn">Search</button>
                     </div>
                 </form>
 
-                <button type="button"  class="btn-create" onclick="window.location.href = '${pageContext.request.contextPath}/Authen/Register'">Tạo tài khoản</button>
                 <div class="account-list-table">
                     <table class="account-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Username</th>
-                                <th>Tên</th>
+                                <th>Full Name</th>
                                 <th>Phone</th>
-                                <th>Mail</th>
+                                <th>Email</th>
                                 <th>Role</th>
-                                <th>Trạng thái</th>
-                                <th>Cập nhật</th>
+                                <th>Status</th>
+                                <th>Update</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -117,18 +116,18 @@
                                         try {
                                             decryptedPassword = Encryption.decrypt(rs.getString("password"));
                                         } catch (Exception e) {
-                                            decryptedPassword = "Lỗi giải mã";
+                                            decryptedPassword = "Decryption Error";
                                             e.printStackTrace();
                                         }
                             %>
-                            <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= decryptedPassword %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %>')">
+                            <tr onclick="openModal('<%= rs.getInt("account_id") %>', '<%= rs.getString("username") %>', '<%= decryptedPassword %>', '<%= rs.getString("user_fullname") %>', '<%= rs.getString("user_phone") %>', '<%= rs.getString("user_email") %>', '<%= rs.getString("role") %>', '<%= rs.getBoolean("is_lock") ? "Locked" : "Active" %>')">
                                 <td><%= rs.getInt("account_id") %></td>
                                 <td><%= rs.getString("username") %></td>
                                 <td><%= rs.getString("user_fullname") %></td>
                                 <td><%= rs.getString("user_phone") %></td>
                                 <td><%= rs.getString("user_email") %></td>
                                 <td><%= rs.getString("role") %></td>
-                                <td><%= rs.getBoolean("is_lock") ? "Đã khóa" : "Hoạt động" %></td>
+                                <td><%= rs.getBoolean("is_lock") ? "Locked" : "Active" %></td>
                                 <td><%= rs.getDate("update_at") != null ? rs.getDate("update_at").toString() : "N/A" %></td>
                             </tr>
                             <%
@@ -137,7 +136,7 @@
                                 if (!hasAccounts) {
                             %>
                             <tr>
-                                <td colspan="8" style="text-align: center;">Không tìm thấy tài khoản nào.</td>
+                                <td colspan="8" style="text-align: center;">No accounts found.</td>
                             </tr>
                             <%
                                 }
@@ -151,27 +150,27 @@
         <div id="accountModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
-                <h3>Thông tin tài khoản</h3>
+                <h3>Account Information</h3>
                 <form action="${pageContext.request.contextPath}/ManageAccount" method="post">
                     <input type="hidden" name="id" id="accountId">
 
-                    <label for="username">Tài khoản</label>
+                    <label for="username">Username</label>
                     <input type="text" name="username" id="username" required>
 
-                    <label for="password">Mật khẩu</label>
+                    <label for="password">Password</label>
                     <input type="text" name="password" id="password" required>
 
-                    <label for="fullName">Tên</label>
+                    <label for="fullName">Full Name</label>
                     <input type="text" name="fullName" id="fullName" required>
 
-                    <label for="phone">Điện thoại</label>
+                    <label for="phone">Phone</label>
                     <input type="text" name="phone" id="phone" required>
 
-                    <label for="email">Mail</label>
+                    <label for="email">Email</label>
                     <input type="email" name="email" id="email" required>
 
                     <!-- Role Selection -->
-                    <label for="role">Vai trò</label>
+                    <label for="role">Role</label>
                     <select name="role" id="role" required>
                         <option value="customer">Customer</option>
                         <option value="staff">Staff</option>
@@ -179,18 +178,18 @@
                     </select>
 
                     <!-- Status -->
-                    <label>Trạng thái</label>
+                    <label>Status</label>
                     <div class="status-container">
-                        <input type="radio" id="statusActive" name="status" value="Hoạt động">
-                        <label for="statusActive"><span>Mở</span></label>
+                        <input type="radio" id="statusActive" name="status" value="Active">
+                        <label for="statusActive"><span>Open</span></label>
 
-                        <input type="radio" id="statusLocked" name="status" value="Đã khóa">
-                        <label for="statusLocked"><span>Khóa</span></label>
+                        <input type="radio" id="statusLocked" name="status" value="Locked">
+                        <label for="statusLocked"><span>Locked</span></label>
                     </div>
 
                     <div class="modal-actions">
-                        <button type="button" class="btn-delete" name="btnAction" value="delete">Xóa</button>
-                        <button type="submit" class="btn-save" name="btnAction" value="update">Lưu</button>
+                        <button type="button" class="btn-delete" name="btnAction" value="delete">Delete</button>
+                        <button type="submit" class="btn-save" name="btnAction" value="update">Save</button>
                     </div>
                 </form>
             </div>
