@@ -1,5 +1,7 @@
 package DAO;
 
+import DB.DBConnect;
+import Model.Product;
 import Model.ProductModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -173,5 +175,24 @@ public class ProductDAO {
             System.out.println("Error fetching products: " + e.getMessage());
         }
         return result;
+    }
+
+    public boolean addProduct(Product product) throws SQLException {
+        String sql = "INSERT INTO product (product_name, product_sku, product_price, product_quantity, product_description, image_url, category_id, created_at) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, product.getProductName());
+            ps.setString(2, product.getProductSku());
+            ps.setBigDecimal(3, product.getProductPrice());
+            ps.setInt(4, product.getProductQuantity());
+            ps.setString(5, product.getProductDescription());
+            ps.setString(6, product.getImgUrl());
+            ps.setInt(7, product.getCategoryId());
+            ps.setTimestamp(8, product.getCreatedAt()); // Store createdAt in the database
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        }
     }
 }

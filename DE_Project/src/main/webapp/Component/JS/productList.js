@@ -12,7 +12,7 @@ function openModal(product) {
     document.getElementById("productQuantity").value = product.quantity;
     document.getElementById("labelName").value = product.label;
     document.getElementById("categoryName").value = product.category;
-    document.getElementById("productImage").src = product.imageUrl;
+    document.getElementById("productImage").src = contextPath + "/" + product.imageUrl;
 
     document.getElementById("productModal").style.display = "block";
 }

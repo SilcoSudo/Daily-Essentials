@@ -80,7 +80,7 @@
                         <div class="filter-item">
                             <label for="search-username">Username</label>
                             <input type="text" id="search-username" name="search-username" placeholder="Tất cả" 
-                                   value="<%= request.getParameter("search-username") != null ? request.getParameter("search-username") : "" %>">
+                                   value="<%=   request.getParameter("search-username") != null ? request.getParameter("search-username") : "" %>">
                         </div>
                         <button type="submit" name="btnAction" value="search" class="filter-btn">Tìm</button>
                     </div>

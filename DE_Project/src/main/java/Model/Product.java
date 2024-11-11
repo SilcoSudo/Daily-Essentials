@@ -8,10 +8,11 @@ package Model;
  *
  * @author Qi
  */
-
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 public class Product {
+
     private int productId;
     private String productName;
     private String productSku;
@@ -23,13 +24,16 @@ public class Product {
     private String labelName;  // Thêm tên nhãn nếu cần hiển thị cùng với sản phẩm
     private String warehouseCode;
     private String warehouseName;  // Thêm tên kho nếu cần hiển thị cùng với sản phẩm
+    private int categoryId;
+    private Timestamp createdAt;  // Thêm thuộc tính createdAt
 
+    // Constructor mặc định
     public Product() {
-        // Constructor mặc định
     }
 
-    public Product(int productId, String productName, String productSku, BigDecimal productPrice, int productQuantity, String imgUrl, 
-                   String productDescription, int labelId, String labelName, String warehouseCode, String warehouseName) {
+    // Constructor có tham số
+    public Product(int productId, String productName, String productSku, BigDecimal productPrice, int productQuantity, String imgUrl,
+            String productDescription, int labelId, String labelName, String warehouseCode, String warehouseName, int categoryId, Timestamp createdAt) {
         this.productId = productId;
         this.productName = productName;
         this.productSku = productSku;
@@ -41,10 +45,11 @@ public class Product {
         this.labelName = labelName;
         this.warehouseCode = warehouseCode;
         this.warehouseName = warehouseName;
+        this.categoryId = categoryId;
+        this.createdAt = createdAt;
     }
 
     // Getters và Setters cho tất cả các thuộc tính
-
     public int getProductId() {
         return productId;
     }
@@ -131,5 +136,21 @@ public class Product {
 
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

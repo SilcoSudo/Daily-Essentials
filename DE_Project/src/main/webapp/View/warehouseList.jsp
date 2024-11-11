@@ -1,16 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="DAO.WarehouseDAO"%>
+<%@ page import="DAO.WarehouseDAO" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../Component/CSS/warehouseList.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/warehouseList.css" />
         <title>Warehouse Management</title>
 
     </head>
     <body>
+        <%WarehouseDAO warehouseDAO = new WarehouseDAO();%>
         <!-- Warehouse Management Section -->
         <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
@@ -36,26 +37,26 @@
 
                             <!-- Action Buttons -->
                             <div class="action-buttons">
-                                <a href="importWarehouse.jsp" class="btn">Nhập kho</a>
-                                <a href="#" class="btn">Xuất kho</a>
-                                <a href="#" class="btn">Tồn kho</a>
-                            </div>
+                                <a href="${pageContext.request.contextPath}/DEHome/Manage-Products/ImportWarehouse" class="btn">Nhập kho</a>
+                            <a href="#" class="btn">Xuất kho</a>
+                            <a href="#" class="btn">Tồn kho</a>
+                        </div>
 
-                            <!-- Warehouse Table -->
-                            <table class="warehouse-table">
-                                <thead>
-                                    <tr>
-                                        <th>Tên kho</th>
-                                        <th>Mã kho</th>
-                                        <th>Địa chỉ</th>
-                                        <th>Sức chứa hiện tại (sản phẩm)</th>
-                                        <th>Loại kho</th>
-                                        <th>Trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <!-- Warehouse Table -->
+                        <table class="warehouse-table">
+                            <thead>
+                                <tr>
+                                    <th>Tên kho</th>
+                                    <th>Mã kho</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Sức chứa hiện tại (sản phẩm)</th>
+                                    <th>Loại kho</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <%
-                                    WarehouseDAO warehouseDAO = new WarehouseDAO();
+                                    
                                     ResultSet rs = (ResultSet) request.getAttribute("warehouses");
                                      if (rs == null) {
                                     rs = warehouseDAO.getAllWarehouses(); 

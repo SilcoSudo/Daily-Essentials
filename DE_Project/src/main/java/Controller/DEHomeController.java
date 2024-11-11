@@ -65,8 +65,14 @@ public class DEHomeController extends HttpServlet {
             if (part.length > 3 && part[3].equalsIgnoreCase("Manage-Orders")) {
                 request.getRequestDispatcher("/View/staffViewOrder.jsp").forward(request, response);
             } else if (part.length > 3 && part[3].equalsIgnoreCase("Manage-Products")) {
-                request.getRequestDispatcher("/View/warehouseList.jsp").forward(request, response);
-
+                // Check for further path segments under "Manage-Products"
+                if (part.length > 4 && part[4].equalsIgnoreCase("ImportWarehouse")) {
+                    // Route to Import Warehouse page
+                    request.getRequestDispatcher("/View/importWarehouse.jsp").forward(request, response);
+                } else {
+                    // Default Manage Products page
+                    request.getRequestDispatcher("/View/warehouseList.jsp").forward(request, response);
+                }
             } else if (part.length > 3 && part[3].equalsIgnoreCase("Manage-Account")) {
                 request.getRequestDispatcher("/View/listAccount.jsp").forward(request, response);
             } else {
@@ -146,7 +152,7 @@ public class DEHomeController extends HttpServlet {
             } else {
                 request.setAttribute("getPercentChange", "No data to compare");
             }
-            
+
             request.setAttribute("currentMonth", currentMonth);
             request.setAttribute("previousMonth", previousMonth);
         } else {

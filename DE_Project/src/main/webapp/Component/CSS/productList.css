@@ -6,7 +6,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : Oct 31, 2024, 5:20:25 PM
     Author     : Qi
 */
-/* Global Styles for Product Management */
+
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    font-size: 16px;
+    color: #333;
+}
+
 .product-container {
     width: 100%;
     padding: 20px;
@@ -28,81 +42,103 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Form Styles */
 .pm-product-form-group {
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping */
-    align-items: center;
-    justify-content: space-between;
+    gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-.pm-product-form-group input,
-.pm-product-form-group select,
-.pm-product-form-group button {
-    padding: 10px;
-    margin-right: 10px;
-    font-size: 16px;
+.pm-product-form-group input[type="text"],
+.pm-product-form-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    border: 1px solid #ccc;
     flex: 1;
-    min-width: 150px; /* Ensure minimum width */
-    box-sizing: border-box; /* Include padding and border in width */
+    min-width: 150px;
 }
 
-.pm-product-form-group button {
-    background-color: #0056b3;
+.pm-product-form-group .btn {
+    padding: 8px 16px;
     color: white;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.pm-product-form-group button:hover {
-    background-color: #004080;
+
+/* Table Styles */
+.pm-product-list-table {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 10px;
 }
 
-table.pm-product-table {
+
+/* Scrollbar custom styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0px 0px 20px 20px grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000080;
+    border-radius: 10px;
+}
+
+.pm-product-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
-table.pm-product-table th,
-table.pm-product-table td {
-    padding: 12px;
-    text-align: center;
-    border: none;
+.pm-product-table th,
+.pm-product-table td {
+    padding: 12px 15px;
+    text-align: left;
+
 }
 
-th.pm-product-header {
-    background-color: whitesmoke; /* Header background color */
-    border-bottom: 2px solid #0056b3; /* Darker border for the header */
+.pm-product-table th {
+    background-color: #f2f2f2;
+    color: black;
+    font-weight: bold;
 }
 
-td.pm-product-cell {
-    background-color: white; /* Light gray for cells */
+.pm-product-table td {
+
 }
 
-/* Modal styles */
+.product-data-row:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+
+/* Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 1000;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    background-color: rgba(0, 0, 0, 0.7); /* Dark background with higher opacity */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
-    background-color: #fff; /* White background */
-    margin: 10% auto; /* Center the modal */
-    padding: 30px; /* Increased padding */
-    border-radius: 10px; /* Rounded corners */
-    width: 50%; /* Modal width */
-    max-width: 600px; /* Maximum width */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Soft shadow */
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
 }
 
 .close-button {
@@ -110,62 +146,61 @@ td.pm-product-cell {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: black;
+    color: #000;
     text-decoration: none;
-    cursor: pointer;
 }
 
-label.modalproduct {
+.modalproduct {
     display: block;
-    margin: 15px 0 5px; /* Spacing around labels */
-    font-weight: bold; /* Make label text bold */
+    margin-top: 15px;
+    font-weight: bold;
 }
 
-input[type="text"],
-textarea,
-select {
-    width: calc(100% - 20px); /* Full width minus padding */
-    padding: 10px;
-    border: 1px solid #ccc;
+.modalproduct + input,
+.modalproduct + textarea,
+.modalproduct + select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    margin-bottom: 10px;
 }
 
-textarea{
-    font-family: Arial;
+#productImage {
+    width: 100%;
+    max-height: 200px;
+    margin-top: 10px;
 }
-#changeImageButton {
-    background-color: #0056b3;
+
+button#changeImageButton {
+    padding: 8px 16px;
+    background-color: #28a745;
     color: white;
     border: none;
-    padding: 10px;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    margin-top: 10px;
 }
 
-#changeImageButton:hover {
-    background-color: #004080;
+button#changeImageButton:hover {
+    background-color: #218838;
 }
 
-button {
-    padding: 10px 15px; /* Increased padding for buttons */
-    border-radius: 5px; /* Rounded corners */
-    border: none; /* No border */
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #0056b3; /* Hover effect */
+button[onclick="deleteProduct()"] {
+    padding: 8px 16px;
+    background-color: #dc3545;
     color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-button:focus {
-    outline: none; /* Remove focus outline */
+button[onclick="deleteProduct()"]:hover {
+    background-color: #c82333;
 }
 

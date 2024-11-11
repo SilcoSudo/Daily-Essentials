@@ -1,0 +1,155 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 10, 2024, 11:29:52 AM
+    Author     : Qi
+*/
+
+body.warehouse-import {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.iw-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+}
+
+.iw-container h1 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.iw-form-group {
+    margin-bottom: 15px;
+}
+
+.iw-form-group label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.iw-form-group input[type="text"],
+.iw-form-group input[type="number"],
+.iw-form-group select,
+.iw-form-group input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.iw-form-group input[type="file"] {
+    padding: 5px;
+}
+
+.iw-product-container {
+    margin-bottom: 20px;
+}
+
+.iw-product-group {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+    background-color: #fafafa;
+}
+
+.iw-product-group h3 {
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0;
+    color: #007bff;
+}
+
+.iw-product-details {
+    display: none;
+    padding-top: 10px;
+}
+
+.iw-product-details.show {
+    display: block;
+}
+
+.iw-form-group label[for="productName"] {
+    font-weight: bold;
+}
+
+.iw-add-product-button {
+    display: inline-block;
+    padding: 10px 15px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.iw-add-product-button:hover {
+    background-color: #0056b3;
+}
+
+.iw-submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.iw-submit-button:hover {
+    background-color: #218838;
+}
+
+.iw-error-message {
+    color: #ff0000;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.iw-form-group select option {
+    padding: 5px;
+}
+
+#iw-productTemplate {
+    display: none;
+}
+
+.iw-product-group h3::after {
+    content: " ▼";
+    font-size: 14px;
+    color: #007bff;
+}
+.iw-product-group h3.active::after {
+    content: " ▲";
+}
+
+.iw-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

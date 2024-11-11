@@ -7,12 +7,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Qi
 */
 
-/* Global Styles */
 
-.w-label{
+
+/* Global Styles */
+.w-label {
     width: 100%;
     padding: 20px;
 }
+
 .label-management-container {
     width: 90%;
     max-width: 1200px; /* Limit width to 1200px */
@@ -56,15 +58,11 @@ h1.label-title {
 }
 
 .label-search-btn {
-    background-color: #0056b3;
     color: white;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-
-.label-search-btn:hover {
-    background-color: #004080;
+    background-color: #002080;
 }
 
 table.label-data-table {
@@ -82,19 +80,27 @@ table.label-data-table td {
     text-align: center;
 }
 
+/* Sticky header for table */
+table.label-data-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+    z-index: 1;
+}
+
 th.label-table-header {
     background-color: #f2f2f2;
-    border-bottom: 2px solid;
+    border-bottom: 2px solid #ccc;
 }
 
 td.label-table-cell {
     border-bottom: 1px solid #ddd;
 }
 
-/* Scrollbar Styling */
+/* Scrollable Table Body */
 .label-data-table-container {
-    height: 300px;
-    overflow-y: scroll;
+    max-height: 300px; /* Set max height for scrollable container */
+    overflow-y: auto; /* Enable vertical scrolling */
     display: block;
     min-width: 500px;
     max-width: 600px;
@@ -140,7 +146,6 @@ td.label-table-cell {
 }
 
 .label-input-group button.label-submit-btn {
-    background-color: #002080;
     color: white;
     border: none;
     padding: 10px;
@@ -148,11 +153,11 @@ td.label-table-cell {
     border-radius: 4px;
     cursor: pointer;
 }
-
-.label-input-group button.label-submit-btn:hover {
-    background-color: #004080;
+.label-add-btn{
+    color: white;
+    border-radius: 4px;
+    background-color: #002080;
 }
-
 .label-delete-btn {
     color: red;
     cursor: pointer;
@@ -196,3 +201,5 @@ td.label-table-cell {
     text-decoration: none;
     cursor: pointer;
 }
+
+

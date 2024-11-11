@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../Component/CSS/labelList.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/labelList.css" />
         <title>Label Management</title>
         <script src="${pageContext.request.contextPath}/Component/JS/labelList.js"></script>
 
@@ -35,7 +35,7 @@
                             <!-- Thay đổi phần này thành input để người dùng có thể nhập nhãn -->
                             <input type="text" name="categoryName" placeholder="Nhập phân loại" />
                             <button type="submit" class="label-search-btn">Tìm</button>
-                            <button type="button" id="addLabelButton" class="label-search-btn label-add-btn">Thêm nhãn</button>
+                            <button type="button" id="addLabelButton" class="label-add-btn">Thêm nhãn</button>
                         </form>
                     </div>
 
@@ -123,7 +123,7 @@
                             <input type="text" id="addLabelName" name="labelName" required>
                             <label for="addCategoryName">Phân loại</label>
                             <input type="text" id="addCategoryName" name="categoryName" required>
-                            <button type="submit">Thêm</button>
+                            <button type="submit" class="label-add-btn">Thêm</button>
                         </form>
                     </div>
                 </div>
