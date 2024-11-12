@@ -44,6 +44,15 @@
             function closeModal() {
                 document.getElementById('accountModal').style.display = 'none';
             }
+            // Confirmation function for deletion
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this account?");
+            }
+
+            // Confirmation function for update
+            function confirmUpdate() {
+                return confirm("Are you sure you want to update this account?");
+            }
         </script>
     </head>
     <body>
@@ -188,8 +197,8 @@
                     </div>
 
                     <div class="modal-actions">
-                        <button type="button" class="btn-delete" name="btnAction" value="delete">Delete</button>
-                        <button type="submit" class="btn-save" name="btnAction" value="update">Update</button>
+                        <button type="submit" class="btn-delete" name="btnAction" value="delete" onclick="return confirmDelete()">Delete</button>
+                        <button type="submit" class="btn-save" name="btnAction" value="update" onclick="return confirmUpdate()">Update</button>
                     </div>
                 </form>
             </div>
