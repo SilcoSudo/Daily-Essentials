@@ -7,7 +7,7 @@ function openModal(product) {
     document.getElementById("productQuantity").value = product.quantity;
     document.getElementById("labelName").value = product.label;
     document.getElementById("categoryName").value = product.category;
-    document.getElementById("productImage").src = contextPath + "/" + product.imageUrl;
+    document.getElementById("productImage").src = product.imageUrl ? contextPath + "/" + product.imageUrl : "";
     document.getElementById("productModal").style.display = "block";
 }
 
@@ -42,10 +42,10 @@ function saveProduct() {
         }
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "ProductWMController", true);
+        xhr.open("POST", `${contextPath}/DEHome/Manage-Products/update`, true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onload = function () {
-            if (xhr.responseText === "success") {
+            if (xhr.status === 200 && xhr.responseText === "success") {
                 alert("Product updated successfully.");
                 closeModal();
                 location.reload();  // Reload the page to view changes
@@ -58,36 +58,44 @@ function saveProduct() {
             console.error("Request failed");
         };
 
-        xhr.send("action=save&productId=" + productId +
+        xhr.send("action=update&productId=" + productId +
                 "&productName=" + encodeURIComponent(productName) +
                 "&productDescription=" + encodeURIComponent(productDescription) +
-                "&productPrice=" + productPrice +
-                "&productQuantity=" + productQuantity +
+                "&productPrice=" + encodeURIComponent(productPrice) +
+                "&productQuantity=" + encodeURIComponent(productQuantity) +
                 "&labelName=" + encodeURIComponent(labelName) +
                 "&categoryName=" + encodeURIComponent(categoryName) +
                 "&imageUrl=" + encodeURIComponent(imageUrl));
-
     } catch (error) {
         console.error("Error in saveProduct:", error);
     }
 }
 
-// Delete product
 function deleteProduct() {
     const productId = document.getElementById("productId").value;
+
+    if (!productId) {
+        alert("Product ID is missing!");
+        return;
+    }
+
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "ProductWMController", true);
+    xhr.open("POST", `${contextPath}/DEHome/ProductWMController/delete`, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.onload = function () {
-        if (xhr.responseText === "success") {
+        if (xhr.status === 200 && xhr.responseText === "success") {
             alert("Product deleted successfully.");
             closeModal();
-            location.reload();  // Reload the page to see changes
+            location.reload();
         } else {
             alert("Failed to delete product.");
+            console.error("Error:", xhr.responseText);
         }
     };
-    xhr.send("action=delete&productId=" + productId);
+    xhr.onerror = function () {
+        console.error("Request failed");
+    };
+    xhr.send("action=delete&productId=" + encodeURIComponent(productId));
 }
 
 // Add click event to product rows for opening the modal

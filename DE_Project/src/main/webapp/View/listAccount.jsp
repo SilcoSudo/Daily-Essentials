@@ -12,8 +12,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Account List</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/listAccount.css">
+        <%
+            String loggedInUsername = (String) session.getAttribute("username");
+        %>
         <script>
             var contextPaths = '<%= request.getContextPath() %>';
+            var loggedInUsername = '<%= loggedInUsername %>';
             // Function to open the modal and populate it with account data
             function openModal(id, username, password, fullName, phone, email, role, status) {
                 document.getElementById('accountId').value = id;
@@ -46,11 +50,21 @@
             }
             // Confirmation function for deletion
             function confirmDelete() {
+                var selectedUsername = document.getElementById('username').value;
+                if (selectedUsername === loggedInUsername) {
+                    alert("You cannot delete your own account.");
+                    return false;
+                }
                 return confirm("Are you sure you want to delete this account?");
             }
 
             // Confirmation function for update
             function confirmUpdate() {
+                var selectedUsername = document.getElementById('username').value;
+                if (selectedUsername === loggedInUsername) {
+                    alert("You cannot update your own account.");
+                    return false;
+                }
                 return confirm("Are you sure you want to update this account?");
             }
         </script>

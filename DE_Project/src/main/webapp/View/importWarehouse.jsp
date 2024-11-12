@@ -4,7 +4,6 @@
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="Model.Product" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -24,50 +23,22 @@
         <div class="w-container">
             <jsp:include page="headers.jsp"></jsp:include>
                 <div class="container">
-                    <h1>Import Products</h1>
+                    <h1>Import Products from Excel</h1>
 
-                    <!-- Display error message if it exists -->
+                    <!-- Hiển thị thông báo lỗi nếu có -->
                 <c:if test="${not empty errorMessage}">
                     <div class="error-message">${errorMessage}</div>
                 </c:if>
 
-                <!-- Product Import Form -->
-                <form action="${pageContext.request.contextPath}/DEHome/Manage-Products/import" method="post">
-                    <h2>Product Information</h2>
-                    <div class="product-group">    
-                        <h3>Product Information</h3>
-                        <div class="form-group">
-                            <label for="productName">Product Name:</label>
-                            <input type="text" id="productName" name="productName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="productPrice">Price:</label>
-                            <input type="number" id="productPrice" name="productPrice" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="sku">SKU:</label>
-                            <input type="text" id="sku" name="sku" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="productQuantity">Quantity:</label>
-                            <input type="number" id="productQuantity" name="productQuantity" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="productDescription">Description:</label>
-                            <input type="text" id="productDescription" name="productDescription" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="productImage">Image URL:</label>
-                            <input type="text" id="productImage" name="productImage" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="categoryId">Category ID:</label>
-                            <input type="number" id="categoryId" name="categoryId" required>
-                        </div>
-                    </div>
-
+                <!-- Form tải lên file Excel -->
+                <form action="${pageContext.request.contextPath}/DEHome/Manage-Products/importExcel" 
+                      method="post" 
+                      enctype="multipart/form-data">
+                    <label for="productExcel">Select Excel file:</label>
+                    <input type="file" id="productExcel" name="productExcel" accept=".xlsx" required>
                     <input type="submit" value="Import Products">
                 </form>
+
             </div>
         </div>
     </body>

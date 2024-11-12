@@ -3,7 +3,7 @@
 <%@page import="DAO.LabelDAO"%>
 <%@page import="java.sql.ResultSet"%>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,13 +19,13 @@
                 <h1>Product Management</h1>
 
                 <!-- Search and Filter Section for Products -->
-                <form action="${pageContext.request.contextPath}/DEHome/Manage-Products/ProductWM" method="GET">
+                <form action="${pageContext.request.contextPath}/DEHome/Manage-Products/search" method="GET">
                     <div class="pm-product-form-group">
-                        <input type="text" name="productName" placeholder="Tên sản phẩm">
-                        <input type="text" name="productID" placeholder="Mã sản phẩm">
-                        <input type="text" name="price" placeholder="Giá">
-                        <input type="text" name="label" placeholder="Nhãn">
-                        <button type="submit" class="btn">Tìm</button>
+                        <input type="text" name="productName" placeholder="Product Name">
+                        <input type="text" name="productID" placeholder="Product ID">
+                        <input type="text" name="price" placeholder="Price">
+                        <input type="text" name="label" placeholder="Label">
+                        <button type="submit" class="btn">Search</button>
                     </div>
                 </form>
 
@@ -34,23 +34,21 @@
                     <table class="pm-product-table">
                         <thead>
                             <tr>
-                                <th class="pm-product-header">Tên sản phẩm</th>
-                                <th class="pm-product-header">ID sản phẩm</th>
-                                <th class="pm-product-header">Mã sản phẩm</th>
-                                <th class="pm-product-header">Giá</th>
-                                <th class="pm-product-header">Nhãn</th>
+                                <th class="pm-product-header">Product Name</th>
+                                <th class="pm-product-header">Product ID</th>
+                                <th class="pm-product-header">SKU</th>
+                                <th class="pm-product-header">Price</th>
+                                <th class="pm-product-header">Label</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
-                            // Get the filtered product results if available, otherwise retrieve all products
                             ProductWMDAO productWMDAO = new ProductWMDAO();
                             ResultSet rs = (ResultSet) request.getAttribute("filteredProduct");
                             if (rs == null) {
                                 rs = productWMDAO.getAllProducts(); 
                             }
                             boolean hasProducts = false;
-                            // Iterate through the products and display them in the table
                             if (rs != null) {
                                 while (rs.next()) {
                                     hasProducts = true;
@@ -73,11 +71,10 @@
                             <% 
                                  }
                             }
-                            // If no products were found, display a message
                             if (!hasProducts) {
                             %>
                             <tr>
-                                <td colspan="5" class="pm-product-cell">Không tìm thấy sản phẩm.</td>
+                                <td colspan="5" class="pm-product-cell">No products found.</td>
                             </tr>
                             <% 
                             }
@@ -92,26 +89,26 @@
         <div id="productModal" class="modal">
             <div class="modal-content">
                 <span class="close-button" onclick="closeModal()">&times;</span>
-                <h2>Thông tin sản phẩm</h2>
-                <form action="${pageContext.request.contextPath}/DEHome/Manage-Products/ProductWM" method="POST">
+                <h2>Product Information</h2>
+                <form id="productForm" action="${pageContext.request.contextPath}/DEHome/Manage-Products/update" method="POST">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" id="productId" name="productId">
 
-                    <label class="modalproduct">Tên</label>
+                    <label class="modalproduct">Name</label>
                     <input type="text" id="productName" name="productName" />
 
-                    <label class="modalproduct">Mô tả</label>
+                    <label class="modalproduct">Description</label>
                     <textarea id="productDescription" name="productDescription"></textarea>
 
-                    <label class="modalproduct">Giá</label>
+                    <label class="modalproduct">Price</label>
                     <input type="text" id="productPrice" name="productPrice" />
 
-                    <label class="modalproduct">Tồn kho</label>
+                    <label class="modalproduct">Stock</label>
                     <input type="text" id="productQuantity" name="productQuantity" />
 
-                    <label class="modalproduct">Nhãn</label>
+                    <label class="modalproduct">Label</label>
                     <select id="labelName" name="labelName">
-                        <option value="">Chọn Nhãn</option>
+                        <option value="">Select Label</option>
                         <%
                             LabelDAO labelDAO = new LabelDAO();
                             ResultSet labels = labelDAO.getLabels();
@@ -124,9 +121,9 @@
                         %>
                     </select>
 
-                    <label class="modalproduct">Phân loại</label>
+                    <label class="modalproduct">Category</label>
                     <select id="categoryName" name="categoryName">
-                        <option value="">Chọn phân loại</option>
+                        <option value="">Select Category</option>
                         <%
                             ResultSet categories = labelDAO.getCategories();
                             while (categories != null && categories.next()) {
@@ -138,20 +135,90 @@
                         %>
                     </select>
 
-                    <button id="changeImageButton">Đổi</button>
+                    <button id="changeImageButton">Change</button>
                     <img id="productImage" src="" alt="Product Image" />
 
                     <div>
-                        <button type="button" onclick="deleteProduct()">Xóa</button>
-                        <button type="submit">Lưu</button>
+                        <button type="button" onclick="deleteProduct()">Delete</button>
+                        <button type="submit">Save</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- Include JavaScript File -->
-        <script src="${pageContext.request.contextPath}/Component/JS/productList.js"></script>
-        <script src="${pageContext.request.contextPath}/Component/JS/warehouse.js"></script>
+        <!-- JavaScript Functions -->
+        <script>
+            // Open the modal with product details
+            function openModal(product) {
+                console.log("Opening modal for product:", product);
+                document.getElementById("productId").value = product.id;
+                document.getElementById("productName").value = product.name;
+                document.getElementById("productDescription").value = product.description;
+                document.getElementById("productPrice").value = product.price;
+                document.getElementById("productQuantity").value = product.quantity;
+                document.getElementById("labelName").value = product.label;
+                document.getElementById("categoryName").value = product.category;
+                document.getElementById("productImage").src = product.imageUrl ? contextPath + "/" + product.imageUrl : "";
+                document.getElementById("productModal").style.display = "block";
+            }
 
+            // Close the modal
+            function closeModal() {
+                console.log("Closing modal");
+                document.getElementById("productModal").style.display = "none";
+            }
+
+            // Event listener for clicking outside the modal to close it
+            window.onclick = function (event) {
+                if (event.target === document.getElementById('productModal')) {
+                    closeModal();
+                }
+            };
+
+            // Delete product function
+            function deleteProduct() {
+                const productId = document.getElementById("productId").value;
+                if (!productId) {
+                    alert("Product ID is missing!");
+                    return;
+                }
+                console.log("Deleting product with ID:", productId);
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", `${contextPath}/DEHome/ProductWMController/delete`, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onload = function () {
+                    if (xhr.status === 200 && xhr.responseText === "success") {
+                        alert("Product deleted successfully.");
+                        closeModal();
+                        location.reload();
+                    } else {
+                        alert("Failed to delete product.");
+                        console.error("Error:", xhr.responseText);
+                    }
+                };
+                xhr.onerror = function () {
+                    console.error("Request failed");
+                };
+                xhr.send("action=delete&productId=" + encodeURIComponent(productId));
+            }
+
+            // Add click event to product rows for opening the modal
+            document.querySelectorAll('.product-data-row').forEach(row => {
+                row.addEventListener('click', function () {
+                    const product = {
+                        id: this.getAttribute('data-id'),
+                        name: this.getAttribute('data-name'),
+                        description: this.getAttribute('data-description'),
+                        price: this.getAttribute('data-price'),
+                        quantity: this.getAttribute('data-quantity'),
+                        label: this.getAttribute('data-label'),
+                        category: this.getAttribute('data-category'),
+                        imageUrl: this.getAttribute('data-image-url')
+                    };
+                    openModal(product);
+                });
+            });
+        </script>
     </body>
 </html>

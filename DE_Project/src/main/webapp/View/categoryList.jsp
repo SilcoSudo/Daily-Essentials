@@ -17,7 +17,7 @@
                 <!-- Table Section -->
                 <div class="label-table-section">
                     <div class="label-form-group">
-                        <form action="LabelController" method="GET">
+                        <form action="${pageContext.request.contextPath}/DEHome/Manage-Products/manageLabels" method="GET">
                             <select name="labelName">
                                 <option value="">Nhãn</option>
                                 <%
