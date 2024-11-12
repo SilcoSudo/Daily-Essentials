@@ -95,23 +95,54 @@ public class ImportWarehouseController extends HttpServlet {
         request.getRequestDispatcher("/View/warehouseList.jsp").forward(request, response);
     }
 
-    // Phương thức xử lý cập nhật sản phẩm
     private void handleUpdate(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        String productName = request.getParameter("productName");
-        String productDescription = request.getParameter("productDescription");
-        BigDecimal productPrice = new BigDecimal(request.getParameter("productPrice"));
-        int productQuantity = Integer.parseInt(request.getParameter("productQuantity"));
-        String labelName = request.getParameter("labelName");
-        String categoryName = request.getParameter("categoryName");
-        String imageUrl = request.getParameter("imageUrl");
+        try {
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            String productName = request.getParameter("productName");
+            String productDescription = request.getParameter("productDescription");
+            BigDecimal productPrice = new BigDecimal(request.getParameter("productPrice"));
+            int productQuantity = Integer.parseInt(request.getParameter("productQuantity"));
+            String labelName = request.getParameter("labelName");
+            String categoryName = request.getParameter("categoryName");
+            String imageUrl = request.getParameter("imageUrl");
 
-        ProductWMDAO productWMDAO = new ProductWMDAO();
-        boolean success = productWMDAO.updateProduct(productId, productName, productDescription, productPrice,
-                productQuantity, labelName, categoryName, imageUrl);
+            ProductWMDAO productWMDAO = new ProductWMDAO();
 
-        response.getWriter().write(success ? "success" : "failure");
+            // Nếu imageUrl là null hoặc rỗng, lấy imageUrl hiện tại từ cơ sở dữ liệu
+            if (imageUrl == null || imageUrl.isEmpty()) {
+                String currentImageUrl = productWMDAO.getImageUrlById(productId); // Thêm phương thức này trong DAO
+                imageUrl = currentImageUrl != null ? currentImageUrl : ""; // Giữ nguyên imageUrl hiện tại nếu có
+            }
+
+            // In log các giá trị
+            System.out.println("Received data for update:");
+            System.out.println("Product ID: " + productId);
+            System.out.println("Product Name: " + productName);
+            System.out.println("Description: " + productDescription);
+            System.out.println("Price: " + productPrice);
+            System.out.println("Quantity: " + productQuantity);
+            System.out.println("Label: " + labelName);
+            System.out.println("Category: " + categoryName);
+            System.out.println("Image URL: " + imageUrl);
+
+            // Thực hiện cập nhật
+            boolean success = productWMDAO.updateProduct(productId, productName, productDescription, productPrice,
+                    productQuantity, labelName, categoryName, imageUrl);
+
+            if (success) {
+                response.getWriter().write("success");
+            } else {
+                response.getWriter().write("failure");
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing number from request: " + e.getMessage());
+            response.getWriter().write("failure");
+        } catch (Exception e) {
+            System.err.println("An error occurred during update: " + e.getMessage());
+            e.printStackTrace();
+            response.getWriter().write("failure");
+        }
     }
 
     // Phương thức xử lý xóa sản phẩm
@@ -206,10 +237,10 @@ public class ImportWarehouseController extends HttpServlet {
 
             if (labelName != null && !labelName.trim().isEmpty() && categoryType != null && !categoryType.trim().isEmpty()) {
                 labelDAO.addLabel(labelName, categoryType);
-                response.sendRedirect("labelList.jsp?successMessage=Label added successfully.");
+                response.sendRedirect("warehouseList.jsp?successMessage=Label added successfully.");
             } else {
                 request.setAttribute("errorMessage", "Please fill all fields.");
-                request.getRequestDispatcher("labelList.jsp").forward(request, response);
+                request.getRequestDispatcher("warehouseList.jsp").forward(request, response);
             }
 
         } else if ("update".equalsIgnoreCase(action)) {
@@ -222,18 +253,18 @@ public class ImportWarehouseController extends HttpServlet {
                     boolean isUpdated = labelDAO.updateLabel(labelId, updatedCategory, updatedLabelName);
 
                     if (isUpdated) {
-                        response.sendRedirect("labelList.jsp?successMessage=Label updated successfully.");
+                        response.sendRedirect("warehouseList.jsp?successMessage=Label updated successfully.");
                     } else {
                         request.setAttribute("errorMessage", "Update failed. Please try again.");
-                        request.getRequestDispatcher("labelList.jsp").forward(request, response);
+                        request.getRequestDispatcher("warehouseList.jsp").forward(request, response);
                     }
                 } else {
                     request.setAttribute("errorMessage", "Please fill all fields.");
-                    request.getRequestDispatcher("labelList.jsp").forward(request, response);
+                    request.getRequestDispatcher("warehouseList.jsp").forward(request, response);
                 }
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "Invalid label ID.");
-                request.getRequestDispatcher("labelList.jsp").forward(request, response);
+                request.getRequestDispatcher("warehouseList.jsp").forward(request, response);
             }
         }
     }

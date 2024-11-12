@@ -106,6 +106,24 @@ public class ProductWMDAO {
         }
     }
 
+    public String getImageUrlById(int productId) {
+        String imageUrl = null;
+        String sql = "SELECT image_url FROM product WHERE product_id = ?";
+
+        try ( Connection conn = DBConnect.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, productId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                imageUrl = rs.getString("image_url");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return imageUrl;
+    }
+
     // Lấy id nhãn
     private int getLabelId(String labelName) {
         String query = "SELECT label_id FROM label WHERE label_name = ?";
@@ -138,15 +156,34 @@ public class ProductWMDAO {
 
     // Xóa sản phẩm
     public boolean deleteProduct(int productId) {
-        String query = "DELETE FROM product WHERE product_id = ?";
-        try ( Connection conn = DBConnect.getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, productId);
-            int rowsDeleted = ps.executeUpdate();
-            return rowsDeleted > 0;
+        String deleteInventoryReportSql = "DELETE FROM inventory_report WHERE product_id = ?";
+        String deleteProductSql = "DELETE FROM product WHERE product_id = ?";
+
+        try ( Connection conn = DBConnect.getConnection()) {
+            conn.setAutoCommit(false); // Bắt đầu transaction
+
+            try ( PreparedStatement stmt1 = conn.prepareStatement(deleteInventoryReportSql);  PreparedStatement stmt2 = conn.prepareStatement(deleteProductSql)) {
+
+                // Xóa các bản ghi trong bảng inventory_report
+                stmt1.setInt(1, productId);
+                stmt1.executeUpdate();
+
+                // Xóa sản phẩm trong bảng products
+                stmt2.setInt(1, productId);
+                int rowsAffected = stmt2.executeUpdate();
+
+                conn.commit(); // Commit transaction nếu không có lỗi
+                return rowsAffected > 0;
+
+            } catch (SQLException e) {
+                conn.rollback(); // Rollback nếu có lỗi
+                e.printStackTrace();
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-
+    
 }
