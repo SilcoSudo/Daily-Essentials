@@ -148,10 +148,12 @@
         <servlet-name>MangeAccountController</servlet-name>
         <url-pattern>/ManageAccount</url-pattern>
     </servlet-mapping>
+  
     <servlet-mapping>
         <servlet-name>ImportWarehouseController</servlet-name>
-        <url-pattern>/ImportWarehouse</url-pattern>
+        <url-pattern>/DEHome/Manage-Products/*</url-pattern>
     </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>LabelController</servlet-name>
         <url-pattern>/Label</url-pattern>

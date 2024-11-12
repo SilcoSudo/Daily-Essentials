@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Model;
 
-/**
- *
- * @author Qi
- */
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -22,8 +14,6 @@ public class Product {
     private String productDescription;
     private int labelId;
     private String labelName;  // Thêm tên nhãn nếu cần hiển thị cùng với sản phẩm
-    private String warehouseCode;
-    private String warehouseName;  // Thêm tên kho nếu cần hiển thị cùng với sản phẩm
     private int categoryId;
     private Timestamp createdAt;  // Thêm thuộc tính createdAt
 
@@ -33,7 +23,7 @@ public class Product {
 
     // Constructor có tham số
     public Product(int productId, String productName, String productSku, BigDecimal productPrice, int productQuantity, String imgUrl,
-            String productDescription, int labelId, String labelName, String warehouseCode, String warehouseName, int categoryId, Timestamp createdAt) {
+            String productDescription, int labelId, String labelName, int categoryId, Timestamp createdAt) {
         this.productId = productId;
         this.productName = productName;
         this.productSku = productSku;
@@ -43,8 +33,6 @@ public class Product {
         this.productDescription = productDescription;
         this.labelId = labelId;
         this.labelName = labelName;
-        this.warehouseCode = warehouseCode;
-        this.warehouseName = warehouseName;
         this.categoryId = categoryId;
         this.createdAt = createdAt;
     }
@@ -120,22 +108,6 @@ public class Product {
 
     public void setLabelName(String labelName) {
         this.labelName = labelName;
-    }
-
-    public String getWarehouseCode() {
-        return warehouseCode;
-    }
-
-    public void setWarehouseCode(String warehouseCode) {
-        this.warehouseCode = warehouseCode;
-    }
-
-    public String getWarehouseName() {
-        return warehouseName;
-    }
-
-    public void setWarehouseName(String warehouseName) {
-        this.warehouseName = warehouseName;
     }
 
     public int getCategoryId() {

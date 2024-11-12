@@ -1,9 +1,4 @@
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
- */
-
-
+// Open the modal with product details
 function openModal(product) {
     document.getElementById("productId").value = product.id;
     document.getElementById("productName").value = product.name;
@@ -13,66 +8,56 @@ function openModal(product) {
     document.getElementById("labelName").value = product.label;
     document.getElementById("categoryName").value = product.category;
     document.getElementById("productImage").src = contextPath + "/" + product.imageUrl;
-
     document.getElementById("productModal").style.display = "block";
 }
 
+// Close the modal
 function closeModal() {
     document.getElementById("productModal").style.display = "none";
 }
+
+// Event listener for clicking outside the modal to close it
 window.onclick = function (event) {
-    const modal = document.querySelector('.modal');
-    if (event.target === modal) {
+    if (event.target === document.getElementById('productModal')) {
         closeModal();
     }
-}
+};
 
+// Save product data to server
 function saveProduct() {
     try {
-        const productIdElement = document.getElementById("productId"); // Kiểm tra sự tồn tại của ID sản phẩm
-        if (!productIdElement) {
-            console.error("Product ID element not found");
-            return;
-        }
-        const productId = productIdElement.value; // Lấy ID sản phẩm
+        const productId = document.getElementById("productId").value;
         const productName = document.getElementById("productName").value;
         const productDescription = document.getElementById("productDescription").value;
         const productPrice = document.getElementById("productPrice").value;
-        const productQuantity = document.getElementById("productQuantity").value; // Lấy số lượng sản phẩm
-        const labelName = document.getElementById("labelName").value; // Lấy tên nhãn
-        const categoryName = document.getElementById("categoryName").value; // Lấy tên danh mục
+        const productQuantity = document.getElementById("productQuantity").value;
+        const labelName = document.getElementById("labelName").value;
+        const categoryName = document.getElementById("categoryName").value;
         const imageUrl = document.getElementById("productImage").src;
 
-        // Kiểm tra các giá trị trước khi gửi yêu cầu
-        console.log("Product ID:", productId);
-        console.log("Product Name:", productName);
-        console.log("Product Description:", productDescription);
-        console.log("Product Price:", productPrice);
-        console.log("Product Quantity:", productQuantity);
-        console.log("Label:", labelName);
-        console.log("Category:", categoryName);
-        console.log("Image URL:", imageUrl);
+        // Simple validation for required fields
+        if (!productName || !productDescription || !productPrice || !productQuantity) {
+            alert("All fields are required!");
+            return;
+        }
 
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "ProductWMController", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onload = function () {
-            console.log("Response status:", xhr.status); // Ghi lại mã trạng thái của phản hồi
-            console.log("Response text:", xhr.responseText); // Ghi lại nội dung phản hồi
             if (xhr.responseText === "success") {
                 alert("Product updated successfully.");
                 closeModal();
-                location.reload(); // Tải lại trang để xem các thay đổi
+                location.reload();  // Reload the page to view changes
             } else {
                 alert("Failed to update product.");
-                console.log("Server response:", xhr.responseText); // Ghi lại phản hồi từ máy chủ
+                console.error("Error:", xhr.responseText);
             }
         };
         xhr.onerror = function () {
-            console.error("Request failed"); // Ghi log lỗi yêu cầu
+            console.error("Request failed");
         };
 
-        // Gửi yêu cầu
         xhr.send("action=save&productId=" + productId +
                 "&productName=" + encodeURIComponent(productName) +
                 "&productDescription=" + encodeURIComponent(productDescription) +
@@ -81,49 +66,15 @@ function saveProduct() {
                 "&labelName=" + encodeURIComponent(labelName) +
                 "&categoryName=" + encodeURIComponent(categoryName) +
                 "&imageUrl=" + encodeURIComponent(imageUrl));
+
     } catch (error) {
-        console.error("Error in saveProduct:", error); // Ghi log bất kỳ lỗi nào
+        console.error("Error in saveProduct:", error);
     }
-    closeModal();
 }
 
+// Delete product
 function deleteProduct() {
-    // Implement delete logic here
-    closeModal();
-}
-
-// Add event listener to each row
-document.querySelectorAll('.product-data-row').forEach(row => {
-    row.addEventListener('click', function () {
-        // Collect the data attributes from the clicked row
-        const product = {
-            id: this.getAttribute('data-id'),
-            name: this.getAttribute('data-name'),
-            description: this.getAttribute('data-description'),
-            price: this.getAttribute('data-price'),
-            quantity: this.getAttribute('data-quantity'),
-            type: this.getAttribute('data-type'),
-            category: this.getAttribute('data-category'),
-            imageUrl: this.getAttribute('data-image-url')
-        };
-        openModal(product); // Open modal with product details
-    });
-});
-
-// Close the modal if the user clicks outside of it
-window.onclick = function (event) {
-    if (event.target === document.getElementById('productModal')) {
-        closeModal();
-    }
-};
-
-document.querySelector(".close-button").onclick = function () {
-    document.querySelector(".modal").style.display = "none";
-};
-
-function deleteProduct() {
-    const productId = document.getElementById("productId").value; // Get product ID
-
+    const productId = document.getElementById("productId").value;
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "ProductWMController", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -131,10 +82,27 @@ function deleteProduct() {
         if (xhr.responseText === "success") {
             alert("Product deleted successfully.");
             closeModal();
-            location.reload(); // Reload the page to see changes
+            location.reload();  // Reload the page to see changes
         } else {
             alert("Failed to delete product.");
         }
     };
     xhr.send("action=delete&productId=" + productId);
 }
+
+// Add click event to product rows for opening the modal
+document.querySelectorAll('.product-data-row').forEach(row => {
+    row.addEventListener('click', function () {
+        const product = {
+            id: this.getAttribute('data-id'),
+            name: this.getAttribute('data-name'),
+            description: this.getAttribute('data-description'),
+            price: this.getAttribute('data-price'),
+            quantity: this.getAttribute('data-quantity'),
+            label: this.getAttribute('data-label'),
+            category: this.getAttribute('data-category'),
+            imageUrl: this.getAttribute('data-image-url')
+        };
+        openModal(product);
+    });
+});

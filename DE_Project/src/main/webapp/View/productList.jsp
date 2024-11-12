@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/Component/CSS/productList.css" />
         <script>
-        var contextPath = '${pageContext.request.contextPath}';
+            var contextPath = '${pageContext.request.contextPath}';
         </script>
         <title>Product Management</title>
     </head>
@@ -25,18 +25,6 @@
                         <input type="text" name="productID" placeholder="Mã sản phẩm">
                         <input type="text" name="price" placeholder="Giá">
                         <input type="text" name="label" placeholder="Nhãn">
-                        <select name="warehouse">
-                            <option value="">Kho</option>
-                            <%
-                                ProductWMDAO productWMDAO = new ProductWMDAO();
-                                ResultSet warehouses = productWMDAO.getWarehouses();
-                                while (warehouses != null && warehouses.next()) {
-                            %>
-                            <option value="<%= warehouses.getString("warehouse_name") %>"><%= warehouses.getString("warehouse_name") %></option>
-                            <%
-                                }
-                            %>
-                        </select>
                         <button type="submit" class="btn">Tìm</button>
                     </div>
                 </form>
@@ -51,16 +39,18 @@
                                 <th class="pm-product-header">Mã sản phẩm</th>
                                 <th class="pm-product-header">Giá</th>
                                 <th class="pm-product-header">Nhãn</th>
-                                <th class="pm-product-header">Kho</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
+                            // Get the filtered product results if available, otherwise retrieve all products
+                            ProductWMDAO productWMDAO = new ProductWMDAO();
                             ResultSet rs = (ResultSet) request.getAttribute("filteredProduct");
                             if (rs == null) {
                                 rs = productWMDAO.getAllProducts(); 
                             }
                             boolean hasProducts = false;
+                            // Iterate through the products and display them in the table
                             if (rs != null) {
                                 while (rs.next()) {
                                     hasProducts = true;
@@ -79,15 +69,15 @@
                                 <td class="pm-product-cell"><%= rs.getString("product_sku") %></td>
                                 <td class="pm-product-cell"><%= rs.getBigDecimal("product_price") %></td>
                                 <td class="pm-product-cell"><%= rs.getString("label_name") %></td>
-                                <td class="pm-product-cell"><%= rs.getString("warehouse_name") %></td>
                             </tr>
                             <% 
                                  }
                             }
+                            // If no products were found, display a message
                             if (!hasProducts) {
                             %>
                             <tr>
-                                <td colspan="6" class="pm-product-cell">Không tìm thấy sản phẩm.</td>
+                                <td colspan="5" class="pm-product-cell">Không tìm thấy sản phẩm.</td>
                             </tr>
                             <% 
                             }
